@@ -7,10 +7,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 import javax.xml.crypto.Data;
 
 public class Main {
+
+    // public Map<String,String[]> entities = Map.ofEntries( 
+    //                                     Map.entry("book", new String[]{"name", }),
+    //                                 );
+
     public static Connection connect() throws SQLException {
         String url = "jdbc:postgresql://localhost:5432/javadb";
         String user = "postgres";
@@ -42,6 +49,18 @@ public class Main {
             }
     }
 
+    public static void Execute(){
+        
+    }
+
+    public static void InsertBook(Connection conn) throws SQLException{
+        Scanner scanner = new Scanner(System.in);
+        String tableName = scanner.next();
+        DatabaseMetaData meta = conn.getMetaData();
+
+    }
+    
+
     public static void main(String[] args) {
         try (Connection conn = connect()) {
             // PreparedStatement books_insert = conn.prepareStatement(
@@ -49,7 +68,7 @@ public class Main {
             // );
             GetTables(conn);
 
-            
+
 
         } catch (SQLException e) {
             System.err.println("Database connection failed.");
