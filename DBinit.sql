@@ -21,7 +21,7 @@ CREATE TABLE genres(
     name VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE city(
+CREATE TABLE cities(
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL
 );
@@ -29,7 +29,7 @@ CREATE TABLE city(
 CREATE TABLE warehouses(
     id SERIAL PRIMARY KEY,
     adress VARCHAR(50) NOT NULL,
-    city_id INT REFERENCES city(id)
+    city_id INT REFERENCES cities(id)
 );
 
 ------
