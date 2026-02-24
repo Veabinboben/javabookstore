@@ -1,3 +1,5 @@
+--TODO add UNIQUE on some tables
+
 CREATE TABLE books(
     id SERIAL PRIMARY KEY,
     title VARCHAR(50) NOT NULL,

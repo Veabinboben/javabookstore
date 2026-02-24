@@ -33,7 +33,7 @@ public class Main {
         }
     }
 
-    public static void GetTables(Connection conn) throws  SQLException{
+    public static void getTables(Connection conn) throws  SQLException{
             String[] typs = {"TABLE"};
             DatabaseMetaData meta = conn.getMetaData();
             ResultSet tables = meta.getTables(null, null, null, typs);
@@ -49,25 +49,16 @@ public class Main {
             }
     }
 
-    public static void Execute(){
-        
-    }
-
-    public static void InsertBook(Connection conn) throws SQLException{
-        Scanner scanner = new Scanner(System.in);
-        String tableName = scanner.next();
-        DatabaseMetaData meta = conn.getMetaData();
-
-    }
-    
-
     public static void main(String[] args) {
         try (Connection conn = connect()) {
             // PreparedStatement books_insert = conn.prepareStatement(
             //     "INSERT INTO books (title, publish_date, price) VALUES (?, ?, ?)"
             // );
-            GetTables(conn);
-
+            //GetTables(conn);
+            DBService service = new DBService(conn);
+            ConsoleBookMarket bookMarket = new ConsoleBookMarket(service);
+            //bookMarket.InsertBook();
+            bookMarket.test();
 
 
         } catch (SQLException e) {
