@@ -35,14 +35,19 @@ public class DBService {
     
     class BooksDBService{
 
-        public void insertBook(String title, Date publishDate, double price) throws SQLException{
+        public long insertBook(String title, Date publishDate, double price) throws SQLException{
             PreparedStatement insert = _conn.prepareStatement(
-                "INSERT INTO books (title, publish_date, price) VALUES (?, ?, ?)"
+                "INSERT INTO books (title, publish_date, price) VALUES (?, ?, ?)",
+                PreparedStatement.RETURN_GENERATED_KEYS
             );
             insert.setString(1, title);
             insert.setDate(2, publishDate);
             insert.setDouble(3, price);
             insert.executeUpdate();
+            ResultSet result = insert.getGeneratedKeys();
+            if (result.next())
+            return result.getLong(1);
+            else return -1; 
         }
 
         public void deleteBookById(int id) throws SQLException{
@@ -81,9 +86,10 @@ public class DBService {
     }
 
     class AuthorsDBService{
-        public void insertAuthor(String name, String middleName, String surname, Date birthday, String bio, String photolink) throws SQLException{
+        public long insertAuthor(String name, String middleName, String surname, Date birthday, String bio, String photolink) throws SQLException{
             PreparedStatement insert = _conn.prepareStatement(
-                "INSERT INTO authors (name, middle_name, surname, birthday, bio, photo_link) VALUES (?, ?, ?, ?, ?, ?)"
+            "INSERT INTO authors (name, middle_name, surname, birthday, bio, photo_link) VALUES (?, ?, ?, ?, ?, ?)",
+                PreparedStatement.RETURN_GENERATED_KEYS
             );
             insert.setString(1, name);
             insert.setString(2, middleName);
@@ -92,6 +98,10 @@ public class DBService {
             insert.setString(5, bio);
             insert.setString(6, photolink);
             insert.executeUpdate();
+            ResultSet result = insert.getGeneratedKeys();
+            if (result.next())
+            return result.getLong(1);
+            else return -1; 
         }
 
         public void updateAuthorById(String name, String middleName, String surname, Date birthday, String bio, String photolink, int id) throws SQLException{
@@ -119,12 +129,17 @@ public class DBService {
     }
 
     class GenresDBService{
-        public void insertGenre(String name) throws SQLException{
+        public long insertGenre(String name) throws SQLException{
             PreparedStatement insert = _conn.prepareStatement(
-                "INSERT INTO genres (name) VALUES (?)"
+                "INSERT INTO genres (name) VALUES (?)",
+                PreparedStatement.RETURN_GENERATED_KEYS
             );
             insert.setString(1, name);
             insert.executeUpdate();
+            ResultSet result = insert.getGeneratedKeys();
+            if (result.next())
+            return result.getLong(1);
+            else return -1; 
         }
                  
         public void updateGenreById(String name, int id) throws SQLException{
@@ -147,13 +162,18 @@ public class DBService {
     }
     
     class WarehouseDBService{
-        public void insertWarehouse(String adress, int cityId) throws SQLException{
+        public long insertWarehouse(String adress, int cityId) throws SQLException{
             PreparedStatement insert = _conn.prepareStatement(
-                "INSERT INTO warehouses (adress, city_id) VALUES (?,  ?)"
+                "INSERT INTO warehouses (adress, city_id) VALUES (?,  ?)",
+                PreparedStatement.RETURN_GENERATED_KEYS
             );
             insert.setString(1, adress);
             insert.setInt(2, cityId);
             insert.executeUpdate();
+            ResultSet result = insert.getGeneratedKeys();
+            if (result.next())
+            return result.getLong(1);
+            else return -1; 
         }
                  
         public void updateWarehouseById(String adress, int cityId, int id) throws SQLException{
@@ -178,12 +198,17 @@ public class DBService {
     }
 
     class CitiesDBService{
-        public void insertCity(String name) throws SQLException{
+        public long insertCity(String name) throws SQLException{
             PreparedStatement insert = _conn.prepareStatement(
-                "INSERT INTO cities (name) VALUES (?)"
+                "INSERT INTO cities (name) VALUES (?)",
+                PreparedStatement.RETURN_GENERATED_KEYS
             );
             insert.setString(1, name);
             insert.executeUpdate();
+            ResultSet result = insert.getGeneratedKeys();
+            if (result.next())
+            return result.getLong(1);
+            else return -1; 
         }
                  
         public void updateCityById(String name, int id) throws SQLException{
@@ -197,13 +222,17 @@ public class DBService {
     }
 
     class PublishersDBService{
-        public void insertPublisher(String name, String description) throws SQLException{
+        public long insertPublisher(String name, String description) throws SQLException{
             PreparedStatement insert = _conn.prepareStatement(
                 "INSERT INTO publishers (name, description) VALUES (?,  ?)"
             );
             insert.setString(1, name);
             insert.setString(2, description);
             insert.executeUpdate();
+            ResultSet result = insert.getGeneratedKeys();
+            if (result.next())
+            return result.getLong(1);
+            else return -1; 
         }
                  
         public void updatePublisherById(String name, String description, int id) throws SQLException{
@@ -227,15 +256,20 @@ public class DBService {
     }
 
     class ReviewsDBService{
-         public void insertReview(String contents, int rating, int bookId, int authorId) throws SQLException{
+         public long insertReview(String contents, int rating, int bookId, int authorId) throws SQLException{
             PreparedStatement insert = _conn.prepareStatement(
-                "INSERT INTO reviews (contents, rating, book_id, author_id) VALUES (?, ?, ?, ?)"
+                "INSERT INTO reviews (contents, rating, book_id, author_id) VALUES (?, ?, ?, ?)",
+                PreparedStatement.RETURN_GENERATED_KEYS
             );
             insert.setString(1, contents);
             insert.setInt(2, rating);
             insert.setInt(3, bookId);
             insert.setInt(4, authorId);
             insert.executeUpdate();
+            ResultSet result = insert.getGeneratedKeys();
+            if (result.next())
+            return result.getLong(1);
+            else return -1; 
         }
                  
         public void updateReviewById(String contents, int rating, int id) throws SQLException{

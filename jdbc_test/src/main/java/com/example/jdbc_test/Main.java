@@ -57,8 +57,8 @@ public class Main {
             //GetTables(conn);
             DBService service = new DBService(conn);
             ConsoleBookMarket bookMarket = new ConsoleBookMarket(service);
-            //bookMarket.InsertBook();
-            bookMarket.test();
+            bookMarket.insertBook();
+            //bookMarket.test();
 
 
         } catch (SQLException e) {
