@@ -37,7 +37,8 @@ CREATE TABLE reviews(
     contents TEXT,
     rating INT CHECK (rating >= 0 AND rating <= 10),
     book_id INT REFERENCES books(id) ON DELETE CASCADE,
-    author_id INT REFERENCES authors(id)
+    author_id INT REFERENCES authors(id),
+    CONSTRAINT one_review_pre_author UNIQUE (book_id, author_id)
 );
 
 CREATE TABLE publishers(
