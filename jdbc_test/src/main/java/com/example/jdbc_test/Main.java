@@ -14,10 +14,6 @@ import javax.xml.crypto.Data;
 
 public class Main {
 
-    // public Map<String,String[]> entities = Map.ofEntries( 
-    //                                     Map.entry("book", new String[]{"name", }),
-    //                                 );
-
     public static Connection connect() throws SQLException {
         String url = "jdbc:postgresql://localhost:5432/javadb";
         String user = "postgres";
@@ -33,34 +29,27 @@ public class Main {
         }
     }
 
-    public static void getTables(Connection conn) throws  SQLException{
-            String[] typs = {"TABLE"};
-            DatabaseMetaData meta = conn.getMetaData();
-            ResultSet tables = meta.getTables(null, null, null, typs);
-            while (tables.next()){
-                ResultSet columns = meta.getColumns(null, null, tables.getString("TABLE_NAME"), "%");
-                System.out.println(" <-> " + tables.getString("TABLE_NAME"));
-                while (columns.next()) {
-                    String columnName = columns.getString("COLUMN_NAME");
-                    String columnType = columns.getString("TYPE_NAME");
-                    int columnSize = columns.getInt("COLUMN_SIZE");
-                    System.out.println("  - " + columnName + " (" + columnType + ", Size: " + columnSize + ")");
-                }
-            }
-    }
+    // public static void getTables(Connection conn) throws  SQLException{
+    //         String[] typs = {"TABLE"};
+    //         DatabaseMetaData meta = conn.getMetaData();
+    //         ResultSet tables = meta.getTables(null, null, null, typs);
+    //         while (tables.next()){
+    //             ResultSet columns = meta.getColumns(null, null, tables.getString("TABLE_NAME"), "%");
+    //             System.out.println(" <-> " + tables.getString("TABLE_NAME"));
+    //             while (columns.next()) {
+    //                 String columnName = columns.getString("COLUMN_NAME");
+    //                 String columnType = columns.getString("TYPE_NAME");
+    //                 int columnSize = columns.getInt("COLUMN_SIZE");
+    //                 System.out.println("  - " + columnName + " (" + columnType + ", Size: " + columnSize + ")");
+    //             }
+    //         }
+    // }
 
     public static void main(String[] args) {
         try (Connection conn = connect()) {
-            // PreparedStatement books_insert = conn.prepareStatement(
-            //     "INSERT INTO books (title, publish_date, price) VALUES (?, ?, ?)"
-            // );
-            //GetTables(conn);
             DBService service = new DBService(conn);
             ConsoleBookMarket bookMarket = new ConsoleBookMarket(service);
-            bookMarket.insertBook();
-            //bookMarket.test();
-
-
+            bookMarket.mainMenu();
         } catch (SQLException e) {
             System.err.println("Database connection failed.");
             e.printStackTrace();

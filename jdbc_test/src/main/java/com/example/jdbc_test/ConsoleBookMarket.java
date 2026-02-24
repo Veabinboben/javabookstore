@@ -14,6 +14,7 @@ public class ConsoleBookMarket{
     private DBService.ReviewsDBService _reviewsService;
     private DBService.PublishersDBService _publishersService;
     private DBService.GenresDBService _genresService;
+    private DBService.CitiesDBService _cityService;
     private Scanner _scanner;
 
     //TODO check what scanner can throw
@@ -27,13 +28,39 @@ public class ConsoleBookMarket{
         _reviewsService = _service.new ReviewsDBService();
         _publishersService = _service.new PublishersDBService();
         _genresService = _service.new GenresDBService();
-        
+        _cityService = _service.new CitiesDBService();
+    }
+
+    public void mainMenu() throws SQLException{
+        while (true){
+            System.out.println("""
+                    Input menu item:
+                    1. Add book.
+                    3. Stock warehouse.
+                    4. Show all books
+                    other. Exit
+                    """);
+            int menuItem = _scanner.nextInt();
+            switch (menuItem) {
+                case 1:
+                    insertBook();
+                    break;
+                case 3:
+                    addStock();
+                    break;
+                case 4:
+                    getBooks();
+                    break;
+                default:
+                    return;
+            }
+        }
     }
 
     private Date inputDate(){
         while (true) {
             try{
-                String dateString = _scanner.nextLine();
+                String dateString = _scanner.next();
                 Date date = Date.valueOf(dateString);
                 return date;
             }
@@ -60,12 +87,12 @@ public class ConsoleBookMarket{
         //_booksService.UpdateBookById("name", Date.valueOf("1988-11-11"), 0.0, 3);
     }
 
-    public void insertBook() throws SQLException {
+    private void insertBook() throws SQLException {
         try{            
                 _service.startTransaction();
 
             System.out.println("Input title");
-            String title = _scanner.nextLine();
+            String title = _scanner.next();
 
             System.out.println("Input publishing date");
             Date date = inputDate();
@@ -152,15 +179,16 @@ public class ConsoleBookMarket{
         }
         
     }
+
     private long insertAuthor() throws SQLException{
         System.out.println("Input full name (name, middle name and surname, separated by spaces)");
-        String[] fullName = _scanner.nextLine().split(" ");
+        String[] fullName = _scanner.next().split(" ");
 
         System.out.println("Input author's birthday");
         Date birthday = inputDate();
 
         System.out.println("Input author's bio");
-        String bio = _scanner.nextLine();
+        String bio = _scanner.next();
 
         //TODO photo
 
@@ -168,22 +196,92 @@ public class ConsoleBookMarket{
     }
     private long insertPublisher() throws SQLException{
         System.out.println("Input publisher name");
-        String name = _scanner.nextLine();
+        String name = _scanner.next();
 
         System.out.println("Input publisher description");
-        String description = _scanner.nextLine();
+        String description = _scanner.next();
 
         return _publishersService.insertPublisher(name, description);
     }
     private long insertGenre() throws SQLException{
         System.out.println("Input genre name");
-        String name = _scanner.nextLine();
+        String name = _scanner.next();
         return _genresService.insertGenre(name);
     }
 
-
-    public void changeStock() throws SQLException{
+    private void addStock() throws SQLException{
+        try{
+            _service.startTransaction();
         
+        System.out.println("Input book id");
+        int bookId = _scanner.nextInt();
+
+        //Warehouses
+        while (true){
+                System.out.println("Stock another warehouse?");
+                boolean answ = inputYN();
+                if (!answ) break;
+                System.out.println("Stock new warehouse?");
+                boolean answ1 = inputYN();
+                if (answ1){
+                    long warehouseId = insertWarehouse();
+                    System.out.println("Input stock ammount");
+                    int stock = _scanner.nextInt();
+                    _warehouseService.stockWarehouseWithBooks((int)bookId, (int)warehouseId, stock);
+                }
+                else { 
+                    System.out.println("Change stock in existing warehouse?");
+                    boolean answ2 = inputYN();
+                    if (answ2)
+                    {
+                        System.out.println("Input warehouse id");
+                        int warehouseId = _scanner.nextInt();
+                        System.out.println("Input stock ammount");
+                        int stock = _scanner.nextInt();
+                        _warehouseService.stockWarehouseWithBooks((int)bookId, (int)warehouseId, stock);
+                    }
+                }
+            }    
+
+
+        }
+        catch (SQLException e){
+            _service.abortTransaction();
+            throw e;
+        }
+          
+    }
+
+    private long insertCity() throws SQLException{
+        System.out.println("Input city name");
+        String name = _scanner.next();
+
+        return _cityService.insertCity(name);
+    }
+
+    private long insertWarehouse() throws SQLException{
+        System.out.println("Input warehouse adress");
+        String adress = _scanner.next();
+
+        int cityId;
+
+        //City
+        System.out.println("Warehouse in a new city (chose existing otherwise)");
+        boolean answ1 = inputYN();
+        if (answ1){
+            cityId = (int)insertCity();
+        }
+        else { 
+            System.out.println("Input city id");
+            cityId = _scanner.nextInt();
+        } 
+
+        return _warehouseService.insertWarehouse(adress,cityId);
+    }
+
+    private void getBooks() throws SQLException{
+        String books = _booksService.getBooks();
+        System.out.println(books);
     }
 
 }

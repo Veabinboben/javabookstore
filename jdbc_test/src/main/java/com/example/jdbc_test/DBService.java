@@ -14,7 +14,6 @@ public class DBService {
     private Connection _conn;
 
     //TODO add transaction funcs
-
     //TODO Maybe cringe -_-
     //TODO unique pair field in m2m
     public DBService (Connection conn) throws SQLException{
@@ -81,6 +80,41 @@ public class DBService {
             }
             return strRes;
         }
+
+        public String getBooks() throws SQLException{
+            PreparedStatement select = _conn.prepareStatement(
+                """
+                SELECT
+                    b.title AS book_title,
+                    STRING_AGG(g.name, ', ') AS genres,
+                    STRING_AGG(CONCAT(a.name, ' ', a.middle_name), ', ') AS authors
+                FROM
+                    books b
+                LEFT JOIN
+                    book_genres bg ON b.id = bg.book_id
+                LEFT JOIN
+                    genres g ON bg.genre_id = g.id
+                LEFT JOIN
+                    book_authors ba ON ba.book_id = b.id
+                LEFT JOIN
+                    authors a ON a.id = ba.author_id
+                GROUP BY
+                    b.id;
+
+                """
+            );
+            ResultSet result = select.executeQuery();
+            String strRes = "";
+            while (result.next()) {
+                strRes += result.getString("book_title") + 
+                "\t|" + result.getString("genres") +
+                "\t|" + result.getString("authors") +
+                '\n' ;
+            }
+        
+            return strRes;
+        }
+
 
 
     }
