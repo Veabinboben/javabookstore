@@ -32,6 +32,20 @@ CREATE TABLE warehouses(
     city_id INT REFERENCES cities(id)
 );
 
+CREATE TABLE reviews(
+    id SERIAL PRIMARY KEY,
+    contents TEXT,
+    rating INT CHECK (rating >= 0 AND rating <= 10),
+    book_id INT REFERENCES books(id) ON DELETE CASCADE,
+    author_id INT REFERENCES authors(id)
+);
+
+CREATE TABLE publishers(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    description TEXT
+);
+
 ------
 
 CREATE TABLE book_authors(
@@ -39,6 +53,13 @@ CREATE TABLE book_authors(
     book_id INT REFERENCES books(id) ON DELETE CASCADE,
     author_id INT REFERENCES authors(id),
     CONSTRAINT uniquie_book_author UNIQUE (book_id, author_id)
+);
+
+CREATE TABLE book_publishers(
+    id SERIAL PRIMARY KEY,
+    book_id INT REFERENCES books(id) ON DELETE CASCADE,
+    publisher_id INT REFERENCES publishers(id),
+    CONSTRAINT uniquie_book_publisher UNIQUE (book_id, publisher_id),
 );
 
 CREATE TABLE book_genres(
