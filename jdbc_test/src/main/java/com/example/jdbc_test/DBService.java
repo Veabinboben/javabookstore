@@ -1,13 +1,10 @@
 package com.example.jdbc_test;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Map;
 
 public class DBService {
     
@@ -208,6 +205,32 @@ public class DBService {
             delete.setInt(2, authorId);
             delete.executeUpdate();
             delete.close();
+        }
+
+        public String getAuthorById(int id) throws SQLException{
+            PreparedStatement select = _conn.prepareStatement(
+                """
+                SELECT
+                    name, middle_name, surname 
+                FROM
+                    authors
+                where 
+                    id = ?;
+                """
+            );
+            select.setInt(1, id);
+            ResultSet result = select.executeQuery();
+            String strRes = null;
+            if (result.next()) {
+                
+                strRes  = String.format("Name : %s \nMiddle name: %s \nSurname: %s ", 
+                    result.getString("name"),
+                    result.getString("middle_name"),
+                    result.getString("surname")
+                );
+            }
+            result.close();
+            return strRes;
         }
     }
 

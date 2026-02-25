@@ -2,7 +2,6 @@ package com.example.jdbc_test;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.util.Scanner;
 
 public class ConsoleBookMarket{
@@ -17,7 +16,6 @@ public class ConsoleBookMarket{
     private DBService.CitiesDBService _cityService;
     private Scanner _scanner;
 
-    //TODO check what scanner can throw
 
     public ConsoleBookMarket(DBService service) {
         _service = service;
@@ -39,8 +37,9 @@ public class ConsoleBookMarket{
                     2. Update book
                     3. Delete book
                     4. Stock warehouse.
-                    5. Show all books
-                    6. Show all stocks
+                    5. Publish review
+                    6. Show all books
+                    7. Show all stocks
                     other. Exit
                     """);
             int menuItem = inputInt();
@@ -58,9 +57,12 @@ public class ConsoleBookMarket{
                     addStock();
                     break;
                 case 5:
-                    getBooks();
+                    publishReview();
                     break;
                 case 6:
+                    getBooks();
+                    break;
+                case 7:
                     getStocks();
                     break;
                 default:
@@ -509,6 +511,54 @@ public class ConsoleBookMarket{
     private void getStocks() throws SQLException{
         String books = _warehouseService.getStocks();
         System.out.println(books);
+    }
+
+    private void publishReview() throws SQLException {
+        try{
+                _service.startTransaction();
+
+            System.out.println("Input book id");
+            int bookId = inputInt();
+            String curBook = _booksService.getBookById(bookId);
+            if (curBook == null) {
+                System.out.println("This book does not exist");
+                return;
+            }
+            System.out.println(curBook);
+
+            System.out.println("Input author id");
+            int authorId = inputInt();
+            String curAuthor = _authorsService.getAuthorById(authorId);
+            if (curAuthor == null) {
+                System.out.println("This author does not exist");
+                return;
+            }
+            System.out.println(curAuthor);
+
+            System.out.println("Input review text");
+            String review = inputString();
+            System.out.println("Input review score");
+            int score;
+
+            while (true) {
+                score = inputInt();
+                if (score < 0 || score > 10){
+                    System.out.println("Score cant be less than 0 or higher than 10");
+                }
+                else {
+                    break;
+                }
+            }
+
+            _reviewsService.insertReview(review, score, bookId, authorId);
+
+                _service.commitTransaction();
+        }
+        catch (SQLException e){
+            _service.abortTransaction();
+            throw e;
+        }
+        
     }
 
 }
