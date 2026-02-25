@@ -13,7 +13,6 @@ public class GenresDBService{
         this.connection = connection;
     }
 
-
     public long insertGenre(String name) throws SQLException{
         PreparedStatement insert = connection.prepareStatement(
             "INSERT INTO genres (name) VALUES (?)",

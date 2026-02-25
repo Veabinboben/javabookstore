@@ -333,6 +333,4 @@ public class BooksUI {
         String books = booksDBService.getBooks();
         System.out.println(books);
     }
-
-
 }

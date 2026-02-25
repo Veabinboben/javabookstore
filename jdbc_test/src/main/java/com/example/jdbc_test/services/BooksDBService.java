@@ -27,7 +27,6 @@ public class BooksDBService{
         long ind = -1;
         if (result.next()){
             ind = result.getLong(1);
-            
         }
         result.close();
         return ind;
@@ -131,7 +130,4 @@ public class BooksDBService{
         result.close();
         return strRes;
     }
-
-
-
 }

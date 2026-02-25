@@ -13,7 +13,6 @@ public class AuthorsDBService{
         this.connection = connection;
     }
 
-
     public long insertAuthor(String name, String middleName, String surname, Date birthday, String bio, String photolink) throws SQLException{
         PreparedStatement insert = connection.prepareStatement(
         "INSERT INTO authors (name, middle_name, surname, birthday, bio, photo_link) VALUES (?, ?, ?, ?, ?, ?)",
@@ -99,12 +98,10 @@ public class AuthorsDBService{
     public String getAuthors() throws SQLException{
         PreparedStatement select = connection.prepareStatement(
             """
-            
             SELECT
                 id, name, middle_name, surname 
             FROM
                 authors;
-            
             """
         );
         ResultSet result = select.executeQuery();

@@ -22,5 +22,4 @@ public class TransactionManager {
     public void commitTransaction() throws SQLException {
         connection.commit();
     }
-
 }
