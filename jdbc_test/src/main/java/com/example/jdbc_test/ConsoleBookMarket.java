@@ -415,8 +415,6 @@ public class ConsoleBookMarket{
         System.out.println("Input author's bio");
         String bio = inputString();
 
-        //TODO photo
-
         return _authorsService.insertAuthor(fullName[0], fullName[1], fullName[2], birthday, bio, null);
     }
     private long insertPublisher() throws SQLException{
