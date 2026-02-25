@@ -18,6 +18,7 @@ public class ConsoleBookMarket{
     private Scanner _scanner;
 
     //TODO check what scanner can throw
+    //TODO replace next() with nextline()
 
     public ConsoleBookMarket(DBService service) {
         _service = service;
@@ -36,20 +37,33 @@ public class ConsoleBookMarket{
             System.out.println("""
                     Input menu item:
                     1. Add book.
-                    3. Stock warehouse.
-                    4. Show all books
+                    2. Update book
+                    3. Delete book
+                    4. Stock warehouse.
+                    5. Show all books
+                    6. Show all stocks
                     other. Exit
                     """);
             int menuItem = _scanner.nextInt();
+            _scanner.nextLine();
             switch (menuItem) {
                 case 1:
                     insertBook();
                     break;
+                case 2:
+                    updateBook();
+                    break;
                 case 3:
-                    addStock();
+                    deleteBook();
                     break;
                 case 4:
+                    addStock();
+                    break;
+                case 5:
                     getBooks();
+                    break;
+                case 6:
+                    getStocks();
                     break;
                 default:
                     return;
@@ -60,7 +74,7 @@ public class ConsoleBookMarket{
     private Date inputDate(){
         while (true) {
             try{
-                String dateString = _scanner.next();
+                String dateString = _scanner.nextLine();
                 Date date = Date.valueOf(dateString);
                 return date;
             }
@@ -71,8 +85,9 @@ public class ConsoleBookMarket{
     }
 
     private boolean inputYN(){
+        System.out.println("[y\\n]");
         while (true) {
-            String answ = _scanner.next();
+            String answ = _scanner.nextLine();
             answ = answ.toLowerCase();
             if (answ.equals("y")) return true;
             else if (answ.equals("n")) return false;
@@ -92,13 +107,14 @@ public class ConsoleBookMarket{
                 _service.startTransaction();
 
             System.out.println("Input title");
-            String title = _scanner.next();
+            String title = _scanner.nextLine();
 
             System.out.println("Input publishing date");
             Date date = inputDate();
 
             System.out.println("Input price");
             double price = _scanner.nextDouble();
+            _scanner.nextLine();
 
             long bookId = _booksService.insertBook(title,date,price);
 
@@ -120,6 +136,7 @@ public class ConsoleBookMarket{
                     {
                         System.out.println("Input author id");
                         int authorid = _scanner.nextInt();
+                        _scanner.nextLine();
                         _authorsService.connectAuthorBook((int)bookId, authorid);
                     }
                 }
@@ -143,6 +160,7 @@ public class ConsoleBookMarket{
                     {
                         System.out.println("Input genre id");
                         int genreId = _scanner.nextInt();
+                        _scanner.nextLine();
                         _genresService.connectGenreBook((int)bookId,(int)genreId);
                     }
                 }
@@ -166,6 +184,7 @@ public class ConsoleBookMarket{
                     {
                         System.out.println("Input publisher id");
                         int publisherId = _scanner.nextInt();
+                        _scanner.nextLine();
                         _publishersService.connectPublisherBook((int)bookId,(int)publisherId);
                     }
                 }
@@ -180,15 +199,203 @@ public class ConsoleBookMarket{
         
     }
 
+    private void updateBook() throws SQLException {
+        try{            
+                _service.startTransaction();
+
+            System.out.println("Input book id");
+            int bookId = _scanner.nextInt();
+            _scanner.nextLine();
+            String curBook = _booksService.getBookById(bookId);
+            if (curBook == null) {
+                System.out.println("This book does not exist");
+                return;
+            }
+            System.out.println(curBook);
+            _scanner.nextLine();
+
+            System.out.println("Input new title");
+            String title = _scanner.nextLine();
+
+            System.out.println("Input new publishing date");
+            Date date = inputDate();
+
+            System.out.println("Input new price");
+            double price = _scanner.nextDouble();
+            _scanner.nextLine();
+
+            _booksService.updateBookById(title,date,price,bookId);
+
+            //Authors
+            System.out.println("Edit authors?");
+            boolean authChangeAnsw = inputYN();
+            while (authChangeAnsw){
+                System.out.println("Add authors to the book?");
+                boolean answ = inputYN();
+                if (answ){
+                    System.out.println("Add new author to the book?");
+                    boolean answ1 = inputYN();
+                    if (answ1){
+                        long authorid = insertAuthor();
+                        _authorsService.connectAuthorBook((int)bookId, (int)authorid);
+                    }
+                    else { 
+                        System.out.println("Add existing author to the book?");
+                        boolean answ2 = inputYN();
+                        if (answ2)
+                        {
+                            System.out.println("Input author id");
+                            int authorid = _scanner.nextInt();
+                            _scanner.nextLine();
+                            _authorsService.connectAuthorBook((int)bookId, authorid);
+                        }
+                    }
+                }
+                System.out.println("Remove authors from the book?");
+                boolean answ1 = inputYN();
+                while (answ1){
+                    System.out.println("Input author id");
+                    int authorid = _scanner.nextInt();
+                    _scanner.nextLine();
+                    _authorsService.disconnectAuthorBook((int)bookId, authorid);
+                    System.out.println("Remove another author from the book?");
+                    boolean answ2 = inputYN();
+                    if(!answ2) break;
+                }
+                System.out.println("Continue editing authors?");
+                boolean answbr = inputYN();
+                if(!answbr) break;
+            }
+
+            //Genres
+            System.out.println("Edit Genres?");
+            boolean genreChangeAnsw = inputYN();
+            while (genreChangeAnsw){
+                System.out.println("Add genres to the book?");
+                boolean answ = inputYN();
+                if (answ){
+                    System.out.println("Add new genre to the book?");
+                    boolean answ1 = inputYN();
+                    if (answ1){
+                        long genreId = insertGenre();
+                        _genresService.connectGenreBook(bookId, (int)genreId);
+                    }
+                    else { 
+                        System.out.println("Add existing genre to the book?");
+                        boolean answ2 = inputYN();
+                        if (answ2)
+                        {
+                            System.out.println("Input genre id");
+                            int genreId = _scanner.nextInt();
+                            _scanner.nextLine();
+                            _genresService.connectGenreBook(bookId, (int)genreId);
+                        }
+                    }
+                }
+                System.out.println("Remove genres from the book?");
+                boolean answ1 = inputYN();
+                while (answ1){
+                    System.out.println("Input genre id");
+                    int genreId = _scanner.nextInt();
+                    _scanner.nextLine();
+                    _genresService.disconnectGenreBook(bookId, (int)genreId);
+                    System.out.println("Remove another genre from the book?");
+                    boolean answ2 = inputYN();
+                    if(!answ2) break;
+                }
+                System.out.println("Continue editing genres?");
+                boolean answbr = inputYN();
+                if(!answbr) break;
+            }
+
+
+            //Publishers
+            System.out.println("Edit Publishers?");
+            boolean publisherChangeAnsw = inputYN();
+            while (publisherChangeAnsw){
+                System.out.println("Add publishers to the book?");
+                boolean answ = inputYN();
+                if (answ){
+                    System.out.println("Add new publisher to the book?");
+                    boolean answ1 = inputYN();
+                    if (answ1){
+                        long publisherId = insertPublisher();
+                        _publishersService.connectPublisherBook(bookId, (int)publisherId);
+                    }
+                    else { 
+                        System.out.println("Add existing publisher to the book?");
+                        boolean answ2 = inputYN();
+                        if (answ2)
+                        {
+                            System.out.println("Input publisher id");
+                            int publisherId = _scanner.nextInt();
+                            _scanner.nextLine();
+                            _publishersService.connectPublisherBook(bookId, (int)publisherId);
+                        }
+                    }
+                }
+                System.out.println("Remove publishers from the book?");
+                boolean answ1 = inputYN();
+                while (answ1){
+                    System.out.println("Input publisher id");
+                    int publisherId = _scanner.nextInt();
+                    _scanner.nextLine();
+                    _publishersService.disconnectPublisherBook(bookId, (int)publisherId);
+                    System.out.println("Remove another publisher from the book?");
+                    boolean answ2 = inputYN();
+                    if(!answ2) break;
+                }
+                System.out.println("Continue editing publishers?");
+                boolean answbr = inputYN();
+                if(!answbr) break;
+            }
+
+
+                _service.commitTransaction();
+        }
+        catch (SQLException e){
+            _service.abortTransaction();
+            throw e;
+        }
+        
+    }
+
+    
+    private void deleteBook() throws SQLException {
+        try{            
+                _service.startTransaction();
+
+            System.out.println("Input book id");
+            int bookId = _scanner.nextInt();
+            _scanner.nextLine();
+            String curBook = _booksService.getBookById(bookId);
+            if (curBook == null) {
+                System.out.println("This book does not exist");
+                return;
+            }
+            System.out.println(curBook);
+
+            System.out.println("Confirm deletion");
+            boolean answ = inputYN();
+            if(answ) _booksService.deleteBookById(bookId);
+                _service.commitTransaction();
+        }
+        catch (SQLException e){
+            _service.abortTransaction();
+            throw e;
+        }
+        
+    }
+
     private long insertAuthor() throws SQLException{
         System.out.println("Input full name (name, middle name and surname, separated by spaces)");
-        String[] fullName = _scanner.next().split(" ");
+        String[] fullName = _scanner.nextLine().split(" ");
 
         System.out.println("Input author's birthday");
         Date birthday = inputDate();
 
         System.out.println("Input author's bio");
-        String bio = _scanner.next();
+        String bio = _scanner.nextLine();
 
         //TODO photo
 
@@ -196,16 +403,16 @@ public class ConsoleBookMarket{
     }
     private long insertPublisher() throws SQLException{
         System.out.println("Input publisher name");
-        String name = _scanner.next();
+        String name = _scanner.nextLine();
 
         System.out.println("Input publisher description");
-        String description = _scanner.next();
+        String description = _scanner.nextLine();
 
         return _publishersService.insertPublisher(name, description);
     }
     private long insertGenre() throws SQLException{
         System.out.println("Input genre name");
-        String name = _scanner.next();
+        String name = _scanner.nextLine();
         return _genresService.insertGenre(name);
     }
 
@@ -215,6 +422,7 @@ public class ConsoleBookMarket{
         
         System.out.println("Input book id");
         int bookId = _scanner.nextInt();
+        _scanner.nextLine();
 
         //Warehouses
         while (true){
@@ -227,6 +435,7 @@ public class ConsoleBookMarket{
                     long warehouseId = insertWarehouse();
                     System.out.println("Input stock ammount");
                     int stock = _scanner.nextInt();
+                    _scanner.nextLine();
                     _warehouseService.stockWarehouseWithBooks((int)bookId, (int)warehouseId, stock);
                 }
                 else { 
@@ -236,8 +445,10 @@ public class ConsoleBookMarket{
                     {
                         System.out.println("Input warehouse id");
                         int warehouseId = _scanner.nextInt();
+                        _scanner.nextLine();
                         System.out.println("Input stock ammount");
                         int stock = _scanner.nextInt();
+                        _scanner.nextLine();
                         _warehouseService.stockWarehouseWithBooks((int)bookId, (int)warehouseId, stock);
                     }
                 }
@@ -254,19 +465,19 @@ public class ConsoleBookMarket{
 
     private long insertCity() throws SQLException{
         System.out.println("Input city name");
-        String name = _scanner.next();
+        String name = _scanner.nextLine();
 
         return _cityService.insertCity(name);
     }
 
     private long insertWarehouse() throws SQLException{
         System.out.println("Input warehouse adress");
-        String adress = _scanner.next();
+        String adress = _scanner.nextLine();
 
         int cityId;
 
         //City
-        System.out.println("Warehouse in a new city (chose existing otherwise)");
+        System.out.println("Warehouse in a new city (choose existing otherwise)");
         boolean answ1 = inputYN();
         if (answ1){
             cityId = (int)insertCity();
@@ -274,6 +485,7 @@ public class ConsoleBookMarket{
         else { 
             System.out.println("Input city id");
             cityId = _scanner.nextInt();
+            _scanner.nextLine();
         } 
 
         return _warehouseService.insertWarehouse(adress,cityId);
@@ -281,6 +493,10 @@ public class ConsoleBookMarket{
 
     private void getBooks() throws SQLException{
         String books = _booksService.getBooks();
+        System.out.println(books);
+    }
+    private void getStocks() throws SQLException{
+        String books = _warehouseService.getStocks();
         System.out.println(books);
     }
 

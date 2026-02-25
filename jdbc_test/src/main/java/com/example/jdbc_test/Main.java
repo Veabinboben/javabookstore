@@ -50,6 +50,7 @@ public class Main {
             DBService service = new DBService(conn);
             ConsoleBookMarket bookMarket = new ConsoleBookMarket(service);
             bookMarket.mainMenu();
+            conn.close();
         } catch (SQLException e) {
             System.err.println("Database connection failed.");
             e.printStackTrace();

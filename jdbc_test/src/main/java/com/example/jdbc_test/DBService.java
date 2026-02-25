@@ -16,6 +16,7 @@ public class DBService {
     //TODO add transaction funcs
     //TODO Maybe cringe -_-
     //TODO unique pair field in m2m
+    //TODO close result sets
     public DBService (Connection conn) throws SQLException{
         _conn = conn;
     }
@@ -70,13 +71,41 @@ public class DBService {
 
         public String getBookById(int id) throws SQLException{
             PreparedStatement select = _conn.prepareStatement(
-                "SELECT * FROM books where id = ?"
+                """
+                SELECT
+                    b.id as id,
+                    b.title AS book_title,
+                    b.publish_date AS date,
+                    STRING_AGG(g.name, ', ') AS genres,
+                    STRING_AGG(CONCAT(a.name, ' ', a.middle_name), ', ') AS authors
+                FROM
+                    books b
+                LEFT JOIN
+                    book_genres bg ON b.id = bg.book_id
+                LEFT JOIN
+                    genres g ON bg.genre_id = g.id
+                LEFT JOIN
+                    book_authors ba ON ba.book_id = b.id
+                LEFT JOIN
+                    authors a ON a.id = ba.author_id
+                WHERE
+                    b.id = ?
+                GROUP BY
+                    b.id;
+
+                """
             );
             select.setInt(1, id);
             ResultSet result = select.executeQuery();
-            String strRes = "";
-            while (result.next()) {
-                strRes += result.getString("title");
+            String strRes = null;
+            if (result.next()) {
+                
+                strRes  = String.format("Name : %s \nPublish Date: %s \nGenres: %s \nAuthors: %s", 
+                    result.getString("book_title"),
+                    result.getString("date"),
+                    result.getString("genres"),
+                    result.getString("authors")
+                );
             }
             return strRes;
         }
@@ -85,6 +114,7 @@ public class DBService {
             PreparedStatement select = _conn.prepareStatement(
                 """
                 SELECT
+                    b.id as id,
                     b.title AS book_title,
                     STRING_AGG(g.name, ', ') AS genres,
                     STRING_AGG(CONCAT(a.name, ' ', a.middle_name), ', ') AS authors
@@ -106,7 +136,8 @@ public class DBService {
             ResultSet result = select.executeQuery();
             String strRes = "";
             while (result.next()) {
-                strRes += result.getString("book_title") + 
+                strRes +=  result.getString("id") + 
+                "\t|" + result.getString("book_title") + 
                 "\t|" + result.getString("genres") +
                 "\t|" + result.getString("authors") +
                 '\n' ;
@@ -160,6 +191,15 @@ public class DBService {
             insert.setInt(2, authorId);
             insert.executeUpdate();
         }
+
+        public void disconnectAuthorBook (int bookId, int authorId)throws SQLException{
+            PreparedStatement delete = _conn.prepareStatement(
+                "DELETE FROM book_authors where book_id = ? AND author_id = ?"
+            );
+            delete.setInt(1, bookId);
+            delete.setInt(2, authorId);
+            delete.executeUpdate();
+        }
     }
 
     class GenresDBService{
@@ -193,6 +233,15 @@ public class DBService {
             insert.setInt(2, genreId);
             insert.executeUpdate();
         }
+
+        public void disconnectGenreBook (int bookId, int genreId)throws SQLException{
+            PreparedStatement delete = _conn.prepareStatement(
+                "DELETE FROM book_genres where book_id = ? AND genre_id = ?"
+            );
+            delete.setInt(1, bookId);
+            delete.setInt(2, genreId);
+            delete.executeUpdate();
+        }
     }
     
     class WarehouseDBService{
@@ -222,13 +271,43 @@ public class DBService {
 
         public void stockWarehouseWithBooks(int bookId, int warehoseId, int stock)throws SQLException{
             PreparedStatement insert = _conn.prepareStatement(
-                "INSERT INTO stocks (book_id, warehouse_id, stock) VALUES (?, ?, ?)"
+                "INSERT INTO stocks (book_id, warehouse_id, stock) VALUES (?, ?, ?) ON CONFLICT (book_id, warehouse_id) DO UPDATE SET stock = excluded.stock"
             );
             insert.setInt(1, bookId);
             insert.setInt(2, warehoseId);
             insert.setInt(3, stock);
             insert.executeUpdate();
         }
+
+        public String getStocks() throws SQLException{
+            PreparedStatement select = _conn.prepareStatement(
+                """
+                SELECT
+                    b.title AS book_title,
+                    STRING_AGG(CONCAT(w.adress, ' ', c.name, ' ', s.stock), ', ') AS stocks
+                FROM
+                    books b
+                LEFT JOIN
+                    stocks s ON b.id = s.book_id
+                LEFT JOIN
+                    warehouses w ON s.warehouse_id = w.id
+                LEFT JOIN
+                    cities c ON c.id = w.city_id
+                GROUP BY
+                    b.id;
+                """
+            );
+            ResultSet result = select.executeQuery();
+            String strRes = "";
+            while (result.next()) {
+                strRes +=  result.getString("book_title") + 
+                "\t|" + result.getString("stocks") + 
+                '\n' ;
+            }
+        
+            return strRes;
+        }
+
     }
 
     class CitiesDBService{
@@ -286,6 +365,15 @@ public class DBService {
             insert.setInt(1, bookId);
             insert.setInt(2, publisherId);
             insert.executeUpdate();
+        }
+
+        public void disconnectPublisherBook (int bookId, int publisherId)throws SQLException{
+            PreparedStatement delete = _conn.prepareStatement(
+                "DELETE FROM book_publishers where book_id = ? AND publisher_id = ?"
+            );
+            delete.setInt(1, bookId);
+            delete.setInt(2, publisherId);
+            delete.executeUpdate();
         }
     }
 
