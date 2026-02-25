@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.example.jdbc_test.ui.MainUI;
+
 public class Main {
 
     public static Connection connect() throws SQLException {
@@ -22,11 +24,10 @@ public class Main {
         }
     }
     public static void main(String[] args) {
-        try (Connection conn = connect()) {
-            DBService service = new DBService(conn);
-            ConsoleBookMarket bookMarket = new ConsoleBookMarket(service);
+        try (Connection connection = connect()) {
+            MainUI bookMarket = new MainUI(connection);
             bookMarket.mainMenu();
-            conn.close();
+            connection.close();
         } catch (SQLException e) {
             System.err.println("Database connection failed.");
             e.printStackTrace();
