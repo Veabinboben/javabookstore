@@ -13,10 +13,6 @@ public class DBService {
     
     private Connection _conn;
 
-    //TODO add transaction funcs
-    //TODO Maybe cringe -_-
-    //TODO unique pair field in m2m
-    //TODO close result sets
     public DBService (Connection conn) throws SQLException{
         _conn = conn;
     }
@@ -45,9 +41,13 @@ public class DBService {
             insert.setDouble(3, price);
             insert.executeUpdate();
             ResultSet result = insert.getGeneratedKeys();
-            if (result.next())
-            return result.getLong(1);
-            else return -1; 
+            long ind = -1;
+            if (result.next()){
+                ind = result.getLong(1);
+                
+            }
+            result.close();
+            return ind;
         }
 
         public void deleteBookById(int id) throws SQLException{
@@ -56,6 +56,7 @@ public class DBService {
             );
             delete.setInt(1, id);
             delete.executeUpdate();
+            delete.close();
         }
 
         public void updateBookById(String title, Date publishDate, double price, int id) throws SQLException{
@@ -67,6 +68,7 @@ public class DBService {
             update.setDouble(3, price);
             update.setInt(4, id);
             update.executeUpdate();
+            update.close();
         }
 
         public String getBookById(int id) throws SQLException{
@@ -107,6 +109,7 @@ public class DBService {
                     result.getString("authors")
                 );
             }
+            result.close();
             return strRes;
         }
 
@@ -142,7 +145,7 @@ public class DBService {
                 "\t|" + result.getString("authors") +
                 '\n' ;
             }
-        
+            result.close();
             return strRes;
         }
 
@@ -164,9 +167,12 @@ public class DBService {
             insert.setString(6, photolink);
             insert.executeUpdate();
             ResultSet result = insert.getGeneratedKeys();
-            if (result.next())
-            return result.getLong(1);
-            else return -1; 
+            long ind = -1;
+            if (result.next()){
+                ind = result.getLong(1);
+            }
+            result.close();
+            return ind; 
         }
 
         public void updateAuthorById(String name, String middleName, String surname, Date birthday, String bio, String photolink, int id) throws SQLException{
@@ -181,6 +187,7 @@ public class DBService {
             update.setString(6, photolink);
             update.setInt(7, id);
             update.executeUpdate();
+            update.close();
         }
 
         public void connectAuthorBook (int bookId, int authorId)throws SQLException{
@@ -190,6 +197,7 @@ public class DBService {
             insert.setInt(1, bookId);
             insert.setInt(2, authorId);
             insert.executeUpdate();
+            insert.close();
         }
 
         public void disconnectAuthorBook (int bookId, int authorId)throws SQLException{
@@ -199,6 +207,7 @@ public class DBService {
             delete.setInt(1, bookId);
             delete.setInt(2, authorId);
             delete.executeUpdate();
+            delete.close();
         }
     }
 
@@ -211,9 +220,12 @@ public class DBService {
             insert.setString(1, name);
             insert.executeUpdate();
             ResultSet result = insert.getGeneratedKeys();
-            if (result.next())
-            return result.getLong(1);
-            else return -1; 
+            long ind = -1;
+            if (result.next()){
+                ind = result.getLong(1);
+            }
+            result.close();
+            return ind;
         }
                  
         public void updateGenreById(String name, int id) throws SQLException{
@@ -223,6 +235,7 @@ public class DBService {
             update.setString(1, name);
             update.setInt(2, id);
             update.executeUpdate();
+            update.close();
         }
 
         public void connectGenreBook(int bookId, int genreId)throws SQLException{
@@ -232,6 +245,7 @@ public class DBService {
             insert.setInt(1, bookId);
             insert.setInt(2, genreId);
             insert.executeUpdate();
+            insert.close();
         }
 
         public void disconnectGenreBook (int bookId, int genreId)throws SQLException{
@@ -241,6 +255,7 @@ public class DBService {
             delete.setInt(1, bookId);
             delete.setInt(2, genreId);
             delete.executeUpdate();
+            delete.close();
         }
     }
     
@@ -254,9 +269,12 @@ public class DBService {
             insert.setInt(2, cityId);
             insert.executeUpdate();
             ResultSet result = insert.getGeneratedKeys();
-            if (result.next())
-            return result.getLong(1);
-            else return -1; 
+            long ind = -1;
+            if (result.next()){
+                ind = result.getLong(1);
+            }
+            result.close();
+            return ind;
         }
                  
         public void updateWarehouseById(String adress, int cityId, int id) throws SQLException{
@@ -267,6 +285,7 @@ public class DBService {
             update.setInt(2, cityId);
             update.setInt(3, id);
             update.executeUpdate();
+            update.close();
         }
 
         public void stockWarehouseWithBooks(int bookId, int warehoseId, int stock)throws SQLException{
@@ -277,6 +296,7 @@ public class DBService {
             insert.setInt(2, warehoseId);
             insert.setInt(3, stock);
             insert.executeUpdate();
+            insert.close();
         }
 
         public String getStocks() throws SQLException{
@@ -304,7 +324,7 @@ public class DBService {
                 "\t|" + result.getString("stocks") + 
                 '\n' ;
             }
-        
+            result.close();
             return strRes;
         }
 
@@ -319,9 +339,12 @@ public class DBService {
             insert.setString(1, name);
             insert.executeUpdate();
             ResultSet result = insert.getGeneratedKeys();
-            if (result.next())
-            return result.getLong(1);
-            else return -1; 
+            long ind = -1;
+            if (result.next()){
+                ind = result.getLong(1);
+            }
+            result.close();
+            return ind;
         }
                  
         public void updateCityById(String name, int id) throws SQLException{
@@ -331,6 +354,7 @@ public class DBService {
             update.setString(1, name);
             update.setInt(2, id);
             update.executeUpdate();
+            update.close();
         }
     }
 
@@ -343,9 +367,12 @@ public class DBService {
             insert.setString(2, description);
             insert.executeUpdate();
             ResultSet result = insert.getGeneratedKeys();
-            if (result.next())
-            return result.getLong(1);
-            else return -1; 
+            long ind = -1;
+            if (result.next()){
+                ind = result.getLong(1);
+            }
+            result.close();
+            return ind; 
         }
                  
         public void updatePublisherById(String name, String description, int id) throws SQLException{
@@ -356,6 +383,7 @@ public class DBService {
             update.setString(2, description);
             update.setInt(3, id);
             update.executeUpdate();
+            update.close();
         }
 
         public void connectPublisherBook(int bookId, int publisherId)throws SQLException{
@@ -365,6 +393,7 @@ public class DBService {
             insert.setInt(1, bookId);
             insert.setInt(2, publisherId);
             insert.executeUpdate();
+            insert.close();
         }
 
         public void disconnectPublisherBook (int bookId, int publisherId)throws SQLException{
@@ -374,6 +403,7 @@ public class DBService {
             delete.setInt(1, bookId);
             delete.setInt(2, publisherId);
             delete.executeUpdate();
+            delete.close();
         }
     }
 
@@ -389,9 +419,12 @@ public class DBService {
             insert.setInt(4, authorId);
             insert.executeUpdate();
             ResultSet result = insert.getGeneratedKeys();
-            if (result.next())
-            return result.getLong(1);
-            else return -1; 
+            long ind = -1;
+            if (result.next()){
+                ind = result.getLong(1);
+            }
+            result.close();
+            return ind;
         }
                  
         public void updateReviewById(String contents, int rating, int id) throws SQLException{
@@ -402,6 +435,7 @@ public class DBService {
             update.setInt(2, rating);
             update.setInt(3, id);
             update.executeUpdate();
+            update.close();
         }
 
         public void deleteReviewById(int id) throws SQLException{
@@ -410,6 +444,7 @@ public class DBService {
             );
             delete.setInt(1, id);
             delete.executeUpdate();
+            delete.close();
         }
 
     }
