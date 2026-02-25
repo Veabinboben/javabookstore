@@ -232,6 +232,30 @@ public class DBService {
             result.close();
             return strRes;
         }
+
+        public String getAuthors() throws SQLException{
+            PreparedStatement select = _conn.prepareStatement(
+                """
+                
+                SELECT
+                    id, name, middle_name, surname 
+                FROM
+                    authors;
+                
+                """
+            );
+            ResultSet result = select.executeQuery();
+            String strRes = "";
+            while (result.next()) {
+                strRes +=  result.getString("id") + 
+                "\t|" + result.getString("name") + 
+                "\t|" + result.getString("middle_name") + 
+                "\t|" + result.getString("surname") + 
+                '\n' ;
+            }
+            result.close();
+            return strRes;
+        }
     }
 
     class GenresDBService{
@@ -279,6 +303,28 @@ public class DBService {
             delete.setInt(2, genreId);
             delete.executeUpdate();
             delete.close();
+        }
+
+        public String getGenres() throws SQLException{
+            PreparedStatement select = _conn.prepareStatement(
+                """
+                
+                SELECT
+                    id, name
+                FROM
+                    genres;
+                
+                """
+            );
+            ResultSet result = select.executeQuery();
+            String strRes = "";
+            while (result.next()) {
+                strRes +=  result.getString("id") + 
+                ' ' + result.getString("name") + 
+                '\n' ;
+            }
+            result.close();
+            return strRes;
         }
     }
     
@@ -379,6 +425,28 @@ public class DBService {
             update.executeUpdate();
             update.close();
         }
+
+        public String getCities() throws SQLException{
+            PreparedStatement select = _conn.prepareStatement(
+                """
+                
+                SELECT
+                    id, name
+                FROM
+                    cities;
+                
+                """
+            );
+            ResultSet result = select.executeQuery();
+            String strRes = "";
+            while (result.next()) {
+                strRes +=  result.getString("id") + 
+                ' ' + result.getString("name") + 
+                '\n' ;
+            }
+            result.close();
+            return strRes;
+        }
     }
 
     class PublishersDBService{
@@ -428,6 +496,27 @@ public class DBService {
             delete.executeUpdate();
             delete.close();
         }
+        public String getPublishers() throws SQLException{
+            PreparedStatement select = _conn.prepareStatement(
+                """
+                
+                SELECT
+                    id, name
+                FROM
+                    publishers;
+                
+                """
+            );
+            ResultSet result = select.executeQuery();
+            String strRes = "";
+            while (result.next()) {
+                strRes +=  result.getString("id") + 
+                ' ' + result.getString("name") + 
+                '\n' ;
+            }
+            result.close();
+            return strRes;
+        }
     }
 
     class ReviewsDBService{
@@ -469,6 +558,39 @@ public class DBService {
             delete.executeUpdate();
             delete.close();
         }
+
+            public String getReviews() throws SQLException{
+            PreparedStatement select = _conn.prepareStatement(
+                """
+                SELECT
+                    r.id as id,
+                    r.contents AS cont,
+                    r.rating AS rating,
+                    b.title AS book_name,
+                    CONCAT(a.name, ' ', a.middle_name) AS authors
+                FROM
+                    reviews r
+                LEFT JOIN
+                    books b ON r.book_id = b.id
+                LEFT JOIN
+                    authors a ON a.id = r.author_id;
+
+                """
+            );
+            ResultSet result = select.executeQuery();
+            String strRes = "";
+            while (result.next()) {
+                strRes +=  result.getString("id") + 
+                "\t|" + result.getString("cont") + 
+                "\t|" + result.getString("rating") +
+                "\t|" + result.getString("book_name") +
+                "\t|" + result.getString("authors") +
+                '\n' ;
+            }
+            result.close();
+            return strRes;
+        }
+
 
     }
 }

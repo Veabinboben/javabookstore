@@ -40,6 +40,10 @@ public class ConsoleBookMarket{
                     5. Publish review
                     6. Show all books
                     7. Show all stocks
+                    8. Show all authors
+                    9. Show all reviews
+                    10. Show all genres
+                    11. Show all cities
                     other. Exit
                     """);
             int menuItem = inputInt();
@@ -64,6 +68,18 @@ public class ConsoleBookMarket{
                     break;
                 case 7:
                     getStocks();
+                    break;
+                case 8:
+                    getAuthors();
+                    break;
+                case 9:
+                    getReviews();
+                    break;
+                case 10:
+                    getGenres();
+                    break;
+                case 11:
+                    getCities();
                     break;
                 default:
                     return;
@@ -508,6 +524,22 @@ public class ConsoleBookMarket{
     }
     private void getStocks() throws SQLException{
         String books = _warehouseService.getStocks();
+        System.out.println(books);
+    }
+    private void getAuthors() throws SQLException{
+        String books = _authorsService.getAuthors();
+        System.out.println(books);
+    }
+    private void getCities() throws SQLException{
+        String books = _cityService.getCities();
+        System.out.println(books);
+    }
+    private void getGenres() throws SQLException{
+        String books = _genresService.getGenres();
+        System.out.println(books);
+    }
+    private void getReviews() throws SQLException{
+        String books = _reviewsService.getReviews();
         System.out.println(books);
     }
 
