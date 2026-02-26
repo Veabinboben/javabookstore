@@ -3,7 +3,7 @@ package com.example.bookstoreserver.data.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.bookstoreserver.data.entities.Book;
+import com.example.bookstoreserver.data.entities.Author;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book,Long> {} 
+public interface AuthorsRepository extends JpaRepository<Author,Long> {} 

@@ -1,5 +1,6 @@
 package com.example.bookstoreserver.data.entities;
 
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,6 +28,15 @@ public class Book {
     @Column(name = "title")
     public String title;
 
+    @Column(name = "publish_date")
+    public Date publishDate;
+
+    @Column(name = "price")
+    public Double price;
+
+    @Column(name = "cover_link")
+    public String coverLink;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "book_authors", 
@@ -34,5 +44,23 @@ public class Book {
         inverseJoinColumns = @JoinColumn(name = "author_id") 
     )
     public Set<Author> authors = new HashSet<>();
+   
+    //TODO make it list of string, not of objects
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name = "book_genres", 
+        joinColumns = @JoinColumn(name = "book_id"), 
+        inverseJoinColumns = @JoinColumn(name = "genre_id") 
+    )
+    public Set<Genre> genres = new HashSet<>();
+    
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+        name = "book_publishers", 
+        joinColumns = @JoinColumn(name = "book_id"), 
+        inverseJoinColumns = @JoinColumn(name = "publisher_id") 
+    )
+    public Set<Publisher> publishers = new HashSet<>();
+
 
 }

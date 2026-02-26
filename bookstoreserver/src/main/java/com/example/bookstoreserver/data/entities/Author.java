@@ -1,5 +1,6 @@
 package com.example.bookstoreserver.data.entities;
 
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +20,25 @@ public class Author {
     @Column(name = "name")
     public String name;
 
+    @Column(name = "middle_name")
+    public String middleName;
+
+    @Column(name = "surname")
+    public String surname;
+
+    @Column(name = "birthday")
+    public Date birthday;
+    
+    @Column(name = "bio")
+    public String bio;
+
+    @Column(name = "photo_link")
+    public String photoLink;
+
+
+
     @ManyToMany(mappedBy = "authors")
     private Set<Book> books = new HashSet<>();
 
+    
 }

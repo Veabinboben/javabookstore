@@ -1,0 +1,9 @@
+package com.example.bookstoreserver.data.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.bookstoreserver.data.entities.Publisher;
+
+public interface PublishersRepository extends JpaRepository<Publisher,Long>{
+    
+}
