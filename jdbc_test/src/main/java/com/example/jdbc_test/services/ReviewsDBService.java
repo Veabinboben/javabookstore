@@ -73,7 +73,7 @@ public class ReviewsDBService{
         ResultSet result = select.executeQuery();
         String strRes = "";
         while (result.next()) {
-            strRes +=  String.format("Contents : %s\t Rating: %s\t | Book title: %s\t Authors: %s  \n ", 
+            strRes +=  String.format("Contents : %s\t Rating: %s\t | Book title: %s\t Authors: %s  \n", 
                 result.getString("cont"),
                 result.getString("rating"),
                 result.getString("book_name"),

@@ -101,7 +101,7 @@ public class WarehouseDBService{
             LEFT JOIN
                 cities c ON w.city_id = c.id
             where 
-                name LIKE ?;
+                adress LIKE ?;
             """
         );
         select.setString(1, '%' + name + '%');
@@ -133,7 +133,7 @@ public class WarehouseDBService{
         ResultSet result = select.executeQuery();
         String strRes = "";
         while (result.next()) {
-            strRes += String.format("Adress : %s \tCity: %s", 
+            strRes += String.format("Adress : %s \tCity: %s \n", 
                 result.getString("adress"),
                 result.getString("name")
             ); 

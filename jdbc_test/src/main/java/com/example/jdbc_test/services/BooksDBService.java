@@ -129,7 +129,7 @@ public class BooksDBService{
         while (result.next()) {
     
             strRes.add(new QuerryResult( result.getInt("id"),
-                String.format("Title : %s \tGenres: %s \tAuthors: %s \n ", 
+                String.format("Title : %s \tGenres: %s \tAuthors: %s \n", 
                 result.getString("book_title"),
                 result.getString("genres"),
                 result.getString("authors")
@@ -165,7 +165,7 @@ public class BooksDBService{
         ResultSet result = select.executeQuery();
         String strRes = "";
         while (result.next()) {
-            strRes += String.format("Title : %s \tGenres: %s \tAuthors: %s \n ", 
+            strRes += String.format("Title : %s \tGenres: %s \tAuthors: %s \n", 
                 result.getString("book_title"),
                 result.getString("genres"),
                 result.getString("authors")

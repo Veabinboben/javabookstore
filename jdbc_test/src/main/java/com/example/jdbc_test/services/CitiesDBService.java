@@ -80,7 +80,7 @@ public class CitiesDBService{
         ResultSet result = select.executeQuery();
         String strRes = "";
         while (result.next()) {
-            strRes += String.format("Name : %s \n ", 
+            strRes += String.format("Name : %s \n", 
                 result.getString("name")
             ) ;
         }
