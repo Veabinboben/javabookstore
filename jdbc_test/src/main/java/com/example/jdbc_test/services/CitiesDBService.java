@@ -3,6 +3,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.jdbc_test.utils.QuerryResult;
 
 
 public class CitiesDBService{
@@ -39,6 +43,29 @@ public class CitiesDBService{
         update.close();
     }
 
+    public List<QuerryResult> getCitiesWithName (String name)throws SQLException{
+        PreparedStatement select = connection.prepareStatement(
+            """
+            SELECT
+                id, name
+            FROM
+                cities
+            where 
+                name LIKE ?;
+            """
+        );
+        select.setString(1, '%' + name + '%');
+        ResultSet result = select.executeQuery();
+        List<QuerryResult> strRes = new ArrayList<QuerryResult>();
+        while (result.next()) {
+            strRes.add(new QuerryResult( result.getInt("id"),String.format("Name : %s \n", 
+                result.getString("name")
+            ))); 
+        }
+        result.close();
+        return strRes;
+    }
+
     public String getCities() throws SQLException{
         PreparedStatement select = connection.prepareStatement(
             """
@@ -53,9 +80,9 @@ public class CitiesDBService{
         ResultSet result = select.executeQuery();
         String strRes = "";
         while (result.next()) {
-            strRes +=  result.getString("id") + 
-            ' ' + result.getString("name") + 
-            '\n' ;
+            strRes += String.format("Name : %s \n ", 
+                result.getString("name")
+            ) ;
         }
         result.close();
         return strRes;

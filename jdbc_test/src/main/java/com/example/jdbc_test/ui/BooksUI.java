@@ -2,6 +2,7 @@ package com.example.jdbc_test.ui;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.example.jdbc_test.services.AuthorsDBService;
 import com.example.jdbc_test.services.BooksDBService;
@@ -9,6 +10,7 @@ import com.example.jdbc_test.services.GenresDBService;
 import com.example.jdbc_test.services.PublishersDBService;
 import com.example.jdbc_test.services.TransactionManager;
 import com.example.jdbc_test.utils.InputUtils;
+import com.example.jdbc_test.utils.QuerryResult;
 
 public class BooksUI {
     
@@ -41,6 +43,41 @@ public class BooksUI {
         return authorsDBService.insertAuthor(fullName[0], fullName[1], fullName[2], birthday, bio, null);
     }
 
+    public long chooseAuthor() throws SQLException{
+        System.out.println("Show authors list?");
+        boolean answ = InputUtils.inputYN();
+        if (answ) System.out.println(authorsDBService.getAuthors());
+
+        System.out.println("Input author's name");
+        String name = InputUtils.inputString();
+
+        List<QuerryResult> authors = authorsDBService.getAuthorsWithName(name);
+
+        if (authors.size() > 1){
+            System.out.println("Choose one");
+            int count = authors.size();
+            for (int i = 0 ; i < count; i++){
+                System.out.println(String.format("%d : %s", i+1, authors.get(i).view()));
+            }
+            int rowNum;
+            while (true) {
+                rowNum = InputUtils.inputInt(); 
+                if (rowNum < 1 || rowNum > count) System.out.println("Wrong index, please retry");
+                else break;              
+            }
+            return authors.get(rowNum-1).id();
+        }
+        else if (authors.size() == 1){
+            System.out.println(authors.get(0).view());
+            return authors.get(0).id();
+        }
+        else{
+            System.out.println("No author with this name");
+            return -1;
+        }
+    }
+
+
     private long insertPublisher() throws SQLException{
         System.out.println("Input publisher name");
         String name = InputUtils.inputString();
@@ -51,10 +88,112 @@ public class BooksUI {
         return publishersDBService.insertPublisher(name, description);
     }
 
+    private long choosePublisher() throws SQLException{
+        System.out.println("Show publishers list?");
+        boolean answ = InputUtils.inputYN();
+        if (answ) System.out.println(publishersDBService.getPublishers());
+
+        System.out.println("Input publishers's name");
+        String name = InputUtils.inputString();
+
+        List<QuerryResult> publishres = publishersDBService.getPublishersWithName(name);
+
+        if (publishres.size() > 1){
+            System.out.println("Choose one");
+            int count = publishres.size();
+            for (int i = 0 ; i < count; i++){
+                System.out.println(String.format("%d : %s", i+1, publishres.get(i).view()));
+            }
+            int rowNum;
+            while (true) {
+                rowNum = InputUtils.inputInt(); 
+                if (rowNum < 1 || rowNum > count) System.out.println("Wrong index, please retry");
+                else break;              
+            }
+            return publishres.get(rowNum-1).id();
+        }
+        else if (publishres.size() == 1){
+            System.out.println(publishres.get(0).view());
+            return publishres.get(0).id();
+        }
+        else{
+            System.out.println("No publisher with this name");
+            return -1;
+        }
+    }
+
     private long insertGenre() throws SQLException{
         System.out.println("Input genre name");
         String name = InputUtils.inputString();
         return genresDBService.insertGenre(name);
+    }
+
+    private long chooseGenre() throws SQLException{
+        System.out.println("Show genres list?");
+        boolean answ = InputUtils.inputYN();
+        if (answ) System.out.println(genresDBService.getGenres());
+
+        System.out.println("Input genres's name");
+        String name = InputUtils.inputString();
+
+        List<QuerryResult> genres = genresDBService.getGenresWithName(name);
+
+        if (genres.size() > 1){
+            System.out.println("Choose one");
+            int count = genres.size();
+            for (int i = 0 ; i < count; i++){
+                System.out.println(String.format("%d : %s", i+1, genres.get(i).view()));
+            }
+            int rowNum;
+            while (true) {
+                rowNum = InputUtils.inputInt(); 
+                if (rowNum < 1 || rowNum > count) System.out.println("Wrong index, please retry");
+                else break;              
+            }
+            return genres.get(rowNum-1).id();
+        }
+        else if (genres.size() == 1){
+            System.out.println(genres.get(0).view());
+            return genres.get(0).id();
+        }
+        else{
+            System.out.println("No genre with this name");
+            return -1;
+        }
+    }
+
+    public long chooseBook() throws SQLException{
+        System.out.println("Show books list?");
+        boolean answ = InputUtils.inputYN();
+        if (answ) System.out.println(booksDBService.getBooks());
+
+        System.out.println("Input book's name");
+        String name = InputUtils.inputString();
+
+        List<QuerryResult> books = booksDBService.getBooksWithName(name);
+
+        if (books.size() > 1){
+            System.out.println("Choose one");
+            int count = books.size();
+            for (int i = 0 ; i < count; i++){
+                System.out.println(String.format("%d : %s", i+1, books.get(i).view()));
+            }
+            int rowNum;
+            while (true) {
+                rowNum = InputUtils.inputInt(); 
+                if (rowNum < 1 || rowNum > count) System.out.println("Wrong index, please retry");
+                else break;              
+            }
+            return books.get(rowNum-1).id();
+        }
+        else if (books.size() == 1){
+            System.out.println(books.get(0).view());
+            return books.get(0).id();
+        }
+        else{
+            System.out.println("No book with this name");
+            return -1;
+        }
     }
 
     public void insertBook() throws SQLException {
@@ -88,9 +227,8 @@ public class BooksUI {
                     boolean answ2 = InputUtils.inputYN();
                     if (answ2)
                     {
-                        System.out.println("Input author id");
-                        int authorid = InputUtils.inputInt();
-                        authorsDBService.connectAuthorBook((int)bookId, authorid);
+                        int authorid = (int)chooseAuthor();
+                        if (authorid != -1) authorsDBService.connectAuthorBook((int)bookId, authorid);
                     }
                 }
             }
@@ -111,9 +249,8 @@ public class BooksUI {
                     boolean answ2 = InputUtils.inputYN();
                     if (answ2)
                     {
-                        System.out.println("Input genre id");
-                        int genreId = InputUtils.inputInt();
-                        genresDBService.connectGenreBook((int)bookId,(int)genreId);
+                        int genreId = (int)chooseGenre();
+                        if (genreId != -1) genresDBService.connectGenreBook((int)bookId,(int)genreId);
                     }
                 }
             }
@@ -134,9 +271,8 @@ public class BooksUI {
                     boolean answ2 = InputUtils.inputYN();
                     if (answ2)
                     {
-                        System.out.println("Input publisher id");
-                        int publisherId = InputUtils.inputInt();
-                        publishersDBService.connectPublisherBook((int)bookId,(int)publisherId);
+                        int publisherId = (int)choosePublisher();
+                        if (publisherId != -1) publishersDBService.connectPublisherBook((int)bookId,(int)publisherId);
                     }
                 }
             }
@@ -154,13 +290,14 @@ public class BooksUI {
         try{            
             transactionManager.startTransaction();
 
-            System.out.println("Input book id");
-            int bookId = InputUtils.inputInt();
-            String curBook = booksDBService.getBookById(bookId);
-            if (curBook == null) {
+            int bookId = (int)chooseBook();
+            
+            if (bookId == -1) {
                 System.out.println("This book does not exist");
                 return;
             }
+            String curBook = booksDBService.getBookById(bookId);
+
             System.out.println(curBook);
 
             System.out.println("Input new title");
@@ -192,18 +329,16 @@ public class BooksUI {
                         boolean answ2 = InputUtils.inputYN();
                         if (answ2)
                         {
-                            System.out.println("Input author id");
-                            int authorid = InputUtils.inputInt();
-                            authorsDBService.connectAuthorBook((int)bookId, authorid);
+                            int authorid = (int)chooseAuthor();
+                            if (authorid != -1) authorsDBService.connectAuthorBook((int)bookId, authorid);
                         }
                     }
                 }
                 System.out.println("Remove authors from the book?");
                 boolean answ1 = InputUtils.inputYN();
                 while (answ1){
-                    System.out.println("Input author id");
-                    int authorid = InputUtils.inputInt();
-                    authorsDBService.disconnectAuthorBook((int)bookId, authorid);
+                    int authorid = (int) chooseAuthor();
+                    if (authorid != -1) authorsDBService.disconnectAuthorBook((int)bookId, authorid);
                     System.out.println("Remove another author from the book?");
                     boolean answ2 = InputUtils.inputYN();
                     if(!answ2) break;
@@ -231,18 +366,16 @@ public class BooksUI {
                         boolean answ2 = InputUtils.inputYN();
                         if (answ2)
                         {
-                            System.out.println("Input genre id");
-                            int genreId = InputUtils.inputInt();
-                            genresDBService.connectGenreBook(bookId, (int)genreId);
+                            int genreId = (int)chooseGenre();
+                            if (genreId != -1) genresDBService.connectGenreBook(bookId, (int)genreId);
                         }
                     }
                 }
                 System.out.println("Remove genres from the book?");
                 boolean answ1 = InputUtils.inputYN();
                 while (answ1){
-                    System.out.println("Input genre id");
-                    int genreId = InputUtils.inputInt();
-                    genresDBService.disconnectGenreBook(bookId, (int)genreId);
+                    int genreId = (int) chooseGenre();
+                    if (genreId != -1) genresDBService.disconnectGenreBook(bookId, (int)genreId);
                     System.out.println("Remove another genre from the book?");
                     boolean answ2 = InputUtils.inputYN();
                     if(!answ2) break;
@@ -271,18 +404,16 @@ public class BooksUI {
                         boolean answ2 = InputUtils.inputYN();
                         if (answ2)
                         {
-                            System.out.println("Input publisher id");
-                            int publisherId = InputUtils.inputInt();
-                            publishersDBService.connectPublisherBook(bookId, (int)publisherId);
+                            int publisherId =  (int) choosePublisher();
+                            if (publisherId != -1)publishersDBService.connectPublisherBook(bookId, (int)publisherId);
                         }
                     }
                 }
                 System.out.println("Remove publishers from the book?");
                 boolean answ1 = InputUtils.inputYN();
                 while (answ1){
-                    System.out.println("Input publisher id");
-                    int publisherId = InputUtils.inputInt();
-                    publishersDBService.disconnectPublisherBook(bookId, (int)publisherId);
+                    int publisherId = (int)choosePublisher();
+                     if (publisherId != -1) publishersDBService.disconnectPublisherBook(bookId, (int)publisherId);
                     System.out.println("Remove another publisher from the book?");
                     boolean answ2 = InputUtils.inputYN();
                     if(!answ2) break;
@@ -307,13 +438,14 @@ public class BooksUI {
         try{            
             transactionManager.startTransaction();
 
-            System.out.println("Input book id");
-            int bookId = InputUtils.inputInt();
-            String curBook = booksDBService.getBookById(bookId);
-            if (curBook == null) {
+            int bookId = (int)chooseBook();
+            if (bookId == -1) {
                 System.out.println("This book does not exist");
                 return;
             }
+           
+            String curBook = booksDBService.getBookById(bookId);
+        
             System.out.println(curBook);
 
             System.out.println("Confirm deletion");

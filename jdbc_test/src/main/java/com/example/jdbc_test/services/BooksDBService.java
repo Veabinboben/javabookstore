@@ -4,6 +4,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.jdbc_test.utils.QuerryResult;
 
 
 public class BooksDBService{
@@ -95,6 +99,46 @@ public class BooksDBService{
         return strRes;
     }
 
+    public List<QuerryResult> getBooksWithName (String name)throws SQLException{
+        PreparedStatement select = connection.prepareStatement(
+            """
+            SELECT
+                b.id as id,
+                b.title AS book_title,
+                STRING_AGG(g.name, ', ') AS genres,
+                STRING_AGG(CONCAT(a.name, ' ', a.middle_name), ', ') AS authors
+            FROM
+                books b
+            LEFT JOIN
+                book_genres bg ON b.id = bg.book_id
+            LEFT JOIN
+                genres g ON bg.genre_id = g.id
+            LEFT JOIN
+                book_authors ba ON ba.book_id = b.id
+            LEFT JOIN
+                authors a ON a.id = ba.author_id
+            WHERE 
+                b.title LIKE ? 
+            GROUP BY
+                b.id;
+            """
+        );
+        select.setString(1, '%' + name + '%');
+        ResultSet result = select.executeQuery();
+        List<QuerryResult> strRes = new ArrayList<QuerryResult>();
+        while (result.next()) {
+    
+            strRes.add(new QuerryResult( result.getInt("id"),
+                String.format("Title : %s \tGenres: %s \tAuthors: %s \n ", 
+                result.getString("book_title"),
+                result.getString("genres"),
+                result.getString("authors")
+            ))); 
+        }
+        result.close();
+        return strRes;
+    }
+
     public String getBooks() throws SQLException{
         PreparedStatement select = connection.prepareStatement(
             """
@@ -121,11 +165,11 @@ public class BooksDBService{
         ResultSet result = select.executeQuery();
         String strRes = "";
         while (result.next()) {
-            strRes +=  result.getString("id") + 
-            "\t|" + result.getString("book_title") + 
-            "\t|" + result.getString("genres") +
-            "\t|" + result.getString("authors") +
-            '\n' ;
+            strRes += String.format("Title : %s \tGenres: %s \tAuthors: %s \n ", 
+                result.getString("book_title"),
+                result.getString("genres"),
+                result.getString("authors")
+            ) ;
         }
         result.close();
         return strRes;

@@ -3,6 +3,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.jdbc_test.utils.QuerryResult;
 
 
 public class WarehouseDBService{
@@ -76,9 +80,63 @@ public class WarehouseDBService{
         ResultSet result = select.executeQuery();
         String strRes = "";
         while (result.next()) {
-            strRes +=  result.getString("book_title") + 
-            "\t|" + result.getString("stocks") + 
-            '\n' ;
+            strRes +=  String.format("Book : %s \tStock: %s \n", 
+                result.getString("book_title"),
+                result.getString("stocks")
+            ); 
+        }
+        result.close();
+        return strRes;
+    }
+
+    public List<QuerryResult> getWarehousesWithName (String name)throws SQLException{
+        PreparedStatement select = connection.prepareStatement(
+            """
+            SELECT
+                w.id as id,
+                w.adress as adress, 
+                c.name as name 
+            FROM
+                warehouses w
+            LEFT JOIN
+                cities c ON w.city_id = c.id
+            where 
+                name LIKE ?;
+            """
+        );
+        select.setString(1, '%' + name + '%');
+        ResultSet result = select.executeQuery();
+        List<QuerryResult> strRes = new ArrayList<QuerryResult>();
+        while (result.next()) {
+    
+            strRes.add(new QuerryResult( result.getInt("id"),String.format("Adress : %s \tCity: %s", 
+                result.getString("adress"),
+                result.getString("name")
+            ))); 
+        }
+        result.close();
+        return strRes;
+    }
+
+    public String getWarehouses() throws SQLException{
+        PreparedStatement select = connection.prepareStatement(
+            """
+            SELECT
+                w.adress as adress, 
+                c.name as name 
+            FROM
+                warehouses w
+            LEFT JOIN
+                cities c ON w.city_id = c.id;
+            """
+        );
+        ResultSet result = select.executeQuery();
+        String strRes = "";
+        while (result.next()) {
+            strRes += String.format("Adress : %s \tCity: %s", 
+                result.getString("adress"),
+                result.getString("name")
+            ); 
         }
         result.close();
         return strRes;

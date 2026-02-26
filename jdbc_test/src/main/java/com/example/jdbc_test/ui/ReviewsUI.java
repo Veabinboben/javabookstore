@@ -14,37 +14,39 @@ public class ReviewsUI {
     private AuthorsDBService authorsDBService;
     private ReviewsDBService reviewsDBService;
     private TransactionManager transactionManager;
+    private BooksUI booksUI;
 
 
     public ReviewsUI(BooksDBService booksDBService, AuthorsDBService authorsDBService, 
         ReviewsDBService reviewsDBService,
-        TransactionManager transactionManager){
+        TransactionManager transactionManager,
+        BooksUI booksUI){
         this.booksDBService = booksDBService;    
         this.authorsDBService = authorsDBService;    
         this.reviewsDBService = reviewsDBService;    
         this.transactionManager = transactionManager;
+        this.booksUI = booksUI;
     }
 
     public void publishReview() throws SQLException {
         try{
             transactionManager.startTransaction();
 
-            System.out.println("Input book id");
-            int bookId = InputUtils.inputInt();
-            String curBook = booksDBService.getBookById(bookId);
-            if (curBook == null) {
+        
+            int bookId = (int)booksUI.chooseBook();
+            if (bookId == -1) {
                 System.out.println("This book does not exist");
                 return;
             }
+            String curBook = booksDBService.getBookById(bookId);
             System.out.println(curBook);
 
-            System.out.println("Input author id");
-            int authorId = InputUtils.inputInt();
-            String curAuthor = authorsDBService.getAuthorById(authorId);
-            if (curAuthor == null) {
+            int authorId = (int) booksUI.chooseAuthor();
+            if (authorId == -1) {
                 System.out.println("This author does not exist");
                 return;
             }
+            String curAuthor = authorsDBService.getAuthorById(authorId);
             System.out.println(curAuthor);
 
             System.out.println("Input review text");

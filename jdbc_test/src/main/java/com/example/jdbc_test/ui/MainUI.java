@@ -44,10 +44,10 @@ public class MainUI {
 
         this.booksUI = new BooksUI(booksService, authorsService, genresService, publishersService, transactionManager);
         this.authorsUI = new AuthorsUI(authorsService);
-        this.reviewsUI = new ReviewsUI(booksService, authorsService, reviewsService, transactionManager);
+        this.reviewsUI = new ReviewsUI(booksService, authorsService, reviewsService, transactionManager,booksUI);
         this.genresUI = new GenresUI(genresService);
         this.citiesUI = new CitiesUI(cityService);
-        this.stocksUI = new StocksUI(warehouseService, cityService, transactionManager);
+        this.stocksUI = new StocksUI(warehouseService, cityService, transactionManager,booksUI);
     };
 
     public void mainMenu() throws SQLException{

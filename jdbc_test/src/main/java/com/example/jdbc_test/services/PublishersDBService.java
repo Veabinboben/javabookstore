@@ -3,6 +3,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.jdbc_test.utils.QuerryResult;
 
 public class PublishersDBService{
 
@@ -58,6 +62,30 @@ public class PublishersDBService{
         delete.executeUpdate();
         delete.close();
     }
+
+    public List<QuerryResult> getPublishersWithName (String name)throws SQLException{
+        PreparedStatement select = connection.prepareStatement(
+            """
+            SELECT
+                id, name
+            FROM
+                publishers
+            where 
+                name LIKE ?;
+            """
+        );
+        select.setString(1, '%' + name + '%');
+        ResultSet result = select.executeQuery();
+        List<QuerryResult> strRes = new ArrayList<QuerryResult>();
+        while (result.next()) {
+                strRes.add(new QuerryResult( result.getInt("id"),String.format("Name : %s \n", 
+                result.getString("name")
+            ))); 
+        }
+        result.close();
+        return strRes;
+    }
+
     public String getPublishers() throws SQLException{
         PreparedStatement select = connection.prepareStatement(
             """
@@ -72,9 +100,9 @@ public class PublishersDBService{
         ResultSet result = select.executeQuery();
         String strRes = "";
         while (result.next()) {
-            strRes +=  result.getString("id") + 
-            ' ' + result.getString("name") + 
-            '\n' ;
+            strRes +=  String.format("Name : %s \n ", 
+                result.getString("name")
+            ) ;
         }
         result.close();
         return strRes;

@@ -73,12 +73,12 @@ public class ReviewsDBService{
         ResultSet result = select.executeQuery();
         String strRes = "";
         while (result.next()) {
-            strRes +=  result.getString("id") + 
-            "\t|" + result.getString("cont") + 
-            "\t|" + result.getString("rating") +
-            "\t|" + result.getString("book_name") +
-            "\t|" + result.getString("authors") +
-            '\n' ;
+            strRes +=  String.format("Contents : %s\t Rating: %s\t | Book title: %s\t Authors: %s  \n ", 
+                result.getString("cont"),
+                result.getString("rating"),
+                result.getString("book_name"),
+                result.getString("authors")
+            );
         }
         result.close();
         return strRes;

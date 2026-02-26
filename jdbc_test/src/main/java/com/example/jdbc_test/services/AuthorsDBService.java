@@ -4,6 +4,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.jdbc_test.utils.QuerryResult;
 
 public class AuthorsDBService{
 
@@ -69,6 +73,32 @@ public class AuthorsDBService{
         delete.close();
     }
 
+    public List<QuerryResult> getAuthorsWithName (String name)throws SQLException{
+        PreparedStatement select = connection.prepareStatement(
+            """
+            SELECT
+                id, name, middle_name, surname 
+            FROM
+                authors
+            where 
+                name LIKE ?;
+            """
+        );
+        select.setString(1, '%' + name + '%');
+        ResultSet result = select.executeQuery();
+        List<QuerryResult> strRes = new ArrayList<QuerryResult>();
+        while (result.next()) {
+    
+            strRes.add(new QuerryResult( result.getInt("id"),String.format("Name : %s \tMiddle name: %s \tSurname: %s \n ", 
+                result.getString("name"),
+                result.getString("middle_name"),
+                result.getString("surname")
+            ))); 
+        }
+        result.close();
+        return strRes;
+    }
+
     public String getAuthorById(int id) throws SQLException{
         PreparedStatement select = connection.prepareStatement(
             """
@@ -99,7 +129,7 @@ public class AuthorsDBService{
         PreparedStatement select = connection.prepareStatement(
             """
             SELECT
-                id, name, middle_name, surname 
+                name, middle_name, surname 
             FROM
                 authors;
             """
@@ -107,11 +137,11 @@ public class AuthorsDBService{
         ResultSet result = select.executeQuery();
         String strRes = "";
         while (result.next()) {
-            strRes +=  result.getString("id") + 
-            "\t|" + result.getString("name") + 
-            "\t|" + result.getString("middle_name") + 
-            "\t|" + result.getString("surname") + 
-            '\n' ;
+            strRes +=  String.format("Name : %s \tMiddle name: %s \tSurname: %s \n", 
+                result.getString("name"),
+                result.getString("middle_name"),
+                result.getString("surname")
+            ) ;
         }
         result.close();
         return strRes;
