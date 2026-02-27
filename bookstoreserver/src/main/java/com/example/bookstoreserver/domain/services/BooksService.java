@@ -24,5 +24,10 @@ public class BooksService {
         return booksRepository.findByTitleContainingIgnoreCase(titleFilter,pageable);
     }
 
+    public void saveBook(Book book){
+        booksRepository.save(book);
+    }
+
+    
 
 }

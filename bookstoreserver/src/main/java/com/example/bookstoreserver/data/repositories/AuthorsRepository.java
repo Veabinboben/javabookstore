@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.example.bookstoreserver.data.entities.Author;
 
 @Repository
-public interface AuthorsRepository extends JpaRepository<Author,Long> {} 
+public interface AuthorsRepository extends JpaRepository<Author,Long> {
+    public Author findById(long id);
+} 

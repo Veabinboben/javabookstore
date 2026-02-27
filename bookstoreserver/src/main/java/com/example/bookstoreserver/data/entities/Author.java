@@ -41,7 +41,9 @@ public class Author {
     @JsonIgnore
     private Set<Book> books = new HashSet<>();
 
-    public String getNmae() { return this.name; };
+    public long getId() { return this.id; };
+
+    public String getName() { return this.name; };
 
     public String getMiddleName() { return this.middleName; };
     
