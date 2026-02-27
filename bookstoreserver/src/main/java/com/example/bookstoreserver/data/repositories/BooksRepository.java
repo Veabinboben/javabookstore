@@ -10,4 +10,6 @@ import com.example.bookstoreserver.data.entities.Book;
 @Repository
 public interface BooksRepository extends JpaRepository<Book,Long> {
     Page<Book> findByTitleContainingIgnoreCase(String titleFilter,Pageable pageable);
+
+    
 } 

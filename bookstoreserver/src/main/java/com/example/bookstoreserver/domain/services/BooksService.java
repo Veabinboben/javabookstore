@@ -17,8 +17,11 @@ public class BooksService {
     @Autowired
     private BooksRepository booksRepository;
 
+    //TODO check visibility 
     public Page<Book> allBooksPaginated(int pageNum, int pagesize, String titleFilter){
         Pageable pageable = PageRequest.of(pageNum, pagesize);
         return booksRepository.findByTitleContainingIgnoreCase(titleFilter,pageable);
     }
+
+
 }
