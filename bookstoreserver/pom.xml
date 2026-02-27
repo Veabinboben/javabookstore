@@ -56,7 +56,11 @@
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 		
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -76,7 +80,7 @@
 			<plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.4.0.905</version>
+                <version>3.9.0.2155</version>
             </plugin>
 		</plugins>
 	</build>
