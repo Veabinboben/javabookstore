@@ -3,6 +3,8 @@ package com.example.bookstoreserver.data.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,11 +18,19 @@ public class Publisher {
     private Long id;
 
     @Column(name = "name")
-    public String name;
+    private String name;
     
     @Column(name = "description")
-    public String description;
+    private String description;
 
     @ManyToMany(mappedBy = "publishers")
+    @JsonIgnore
     private Set<Book> books = new HashSet<>();
+
+    public String getName() {return this.name;}
+   
+    public String getDescription() {return this.description;}
+   
+    public Set<Book> getBooks() {return this.books;}
+
 }

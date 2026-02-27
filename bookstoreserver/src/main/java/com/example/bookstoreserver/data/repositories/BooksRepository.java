@@ -11,5 +11,4 @@ import com.example.bookstoreserver.data.entities.Book;
 public interface BooksRepository extends JpaRepository<Book,Long> {
     Page<Book> findByTitleContainingIgnoreCase(String titleFilter,Pageable pageable);
 
-    
 } 

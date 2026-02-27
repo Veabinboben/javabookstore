@@ -23,19 +23,19 @@ public class Book {
     
     @Id
     @GeneratedValue
-    public Long id;
+    private Long id;
 
     @Column(name = "title")
-    public String title;
+    private String title;
 
     @Column(name = "publish_date")
-    public Date publishDate;
+    private Date publishDate;
 
     @Column(name = "price")
-    public Double price;
+    private Double price;
 
     @Column(name = "cover_link")
-    public String coverLink;
+    private String coverLink;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -43,7 +43,7 @@ public class Book {
         joinColumns = @JoinColumn(name = "book_id"), 
         inverseJoinColumns = @JoinColumn(name = "author_id") 
     )
-    public Set<Author> authors = new HashSet<>();
+    private Set<Author> authors = new HashSet<>();
    
     //TODO make it list of string, not of objects
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -52,7 +52,7 @@ public class Book {
         joinColumns = @JoinColumn(name = "book_id"), 
         inverseJoinColumns = @JoinColumn(name = "genre_id") 
     )
-    public Set<Genre> genres = new HashSet<>();
+    private Set<Genre> genres = new HashSet<>();
     
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -60,7 +60,21 @@ public class Book {
         joinColumns = @JoinColumn(name = "book_id"), 
         inverseJoinColumns = @JoinColumn(name = "publisher_id") 
     )
-    public Set<Publisher> publishers = new HashSet<>();
+    private Set<Publisher> publishers = new HashSet<>();
 
+    public String getTitle() { return this.title; };
+    
+    public Date getPublishDate() { return this.publishDate; };
+    
+    public double getPrice() { return this.price; };
+    
+    public String getCoverLink() { return this.coverLink; };
+    
+    public Set<Author> getAuthors() { return this.authors; };
+
+    public Set<Genre> getGenres() { return this.genres; };
+    
+    public Set<Publisher> getPublishers() { return this.publishers; };
+    
 
 }

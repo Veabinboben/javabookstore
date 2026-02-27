@@ -16,9 +16,15 @@ public class Warehouse {
     private Long id;
 
     @Column(name = "adress")
-    public String adress;
+    private String adress;
 
     @ManyToOne(fetch = FetchType.LAZY) 
     @JoinColumn(name = "city_id", nullable = false) 
     private City city;
+
+    public String getAdress() {return this.adress;}
+    
+    public City getCity() {return this.city;}
+
 }
+

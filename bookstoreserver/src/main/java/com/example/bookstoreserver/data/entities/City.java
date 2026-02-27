@@ -13,5 +13,7 @@ public class City {
     private Long id;   
     
     @Column(name = "name")
-    public String name;
+    private String name;
+
+    public String getName() {return this.name;}
 }

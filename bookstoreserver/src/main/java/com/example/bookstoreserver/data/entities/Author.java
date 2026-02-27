@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,27 +20,40 @@ public class Author {
     private Long id;
 
     @Column(name = "name")
-    public String name;
+    private String name;
 
     @Column(name = "middle_name")
-    public String middleName;
+    private String middleName;
 
     @Column(name = "surname")
-    public String surname;
+    private String surname;
 
     @Column(name = "birthday")
-    public Date birthday;
+    private Date birthday;
     
     @Column(name = "bio")
-    public String bio;
+    private String bio;
 
     @Column(name = "photo_link")
-    public String photoLink;
-
-
+    private String photoLink;
 
     @ManyToMany(mappedBy = "authors")
+    @JsonIgnore
     private Set<Book> books = new HashSet<>();
+
+    public String getNmae() { return this.name; };
+
+    public String getMiddleName() { return this.middleName; };
+    
+    public String getSurname() { return this.surname; };
+    
+    public Date getBirthday() { return this.birthday; };
+    
+    public String getBio() { return this.bio; };
+    
+    public String getPhotoLink() { return this.photoLink; };
+    
+    public Set<Book> getBooks() { return this.books; };
 
     
 }
