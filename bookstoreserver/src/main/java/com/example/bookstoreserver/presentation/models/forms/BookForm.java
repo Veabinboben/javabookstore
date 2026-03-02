@@ -16,11 +16,11 @@ public class BookForm {
 
     private Long id = null;
 
-    private String title = null;
+    private String title;
     
-    private Date publishDate = null;
+    private Date publishDate;
     
-    private Double price = null;
+    private Double price;
     
     private ArrayList<Long> authorIds = new ArrayList<>();
     

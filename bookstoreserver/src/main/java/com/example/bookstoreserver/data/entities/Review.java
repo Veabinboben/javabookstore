@@ -32,14 +32,23 @@ public class Review {
     private Book book;
 
     public String getContents() {return this.contents;}
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
     
     
     public int getRating() {return this.rating;}
-    
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
     
     public Author getAuthor() {return this.author;}
-    
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
     
     public Book getBook() {return this.book;}
-
+    public void setBook(Book book) {
+        this.book = book;
+    }
 }

@@ -17,6 +17,11 @@ public class WarehousesService {
         return warehousesRepository.findByAdressContainingIgnoringCase(adress);
     }
 
+    public Warehouse getWarehouseById(long id){
+        return warehousesRepository.findById(id).orElseThrow();
+    }
+
+
     public void saveWarehouse(Warehouse warehouse){
         warehousesRepository.save(warehouse);
     }

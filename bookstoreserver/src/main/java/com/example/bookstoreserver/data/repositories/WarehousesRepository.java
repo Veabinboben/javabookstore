@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface WarehousesRepository extends JpaRepository<Warehouse,Long> {
     List<Warehouse> findByAdressContainingIgnoringCase(String adress);
+    
 }

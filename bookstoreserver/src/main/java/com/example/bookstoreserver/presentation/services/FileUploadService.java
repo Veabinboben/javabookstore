@@ -17,7 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.bookstoreserver.presentation.models.ApiException;
 
-//TODO move vars to config maybe
 @Service
 public class FileUploadService {
     

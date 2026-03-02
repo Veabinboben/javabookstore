@@ -4,12 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 //TODO 
-// CRUD on books (create done)
-// batch get for publishers genres and authors?
 // probably search for authors
 // search for books by filters and paginated
 // simple create api for other models
 // add logger
+// add stock view and add
 
 @SpringBootApplication
 public class BookstoreserverApplication {

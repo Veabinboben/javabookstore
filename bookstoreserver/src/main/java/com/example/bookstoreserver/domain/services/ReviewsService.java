@@ -21,4 +21,8 @@ public class ReviewsService {
         Pageable pageable = PageRequest.of(pageNum, pagesize);
         return reviewsRepository.findByBook(book,pageable);
     }
+
+    public void saveReview(Review review){
+        reviewsRepository.save(review);
+    }
 }
