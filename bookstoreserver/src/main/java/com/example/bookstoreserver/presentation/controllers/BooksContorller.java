@@ -11,8 +11,7 @@ import com.example.bookstoreserver.domain.services.BooksService;
 import com.example.bookstoreserver.domain.services.GenresService;
 import com.example.bookstoreserver.domain.services.PublishersService;
 import com.example.bookstoreserver.presentation.models.ApiException;
-import com.example.bookstoreserver.presentation.models.BookForm;
-import com.example.bookstoreserver.presentation.models.BookForm;
+import com.example.bookstoreserver.presentation.models.forms.BookForm;
 import com.example.bookstoreserver.presentation.services.FileUploadService;
 
 import java.awt.image.BufferedImage;
@@ -54,7 +53,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 //TODO add file upload support
 
 @RestController
-@RequestMapping("/main")
+@RequestMapping("/books")
 public class BooksContorller {
 
     @Autowired
@@ -69,18 +68,18 @@ public class BooksContorller {
     @Autowired
     private FileUploadService fileUploadService;
 
-    @GetMapping("/allBooks")
+    @GetMapping("/all")
     public ResponseEntity<Page<Book>> getbooksPaged(
         @RequestParam(defaultValue = "0") int page, 
         @RequestParam(defaultValue = "10") int pageSize, 
         @RequestParam(defaultValue = "") String titleFilter 
     ) {
         //System.out.println(bookService.books().get(0).title);
-        return ResponseEntity.ok(bookService.allBooksPaginated(page,pageSize,titleFilter));
+        return ResponseEntity.ok(bookService.getBooksPaginated(page,pageSize,titleFilter));
     }
 
     
-    @GetMapping("/getBook")
+    @GetMapping("/getById")
     public ResponseEntity<Book> getBookById(@RequestParam long id) throws ApiException {
         try{
             return ResponseEntity.ok(bookService.getBookById(id));
@@ -90,7 +89,7 @@ public class BooksContorller {
         }
     }
 
-    @PostMapping("/saveBook") 
+    @PostMapping("/save") 
     public ResponseEntity<Book> saveBook(@Value("${app.file.upload-dir}") String uploadDir, @ModelAttribute BookForm form) throws ApiException {
         String coverLink = null;
         if (form.getFile() != null) {
@@ -123,7 +122,7 @@ public class BooksContorller {
         return ResponseEntity.ok(book);
     }
 
-    @PostMapping("/deleteBook") 
+    @PostMapping("/delete") 
     public ResponseEntity<Void> deleteBook(@RequestParam long id) {
         try{
             bookService.deleteBookById(id);

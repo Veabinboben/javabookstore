@@ -17,7 +17,7 @@ public class BooksService {
     @Autowired
     private BooksRepository booksRepository;
 
-    public Page<Book> allBooksPaginated(int pageNum, int pagesize, String titleFilter){
+    public Page<Book> getBooksPaginated(int pageNum, int pagesize, String titleFilter){
         Pageable pageable = PageRequest.of(pageNum, pagesize);
         return booksRepository.findByTitleContainingIgnoreCase(titleFilter,pageable);
     }

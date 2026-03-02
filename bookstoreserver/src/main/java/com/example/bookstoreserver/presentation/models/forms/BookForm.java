@@ -1,4 +1,4 @@
-package com.example.bookstoreserver.presentation.models;
+package com.example.bookstoreserver.presentation.models.forms;
 
 import java.awt.List;
 import java.sql.Date;

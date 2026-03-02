@@ -1,5 +1,7 @@
 package com.example.bookstoreserver.domain.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,15 @@ public class AuthorsService {
     private AuthorsRepository authorsRepository;
     
     public Author getAuthorById(long id){
-        return authorsRepository.findById(id);
+        return authorsRepository.findById(id).orElseThrow();
+    }
+
+    public List<Author> getAuthors(String nameFilter){
+        return authorsRepository.findWithName(nameFilter);
+    }
+
+    public void saveAuthor(Author author){
+        authorsRepository.save(author);
     }
 
 }
