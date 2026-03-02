@@ -1,5 +1,7 @@
 package com.example.bookstoreserver.domain.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,15 @@ public class PublishersService {
     private PublishersRepository publishersRepository;
     
     public Publisher getPublisherById(long id){
-        return publishersRepository.findById(id);
+        return publishersRepository.findById(id).orElseThrow();
+    }
+
+    public List<Publisher> getPublishers(String name){
+        return publishersRepository.findByNameContainingIgnoringCase(name);
+    }
+
+    public void savePublisher(Publisher publisher){
+        publishersRepository.save(publisher);
     }
 
 }

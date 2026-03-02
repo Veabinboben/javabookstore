@@ -19,7 +19,7 @@ public class AuthorsService {
     }
 
     public List<Author> getAuthors(String nameFilter){
-        return authorsRepository.findWithName(nameFilter);
+        return authorsRepository.findByName(nameFilter);
     }
 
     public void saveAuthor(Author author){
