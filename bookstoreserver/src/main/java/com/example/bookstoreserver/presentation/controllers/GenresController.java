@@ -15,14 +15,13 @@ import com.example.bookstoreserver.domain.services.GenresService;
 @RestController
 @RequestMapping("/genres")
 public class GenresController {
-    
+
     @Autowired
     private GenresService genresService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Genre>> getGenres(
-        @RequestParam(defaultValue = "") String nameFilter 
-    ) {
+    private ResponseEntity<List<Genre>> getGenres(
+            @RequestParam(defaultValue = "") String nameFilter) {
         return ResponseEntity.ok(genresService.getGenres(nameFilter));
     }
 

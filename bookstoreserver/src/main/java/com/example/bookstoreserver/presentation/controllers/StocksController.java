@@ -13,23 +13,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.bookstoreserver.data.entities.Author;
 import com.example.bookstoreserver.data.entities.Book;
-import com.example.bookstoreserver.data.entities.Genre;
-import com.example.bookstoreserver.data.entities.Review;
 import com.example.bookstoreserver.data.entities.Stock;
 import com.example.bookstoreserver.data.entities.Warehouse;
 import com.example.bookstoreserver.domain.services.BooksService;
 import com.example.bookstoreserver.domain.services.StocksService;
 import com.example.bookstoreserver.domain.services.WarehousesService;
 import com.example.bookstoreserver.presentation.models.ApiException;
-import com.example.bookstoreserver.presentation.models.forms.ReviewForm;
 import com.example.bookstoreserver.presentation.models.forms.StockFrom;
 
 @RestController
 @RequestMapping("stocks")
 public class StocksController {
-    
+
     @Autowired
     private StocksService stocksService;
     @Autowired
@@ -38,41 +34,36 @@ public class StocksController {
     private WarehousesService warehousesService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Stock>> getStocks(
-        @RequestParam(defaultValue = "-1") int bookId 
-    ) throws ApiException {
-         Book book;
-        try{
+    private ResponseEntity<List<Stock>> getStocks(
+            @RequestParam(defaultValue = "-1") int bookId) throws ApiException {
+        Book book;
+        try {
             book = booksService.getBookById(bookId);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new ApiException(HttpStatus.NOT_FOUND, "Invalid bookId");
         }
         return ResponseEntity.ok(stocksService.getStocksByBook(book));
     }
 
-    @PostMapping("/save") 
-    public ResponseEntity<Stock> saveReview(@ModelAttribute StockFrom form) throws ApiException {
+    @PostMapping("/save")
+    private ResponseEntity<Stock> saveReview(@ModelAttribute StockFrom form) throws ApiException {
         Book book;
         Warehouse warehouse;
-        try{
+        try {
             book = booksService.getBookById(form.getBookId());
-        }
-        catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             throw new ApiException(HttpStatus.NOT_FOUND, "No book found");
         }
-        try{
+        try {
             warehouse = warehousesService.getWarehouseById(form.getWarehouseId());
-        }
-        catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             throw new ApiException(HttpStatus.NOT_FOUND, "No warehouse found");
         }
-        try{
+        try {
             Stock stock = stocksService.getStockByBookAndWarehouse(book, warehouse);
-            if (stock != null){
+            if (stock != null) {
                 stock.setStock(form.getStock());
-            }
-            else{
+            } else {
                 stock = new Stock();
                 stock.setStock(form.getStock());
                 stock.setBook(book);
@@ -80,8 +71,7 @@ public class StocksController {
             }
             stocksService.saveStock(stock);
             return ResponseEntity.ok(stock);
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             throw new ApiException(HttpStatus.NOT_ACCEPTABLE, "Null value on not-null field");
         }
     }

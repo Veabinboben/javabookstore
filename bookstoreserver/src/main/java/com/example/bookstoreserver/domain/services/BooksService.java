@@ -1,7 +1,5 @@
 package com.example.bookstoreserver.domain.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,26 +11,25 @@ import com.example.bookstoreserver.data.repositories.BooksRepository;
 
 @Service
 public class BooksService {
-    
+
     @Autowired
     private BooksRepository booksRepository;
 
-    public Page<Book> getBooksPaginated(int pageNum, int pagesize, String titleFilter){
+    public Page<Book> getBooksPaginated(int pageNum, int pagesize, String titleFilter) {
         Pageable pageable = PageRequest.of(pageNum, pagesize);
-        return booksRepository.findByTitleContainingIgnoreCase(titleFilter,pageable);
+        return booksRepository.findByTitleContainingIgnoreCase(titleFilter, pageable);
     }
 
-    public Book getBookById(long id){
+    public Book getBookById(long id) {
         return booksRepository.findById(id).orElseThrow();
     }
 
-    public void saveBook(Book book){
+    public void saveBook(Book book) {
         booksRepository.save(book);
     }
 
-    public void deleteBookById(long id){
+    public void deleteBookById(long id) {
         booksRepository.deleteById(id);
     }
-    
 
 }

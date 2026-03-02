@@ -10,19 +10,19 @@ import com.example.bookstoreserver.data.repositories.GenresRepository;
 
 @Service
 public class GenresService {
-    
+
     @Autowired
     private GenresRepository genresRepository;
 
-    public Genre getGenreById(long id){
+    public Genre getGenreById(long id) {
         return genresRepository.findById(id).orElseThrow();
     }
 
-    public List<Genre> getGenres(String name){
+    public List<Genre> getGenres(String name) {
         return genresRepository.findByNameContainingIgnoringCase(name);
     }
 
-    public void saveGenre(Genre genre){
+    public void saveGenre(Genre genre) {
         genresRepository.save(genre);
     }
 

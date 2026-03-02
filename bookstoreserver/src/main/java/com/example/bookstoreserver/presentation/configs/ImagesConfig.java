@@ -6,12 +6,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class ImagesConfig implements WebMvcConfigurer{
+public class ImagesConfig implements WebMvcConfigurer {
     @Value("${app.file.upload-dir}")
     private String uploadDir;
 
-    //TODO move val to conf also?
-    //TODO add error case
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/**")

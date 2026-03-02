@@ -1,15 +1,10 @@
 package com.example.bookstoreserver.presentation.models.forms;
 
-import java.awt.List;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.springframework.web.multipart.MultipartFile;
 
-
-//TODO add validation
 public class BookForm {
 
     private MultipartFile file = null;
@@ -17,41 +12,79 @@ public class BookForm {
     private Long id = null;
 
     private String title;
-    
+
     private Date publishDate;
-    
+
     private Double price;
-    
+
     private ArrayList<Long> authorIds = new ArrayList<>();
-    
+
     private ArrayList<Long> publisherIds = new ArrayList<>();
-    
+
     private ArrayList<Long> genreIds = new ArrayList<>();
 
+    public MultipartFile getFile() {
+        return file;
+    }
 
-    public MultipartFile getFile() { return file; }
-    public void setFile(MultipartFile file) { this.file = file; }
-    
-    public Long getId() { return id; }
-    public void setId(long id) { this.id = id; }
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public Long getId() {
+        return id;
+    }
 
-    public double getPrice() { return this.price; };
-    public void setPrice(double price) {this.price = price;}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    public Date getPublishDate() { return this.publishDate; };
-    public void setPublishDate(Date publishDate) {this.publishDate = publishDate;}
+    public String getTitle() {
+        return title;
+    }
 
-    public ArrayList<Long> getAuthorIds() {return authorIds;}
-    public void setAuthorIds(ArrayList<Long> authorIds) {this.authorIds = authorIds;}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public ArrayList<Long> getPublisherIds() {return publisherIds;}
-    public void setPublisherIds(ArrayList<Long> publisherIds) {this.publisherIds = publisherIds;}
+    public double getPrice() {
+        return this.price;
+    };
 
-    public ArrayList<Long> getGenreIds() {return genreIds;}
-    public void setGenreIds(ArrayList<Long> genreIds) {this.genreIds = genreIds;}
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
+    public Date getPublishDate() {
+        return this.publishDate;
+    };
+
+    public void setPublishDate(Date publishDate) {
+        this.publishDate = publishDate;
+    }
+
+    public ArrayList<Long> getAuthorIds() {
+        return authorIds;
+    }
+
+    public void setAuthorIds(ArrayList<Long> authorIds) {
+        this.authorIds = authorIds;
+    }
+
+    public ArrayList<Long> getPublisherIds() {
+        return publisherIds;
+    }
+
+    public void setPublisherIds(ArrayList<Long> publisherIds) {
+        this.publisherIds = publisherIds;
+    }
+
+    public ArrayList<Long> getGenreIds() {
+        return genreIds;
+    }
+
+    public void setGenreIds(ArrayList<Long> genreIds) {
+        this.genreIds = genreIds;
+    }
 
 }

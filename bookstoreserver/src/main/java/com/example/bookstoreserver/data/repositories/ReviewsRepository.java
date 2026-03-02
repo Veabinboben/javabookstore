@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.bookstoreserver.data.entities.Book;
 import com.example.bookstoreserver.data.entities.Review;
-import java.util.List;
 
 
 public interface ReviewsRepository extends JpaRepository<Review,Long> {

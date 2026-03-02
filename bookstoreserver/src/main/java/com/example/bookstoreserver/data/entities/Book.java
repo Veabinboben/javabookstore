@@ -12,7 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity(name = "books")
 public class Book {
@@ -22,12 +23,18 @@ public class Book {
     private Long id;
 
     @Column(name = "title")
+    @NotNull
+    @NotEmpty(message = "Title cannot be empty")
     private String title;
 
     @Column(name = "publish_date")
+    @NotNull
+    @NotEmpty(message = "Date cannot be empty")
     private Date publishDate;
 
     @Column(name = "price")
+    @NotNull
+    @NotEmpty(message = "Price cannot be empty")
     private Double price;
 
     @Column(name = "cover_link")

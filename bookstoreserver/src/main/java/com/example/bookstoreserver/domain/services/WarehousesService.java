@@ -11,18 +11,17 @@ import com.example.bookstoreserver.data.entities.Warehouse;
 public class WarehousesService {
 
     @Autowired
-    private  WarehousesRepository warehousesRepository;
+    private WarehousesRepository warehousesRepository;
 
-    public List<Warehouse> getWarehouses(String adress){
+    public List<Warehouse> getWarehouses(String adress) {
         return warehousesRepository.findByAdressContainingIgnoringCase(adress);
     }
 
-    public Warehouse getWarehouseById(long id){
+    public Warehouse getWarehouseById(long id) {
         return warehousesRepository.findById(id).orElseThrow();
     }
 
-
-    public void saveWarehouse(Warehouse warehouse){
+    public void saveWarehouse(Warehouse warehouse) {
         warehousesRepository.save(warehouse);
     }
 

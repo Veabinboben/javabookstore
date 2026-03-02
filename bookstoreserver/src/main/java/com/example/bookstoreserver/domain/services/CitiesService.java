@@ -10,15 +10,15 @@ import com.example.bookstoreserver.data.repositories.CitiesRepository;
 
 @Service
 public class CitiesService {
-    
+
     @Autowired
     private CitiesRepository citiesRepository;
 
-    public List<City> getCities(String name){
+    public List<City> getCities(String name) {
         return citiesRepository.findByNameContainingIgnoringCase(name);
     }
 
-    public void saveCity(City city){
+    public void saveCity(City city) {
         citiesRepository.save(city);
     }
 

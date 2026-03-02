@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.bookstoreserver.data.entities.Author;
 import com.example.bookstoreserver.data.entities.Publisher;
 import com.example.bookstoreserver.data.repositories.PublishersRepository;
 
@@ -14,16 +13,16 @@ public class PublishersService {
 
     @Autowired
     private PublishersRepository publishersRepository;
-    
-    public Publisher getPublisherById(long id){
+
+    public Publisher getPublisherById(long id) {
         return publishersRepository.findById(id).orElseThrow();
     }
 
-    public List<Publisher> getPublishers(String name){
+    public List<Publisher> getPublishers(String name) {
         return publishersRepository.findByNameContainingIgnoringCase(name);
     }
 
-    public void savePublisher(Publisher publisher){
+    public void savePublisher(Publisher publisher) {
         publishersRepository.save(publisher);
     }
 

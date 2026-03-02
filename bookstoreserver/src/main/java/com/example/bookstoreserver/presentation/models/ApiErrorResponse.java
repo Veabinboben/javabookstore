@@ -1,8 +1,6 @@
 package com.example.bookstoreserver.presentation.models;
 
 import java.time.Instant;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -12,7 +10,7 @@ public class ApiErrorResponse {
     private String title;
     private String instance;
 
-    public ApiErrorResponse(int status, String title, String path){
+    public ApiErrorResponse(int status, String title, String path) {
         this.status = status;
         this.title = title;
         this.instance = path;
@@ -33,6 +31,4 @@ public class ApiErrorResponse {
     public Instant getTimestamp() {
         return timestamp;
     }
-
-    //public static record FieldError(String field, String message) {}
 }

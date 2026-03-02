@@ -7,22 +7,21 @@ import org.springframework.stereotype.Service;
 
 import com.example.bookstoreserver.data.entities.Author;
 import com.example.bookstoreserver.data.repositories.AuthorsRepository;
-import com.example.bookstoreserver.data.repositories.BooksRepository;
 
 @Service
 public class AuthorsService {
     @Autowired
     private AuthorsRepository authorsRepository;
-    
-    public Author getAuthorById(long id){
+
+    public Author getAuthorById(long id) {
         return authorsRepository.findById(id).orElseThrow();
     }
 
-    public List<Author> getAuthors(String nameFilter){
+    public List<Author> getAuthors(String nameFilter) {
         return authorsRepository.findByName(nameFilter);
     }
 
-    public void saveAuthor(Author author){
+    public void saveAuthor(Author author) {
         authorsRepository.save(author);
     }
 

@@ -12,19 +12,19 @@ import com.example.bookstoreserver.data.repositories.StocksRepository;
 
 @Service
 public class StocksService {
-    
+
     @Autowired
     private StocksRepository stocksRepository;
 
-    public List<Stock> getStocksByBook(Book book){
+    public List<Stock> getStocksByBook(Book book) {
         return stocksRepository.findByBook(book);
     }
 
-    public Stock getStockByBookAndWarehouse(Book book, Warehouse warehouse){
+    public Stock getStockByBookAndWarehouse(Book book, Warehouse warehouse) {
         return stocksRepository.findByBookAndWarehouse(book, warehouse);
     }
 
-    public void saveStock(Stock stock){
+    public void saveStock(Stock stock) {
         stocksRepository.save(stock);
     }
 
