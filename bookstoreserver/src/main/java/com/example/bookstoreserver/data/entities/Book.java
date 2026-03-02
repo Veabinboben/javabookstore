@@ -28,8 +28,6 @@ public class Book {
     private String title;
 
     @Column(name = "publish_date")
-    @NotNull
-    @NotEmpty(message = "Date cannot be empty")
     private Date publishDate;
 
     @Column(name = "price")

@@ -36,6 +36,14 @@ public class Review {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getContents() {
         return this.contents;
     }

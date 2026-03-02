@@ -16,13 +16,13 @@ import jakarta.validation.ConstraintViolationException;
 public class ExceptionHandlingController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
-    private ResponseEntity<ApiErrorResponse> handleAll(ApiException ex, HttpServletRequest req) {
+    public ResponseEntity<ApiErrorResponse> handleAll(ApiException ex, HttpServletRequest req) {
         ApiErrorResponse body = new ApiErrorResponse(ex.geStatus().value(), ex.getMessage(), req.getPathInfo());
         return ResponseEntity.status(ex.geStatus()).body(body);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    private ResponseEntity<ApiErrorResponse> handleValidation(ConstraintViolationException ex, HttpServletRequest req) {
+    public ResponseEntity<ApiErrorResponse> handleValidation(ConstraintViolationException ex, HttpServletRequest req) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         ApiErrorResponse body = new ApiErrorResponse(status.value(), ex.getMessage(), req.getPathInfo());
         return ResponseEntity.status(status).body(body);

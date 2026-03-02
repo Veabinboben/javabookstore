@@ -37,8 +37,6 @@ public class Author {
     private String surname;
 
     @Column(name = "birthday")
-    @NotNull
-    @NotEmpty(message = "Date cannot be empty")
     private Date birthday;
 
     @Column(name = "bio")
@@ -53,8 +51,12 @@ public class Author {
     @JsonIgnore
     private Set<Book> books = new HashSet<>();
 
-    public long getId() {
-        return this.id;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -108,5 +110,5 @@ public class Author {
     public Set<Book> getBooks() {
         return this.books;
     }
-
+    
 }
