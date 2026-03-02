@@ -11,23 +11,28 @@ import org.springframework.stereotype.Service;
 import com.example.bookstoreserver.data.entities.Book;
 import com.example.bookstoreserver.data.repositories.BooksRepository;
 
-//TODO maybe add interface
 @Service
 public class BooksService {
     
     @Autowired
     private BooksRepository booksRepository;
 
-    //TODO check visibility 
     public Page<Book> allBooksPaginated(int pageNum, int pagesize, String titleFilter){
         Pageable pageable = PageRequest.of(pageNum, pagesize);
         return booksRepository.findByTitleContainingIgnoreCase(titleFilter,pageable);
+    }
+
+    public Book getBookById(long id){
+        return booksRepository.findById(id).orElseThrow();
     }
 
     public void saveBook(Book book){
         booksRepository.save(book);
     }
 
+    public void deleteBookById(long id){
+        booksRepository.deleteById(id);
+    }
     
 
 }

@@ -14,21 +14,26 @@ public class BookForm {
 
     private MultipartFile file = null;
 
+    private Long id = null;
+
     private String title = null;
     
     private Date publishDate = null;
     
     private Double price = null;
     
-    private ArrayList<Long> authorIds = new ArrayList<>();;
+    private ArrayList<Long> authorIds = new ArrayList<>();
     
-    private ArrayList<Long> publisherIds = new ArrayList<>();;
+    private ArrayList<Long> publisherIds = new ArrayList<>();
     
-    private ArrayList<Long> genreIds = new ArrayList<>();;
+    private ArrayList<Long> genreIds = new ArrayList<>();
 
 
     public MultipartFile getFile() { return file; }
     public void setFile(MultipartFile file) { this.file = file; }
+    
+    public Long getId() { return id; }
+    public void setId(long id) { this.id = id; }
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }

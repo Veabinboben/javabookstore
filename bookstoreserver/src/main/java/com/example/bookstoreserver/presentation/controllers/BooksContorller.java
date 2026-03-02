@@ -10,7 +10,8 @@ import com.example.bookstoreserver.domain.services.AuthorsService;
 import com.example.bookstoreserver.domain.services.BooksService;
 import com.example.bookstoreserver.domain.services.GenresService;
 import com.example.bookstoreserver.domain.services.PublishersService;
-import com.example.bookstoreserver.presentation.models.BookCreateForm;
+import com.example.bookstoreserver.presentation.models.ApiException;
+import com.example.bookstoreserver.presentation.models.BookForm;
 import com.example.bookstoreserver.presentation.models.BookForm;
 import com.example.bookstoreserver.presentation.services.FileUploadService;
 
@@ -68,8 +69,8 @@ public class BooksContorller {
     @Autowired
     private FileUploadService fileUploadService;
 
-    @GetMapping("/all")
-    public ResponseEntity<Page<Book>> booksPaged(
+    @GetMapping("/allBooks")
+    public ResponseEntity<Page<Book>> getbooksPaged(
         @RequestParam(defaultValue = "0") int page, 
         @RequestParam(defaultValue = "10") int pageSize, 
         @RequestParam(defaultValue = "") String titleFilter 
@@ -79,53 +80,28 @@ public class BooksContorller {
     }
 
     
-    //TODO implement
-    @PostMapping("/editBook") 
-    public ResponseEntity<Book> createBook(@Value("${app.file.upload-dir}") String uploadDir, @ModelAttribute BookForm form) throws IOException {
-        //StringBuilder fileNames = new StringBuilder();
-        //TODO change to local dir, probably from config
-        //TODO try catch only on cover
-        String coverLink;
+    @GetMapping("/getBook")
+    public ResponseEntity<Book> getBookById(@RequestParam long id) throws ApiException {
         try{
-            coverLink = fileUploadService.uploadMultipart(form.getFile());
-            Book book = new Book();
-            //TODO
-            book.setTitle(form.getTitle());
-            book.setPublishDate(form.getPublishDate());
-            book.setPrice(form.getPrice());
-            book.setCoverLink(coverLink);
-            for (long id : form.getAuthorIds()){
-                book.addAuthor(authorsService.getAuthorById(id));
-            }
-            for (long id : form.getGenreIds()){
-                book.addGenre(genresService.getGenreById(id));
-            }
-            for (long id : form.getPublisherIds()){
-                book.addPublisher(publisherService.getPublisherById(id));
-            }
-            bookService.saveBook(book);
-            return ResponseEntity.ok(book);
+            return ResponseEntity.ok(bookService.getBookById(id));
         }
-        catch (IOException e) {
-            return ResponseEntity.noContent().build();
+        catch (Exception e){
+            throw new ApiException(HttpStatus.NOT_FOUND, "Book not found");
         }
-    }
-
-    @PostMapping("/formtest") 
-    public ResponseEntity<BookForm> formTest(@ModelAttribute BookForm form) {
-        return ResponseEntity.ok(form);
     }
 
     @PostMapping("/saveBook") 
-    public ResponseEntity<Book> editBook(@Value("${app.file.upload-dir}") String uploadDir, @ModelAttribute BookForm form) throws IOException {
-        //StringBuilder fileNames = new StringBuilder();
-        //TODO change to local dir, probably from config
-        //TODO try catch only on cover
-        String coverLink;
-        try{
+    public ResponseEntity<Book> saveBook(@Value("${app.file.upload-dir}") String uploadDir, @ModelAttribute BookForm form) throws ApiException {
+        String coverLink = null;
+        if (form.getFile() != null) {
             coverLink = fileUploadService.uploadMultipart(form.getFile());
-            Book book = new Book();
-            //TODO
+        }
+        Book book = new Book();
+        //If not null then it will try to update
+        if (form.getId() != null){
+            book.setId(form.getId()); 
+        }
+        try{
             book.setTitle(form.getTitle());
             book.setPublishDate(form.getPublishDate());
             book.setPrice(form.getPrice());
@@ -139,14 +115,22 @@ public class BooksContorller {
             for (long id : form.getPublisherIds()){
                 book.addPublisher(publisherService.getPublisherById(id));
             }
-            bookService.saveBook(book);
-            return ResponseEntity.ok(book);
         }
-        catch (IOException e) {
-            return ResponseEntity.noContent().build();
+        catch (NullPointerException e){
+            throw new ApiException(HttpStatus.NOT_ACCEPTABLE, "Null value on not-null field");
         }
-
-        
+        bookService.saveBook(book);
+        return ResponseEntity.ok(book);
     }
 
+    @PostMapping("/deleteBook") 
+    public ResponseEntity<Void> deleteBook(@RequestParam long id) {
+        try{
+            bookService.deleteBookById(id);
+            return ResponseEntity.ok().build();
+        }
+        catch (Exception e){
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Deletion failed");
+        }
+    }
 }   
