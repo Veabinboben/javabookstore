@@ -25,7 +25,7 @@ public class FileUploadService {
     public String uploadMultipart(MultipartFile file) throws ApiException {
         try {
             InputStream is = file.getInputStream();
-            String uniqueName = UUID.randomUUID().toString().replaceAll("-", "") + ".jpg";
+            String uniqueName = UUID.randomUUID().toString().replace("-", "") + ".jpg";
             BufferedImage inputFile = ImageIO.read(is);
             File outputFile = new File(String.format("%s%s", uploadDir, uniqueName));
 

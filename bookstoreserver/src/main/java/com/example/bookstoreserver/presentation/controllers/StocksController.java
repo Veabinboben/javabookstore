@@ -3,7 +3,6 @@ package com.example.bookstoreserver.presentation.controllers;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,15 +25,21 @@ import com.example.bookstoreserver.presentation.models.forms.StockFrom;
 @RequestMapping("stocks")
 public class StocksController {
 
-    @Autowired
-    private StocksService stocksService;
-    @Autowired
-    private BooksService booksService;
-    @Autowired
-    private WarehousesService warehousesService;
+    private final StocksService stocksService;
+
+    private final BooksService booksService;
+
+    private final WarehousesService warehousesService;
+
+    public StocksController(StocksService stocksService, BooksService booksService,
+            WarehousesService warehousesService) {
+        this.stocksService = stocksService;
+        this.booksService = booksService;
+        this.warehousesService = warehousesService;
+    }
 
     @GetMapping("/all")
-    private ResponseEntity<List<Stock>> getStocks(
+    public ResponseEntity<List<Stock>> getStocks(
             @RequestParam(defaultValue = "-1") int bookId) throws ApiException {
         Book book;
         try {
@@ -46,7 +51,7 @@ public class StocksController {
     }
 
     @PostMapping("/save")
-    private ResponseEntity<Stock> saveReview(@ModelAttribute StockFrom form) throws ApiException {
+    public ResponseEntity<Stock> saveReview(@ModelAttribute StockFrom form) throws ApiException {
         Book book;
         Warehouse warehouse;
         try {
@@ -62,10 +67,10 @@ public class StocksController {
         try {
             Stock stock = stocksService.getStockByBookAndWarehouse(book, warehouse);
             if (stock != null) {
-                stock.setStock(form.getStock());
+                stock.setAmmount(form.getStock());
             } else {
                 stock = new Stock();
-                stock.setStock(form.getStock());
+                stock.setAmmount(form.getStock());
                 stock.setBook(book);
                 stock.setWarehouse(warehouse);
             }

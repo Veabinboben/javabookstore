@@ -2,7 +2,6 @@ package com.example.bookstoreserver.presentation.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +15,14 @@ import com.example.bookstoreserver.domain.services.WarehousesService;
 @RequestMapping("/warehouses")
 public class WarehousesController {
 
-    @Autowired
-    private WarehousesService warehousesService;
+    private final WarehousesService warehousesService;
+
+    public WarehousesController(WarehousesService warehousesService) {
+        this.warehousesService = warehousesService;
+    }
 
     @GetMapping("/all")
-    private ResponseEntity<List<Warehouse>> getGenres(
+    public ResponseEntity<List<Warehouse>> getGenres(
             @RequestParam(defaultValue = "") String adressFilter) {
         return ResponseEntity.ok(warehousesService.getWarehouses(adressFilter));
     }

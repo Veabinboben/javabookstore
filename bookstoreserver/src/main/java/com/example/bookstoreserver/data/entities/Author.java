@@ -55,11 +55,11 @@ public class Author {
 
     public long getId() {
         return this.id;
-    };
+    }
 
     public String getName() {
         return this.name;
-    };
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -67,7 +67,7 @@ public class Author {
 
     public String getMiddleName() {
         return this.middleName;
-    };
+    }
 
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
@@ -75,7 +75,7 @@ public class Author {
 
     public String getSurname() {
         return this.surname;
-    };
+    }
 
     public void setSurname(String surname) {
         this.surname = surname;
@@ -83,7 +83,7 @@ public class Author {
 
     public Date getBirthday() {
         return this.birthday;
-    };
+    }
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
@@ -91,7 +91,7 @@ public class Author {
 
     public String getBio() {
         return this.bio;
-    };
+    }
 
     public void setBio(String bio) {
         this.bio = bio;
@@ -99,7 +99,7 @@ public class Author {
 
     public String getPhotoLink() {
         return this.photoLink;
-    };
+    }
 
     public void setPhotoLink(String photoLink) {
         this.photoLink = photoLink;
@@ -107,6 +107,6 @@ public class Author {
 
     public Set<Book> getBooks() {
         return this.books;
-    };
+    }
 
 }

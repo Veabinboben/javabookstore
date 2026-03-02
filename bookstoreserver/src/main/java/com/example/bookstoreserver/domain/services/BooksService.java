@@ -1,6 +1,5 @@
 package com.example.bookstoreserver.domain.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,8 +11,11 @@ import com.example.bookstoreserver.data.repositories.BooksRepository;
 @Service
 public class BooksService {
 
-    @Autowired
-    private BooksRepository booksRepository;
+    private final BooksRepository booksRepository;
+
+    public BooksService(BooksRepository booksRepository) {
+        this.booksRepository = booksRepository;
+    }
 
     public Page<Book> getBooksPaginated(int pageNum, int pagesize, String titleFilter) {
         Pageable pageable = PageRequest.of(pageNum, pagesize);

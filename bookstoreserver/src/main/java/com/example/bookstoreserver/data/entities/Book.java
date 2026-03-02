@@ -62,7 +62,7 @@ public class Book {
 
     public String getTitle() {
         return this.title;
-    };
+    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -70,7 +70,7 @@ public class Book {
 
     public Date getPublishDate() {
         return this.publishDate;
-    };
+    }
 
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
@@ -78,7 +78,7 @@ public class Book {
 
     public double getPrice() {
         return this.price;
-    };
+    }
 
     public void setPrice(double price) {
         this.price = price;
@@ -86,7 +86,7 @@ public class Book {
 
     public String getCoverLink() {
         return this.coverLink;
-    };
+    }
 
     public void setCoverLink(String coverLink) {
         this.coverLink = coverLink;
@@ -94,7 +94,7 @@ public class Book {
 
     public Set<Author> getAuthors() {
         return this.authors;
-    };
+    }
 
     public void addAuthor(Author author) {
         this.authors.add(author);
@@ -103,7 +103,7 @@ public class Book {
 
     public Set<Genre> getGenres() {
         return this.genres;
-    };
+    }
 
     public void addGenre(Genre genre) {
         this.genres.add(genre);
@@ -112,7 +112,7 @@ public class Book {
 
     public Set<Publisher> getPublishers() {
         return this.publishers;
-    };
+    }
 
     public void addPublisher(Publisher publisher) {
         this.publishers.add(publisher);

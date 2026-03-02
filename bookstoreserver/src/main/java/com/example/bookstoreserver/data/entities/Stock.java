@@ -21,7 +21,7 @@ public class Stock {
 
     @Column(name = "stock")
     @Min(value = 0, message = "Stock must be at least 0")
-    private int stock;
+    private int ammount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_id", nullable = false)
@@ -40,12 +40,12 @@ public class Stock {
         this.id = id;
     }
 
-    public int getStock() {
-        return stock;
+    public int getAmmount() {
+        return ammount;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setAmmount(int stock) {
+        this.ammount = stock;
     }
 
     public Book getBook() {

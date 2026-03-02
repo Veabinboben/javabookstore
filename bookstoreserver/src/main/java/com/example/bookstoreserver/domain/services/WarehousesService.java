@@ -2,7 +2,6 @@ package com.example.bookstoreserver.domain.services;
 
 import java.util.List;
 import com.example.bookstoreserver.data.repositories.WarehousesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.bookstoreserver.data.entities.Warehouse;
@@ -10,8 +9,11 @@ import com.example.bookstoreserver.data.entities.Warehouse;
 @Service
 public class WarehousesService {
 
-    @Autowired
-    private WarehousesRepository warehousesRepository;
+    private final WarehousesRepository warehousesRepository;
+
+    public WarehousesService(WarehousesRepository warehousesRepository) {
+        this.warehousesRepository = warehousesRepository;
+    }
 
     public List<Warehouse> getWarehouses(String adress) {
         return warehousesRepository.findByAdressContainingIgnoringCase(adress);

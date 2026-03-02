@@ -2,7 +2,6 @@ package com.example.bookstoreserver.presentation.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,20 +22,22 @@ import com.example.bookstoreserver.presentation.services.FileUploadService;
 @RequestMapping("/authors")
 public class AuthorsController {
 
-    @Autowired
-    private AuthorsService authorsService;
+    private final AuthorsService authorsService;
+    private final FileUploadService fileUploadService;
 
-    @Autowired
-    private FileUploadService fileUploadService;
+    public AuthorsController(AuthorsService authorsService, FileUploadService fileUploadService) {
+        this.authorsService = authorsService;
+        this.fileUploadService = fileUploadService;
+    }
 
     @GetMapping("/all")
-    private ResponseEntity<List<Author>> getAuthors(
+    public ResponseEntity<List<Author>> getAuthors(
             @RequestParam(defaultValue = "") String nameFilter) {
         return ResponseEntity.ok(authorsService.getAuthors(nameFilter));
     }
 
     @PostMapping("/save")
-    private ResponseEntity<Author> saveAuthor(@Value("${app.file.upload-dir}") String uploadDir,
+    public ResponseEntity<Author> saveAuthor(@Value("${app.file.upload-dir}") String uploadDir,
             @ModelAttribute AuthorForm form) throws ApiException {
         String photoLink = null;
         if (form.getFile() != null) {
@@ -54,7 +55,6 @@ public class AuthorsController {
             throw new ApiException(HttpStatus.NOT_ACCEPTABLE, "Null value on not-null field");
         }
         authorsService.saveAuthor(author);
-        ;
         return ResponseEntity.ok(author);
     }
 }

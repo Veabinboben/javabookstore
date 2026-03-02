@@ -2,7 +2,6 @@ package com.example.bookstoreserver.presentation.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +15,14 @@ import com.example.bookstoreserver.domain.services.GenresService;
 @RequestMapping("/genres")
 public class GenresController {
 
-    @Autowired
-    private GenresService genresService;
+    private final GenresService genresService;
+
+    public GenresController(GenresService genresService) {
+        this.genresService = genresService;
+    }
 
     @GetMapping("/all")
-    private ResponseEntity<List<Genre>> getGenres(
+    public ResponseEntity<List<Genre>> getGenres(
             @RequestParam(defaultValue = "") String nameFilter) {
         return ResponseEntity.ok(genresService.getGenres(nameFilter));
     }

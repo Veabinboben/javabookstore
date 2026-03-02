@@ -11,7 +11,6 @@ import com.example.bookstoreserver.presentation.models.ApiException;
 import com.example.bookstoreserver.presentation.models.forms.BookForm;
 import com.example.bookstoreserver.presentation.services.FileUploadService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -24,22 +23,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/books")
-public class BooksContorller {
+public class BooksController {
 
-    @Autowired
-    private BooksService bookService;
-    @Autowired
-    private AuthorsService authorsService;
-    @Autowired
-    private GenresService genresService;
-    @Autowired
-    private PublishersService publisherService;
+    private final BooksService bookService;
+    private final AuthorsService authorsService;
+    private final GenresService genresService;
+    private final PublishersService publisherService;
+    private final FileUploadService fileUploadService;
 
-    @Autowired
-    private FileUploadService fileUploadService;
+    public BooksController(BooksService bookService, AuthorsService authorsService, GenresService genresService,
+            PublishersService publisherService, FileUploadService fileUploadService) {
+        this.bookService = bookService;
+        this.authorsService = authorsService;
+        this.genresService = genresService;
+        this.publisherService = publisherService;
+        this.fileUploadService = fileUploadService;
+    }
 
     @GetMapping("/all")
-    private ResponseEntity<Page<Book>> getbooksPaged(
+    public ResponseEntity<Page<Book>> getbooksPaged(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "") String titleFilter) {
@@ -47,7 +49,7 @@ public class BooksContorller {
     }
 
     @GetMapping("/getById")
-    private ResponseEntity<Book> getBookById(@RequestParam long id) throws ApiException {
+    public ResponseEntity<Book> getBookById(@RequestParam long id) throws ApiException {
         try {
             return ResponseEntity.ok(bookService.getBookById(id));
         } catch (Exception e) {
@@ -56,7 +58,7 @@ public class BooksContorller {
     }
 
     @PostMapping("/save")
-    private ResponseEntity<Book> saveBook(@Value("${app.file.upload-dir}") String uploadDir,
+    public ResponseEntity<Book> saveBook(@Value("${app.file.upload-dir}") String uploadDir,
             @ModelAttribute BookForm form) throws ApiException {
         String coverLink = null;
         if (form.getFile() != null) {
@@ -88,7 +90,7 @@ public class BooksContorller {
     }
 
     @PostMapping("/delete")
-    private ResponseEntity<Void> deleteBook(@RequestParam long id) {
+    public ResponseEntity<Void> deleteBook(@RequestParam long id) {
         try {
             bookService.deleteBookById(id);
             return ResponseEntity.ok().build();

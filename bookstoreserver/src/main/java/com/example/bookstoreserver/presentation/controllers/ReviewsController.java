@@ -10,7 +10,6 @@ import com.example.bookstoreserver.domain.services.ReviewsService;
 import com.example.bookstoreserver.presentation.models.ApiException;
 import com.example.bookstoreserver.presentation.models.forms.ReviewForm;
 import java.util.NoSuchElementException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,15 +23,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/reviews")
 public class ReviewsController {
 
-    @Autowired
-    private BooksService bookService;
-    @Autowired
-    private AuthorsService authorsService;
-    @Autowired
-    private ReviewsService reviewsService;
+    private final BooksService bookService;
+
+    private final AuthorsService authorsService;
+
+    private final ReviewsService reviewsService;
+
+    public ReviewsController(BooksService bookService, AuthorsService authorsService, ReviewsService reviewsService) {
+        this.bookService = bookService;
+        this.authorsService = authorsService;
+        this.reviewsService = reviewsService;
+    }
 
     @GetMapping("/all")
-    private ResponseEntity<Page<Review>> getReviewsByBook(
+    public ResponseEntity<Page<Review>> getReviewsByBook(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "-1") int bookId) throws ApiException {
@@ -46,7 +50,7 @@ public class ReviewsController {
     }
 
     @PostMapping("/save")
-    private ResponseEntity<Review> saveReview(@ModelAttribute ReviewForm form) throws ApiException {
+    public ResponseEntity<Review> saveReview(@ModelAttribute ReviewForm form) throws ApiException {
         Book book;
         Author author;
         try {

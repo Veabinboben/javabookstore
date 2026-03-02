@@ -2,6 +2,7 @@ package com.example.bookstoreserver.presentation.models.forms;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,11 +18,11 @@ public class BookForm {
 
     private Double price;
 
-    private ArrayList<Long> authorIds = new ArrayList<>();
+    private List<Long> authorIds = new ArrayList<>();
 
-    private ArrayList<Long> publisherIds = new ArrayList<>();
+    private List<Long> publisherIds = new ArrayList<>();
 
-    private ArrayList<Long> genreIds = new ArrayList<>();
+    private List<Long> genreIds = new ArrayList<>();
 
     public MultipartFile getFile() {
         return file;
@@ -49,7 +50,7 @@ public class BookForm {
 
     public double getPrice() {
         return this.price;
-    };
+    }
 
     public void setPrice(double price) {
         this.price = price;
@@ -57,33 +58,33 @@ public class BookForm {
 
     public Date getPublishDate() {
         return this.publishDate;
-    };
+    }
 
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
     }
 
-    public ArrayList<Long> getAuthorIds() {
+    public List<Long> getAuthorIds() {
         return authorIds;
     }
 
-    public void setAuthorIds(ArrayList<Long> authorIds) {
+    public void setAuthorIds(List<Long> authorIds) {
         this.authorIds = authorIds;
     }
 
-    public ArrayList<Long> getPublisherIds() {
+    public List<Long> getPublisherIds() {
         return publisherIds;
     }
 
-    public void setPublisherIds(ArrayList<Long> publisherIds) {
+    public void setPublisherIds(List<Long> publisherIds) {
         this.publisherIds = publisherIds;
     }
 
-    public ArrayList<Long> getGenreIds() {
+    public List<Long> getGenreIds() {
         return genreIds;
     }
 
-    public void setGenreIds(ArrayList<Long> genreIds) {
+    public void setGenreIds(List<Long> genreIds) {
         this.genreIds = genreIds;
     }
 
