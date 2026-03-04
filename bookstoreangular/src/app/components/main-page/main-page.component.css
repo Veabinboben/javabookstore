@@ -1,0 +1,6 @@
+.books-grid {
+  display: grid;
+  gap: 16px;                      /* space between items */
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  align-items: start;
+}

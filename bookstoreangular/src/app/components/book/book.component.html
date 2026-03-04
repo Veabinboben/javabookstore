@@ -1,0 +1,19 @@
+<style>
+    .example-card {
+        max-width: 400px;
+    }
+</style>
+<p>
+    <mat-card class="example-card" appearance="outlined">
+    <mat-card-header>
+        <mat-card-title-group>
+        <mat-card-title>{{book.title}}</mat-card-title>
+        <mat-card-subtitle>{{book.authors}}</mat-card-subtitle>
+    </mat-card-title-group>
+    </mat-card-header>
+    <img mat-card-sm-image [src] = "book.coverLink" alt="No image :(">
+    <mat-card-content>
+        {{book.price}}
+    </mat-card-content>
+    </mat-card>
+</p>

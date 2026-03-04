@@ -1,0 +1,19 @@
+<!-- <button (click)="service.g()">Add more data</button> -->
+<section>
+    <div class="books-grid">
+        <app-book
+            *ngFor="let book of books"
+            [book] = "book"
+        ></app-book>
+    </div>
+    <mat-paginator
+    [length]="length"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    [pageIndex]="pageIndex"
+    (page)="pageEvent($event)"
+    aria-label="Select page"
+    showFirstLastButtons
+    ></mat-paginator>
+    <ng-template #loading>Loading…</ng-template>
+</section>
