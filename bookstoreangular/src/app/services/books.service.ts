@@ -12,9 +12,10 @@ export class BooksService {
 
   constructor() { }
 
-  getBooks(index: number, size : number) : Observable<Book[]> {
+  getBooks(index: number, size : number, filter : string) : Observable<Book[]> {
     const params = new HttpParams()
       .set('page', index.toString())
+      .set('titleFilter', filter.toString())
       .set('pageSize', size.toString());
     return this.http.get<Page>('http://localhost:8080/books/all', {params})
       .pipe(map(page => page.content));
