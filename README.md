@@ -13,6 +13,10 @@ Estimated time = 1.2h, Actual time = 1h
 ## JDBC 
 Estimated time = 11.3h, Actual time 10h
 
-##Spring 
+## Spring 
 
-Estimated time = 20.7h
+Estimated time = 20.7h, Actual time = 30h
+
+## Angular 
+
+Estimated time = 31h
