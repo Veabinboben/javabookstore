@@ -9,6 +9,7 @@ import { map, Observable } from 'rxjs';
 })
 export class BooksService {
   private http = inject(HttpClient);
+  private baseUrl = 'http://localhost:8080'
 
   constructor() { }
 
@@ -17,7 +18,16 @@ export class BooksService {
       .set('page', index.toString())
       .set('titleFilter', filter.toString())
       .set('pageSize', size.toString());
-    return this.http.get<Page>('http://localhost:8080/books/all', {params})
+    return this.http.get<Page>(this.baseUrl + '/books/all', {params})
+      .pipe(map(page => page.content));
+  }
+
+  addBook(index: number, size : number, filter : string) : Observable<Book[]> {
+    const params = new HttpParams()
+      .set('page', index.toString())
+      .set('titleFilter', filter.toString())
+      .set('pageSize', size.toString());
+    return this.http.get<Page>(this.baseUrl + '/books/all', {params})
       .pipe(map(page => page.content));
   }
 

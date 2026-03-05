@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-book-form',
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormField],
   templateUrl: './book-form.component.html',
   styleUrl: './book-form.component.css'
 })

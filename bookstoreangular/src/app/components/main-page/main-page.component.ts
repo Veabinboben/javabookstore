@@ -9,7 +9,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-main-page',
-  imports: [BookComponent, NgForOf, CommonModule, MatPaginatorModule, RouterLink, RouterOutlet],
+  imports: [BookComponent, NgForOf, CommonModule, MatPaginatorModule],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.css'
 })
