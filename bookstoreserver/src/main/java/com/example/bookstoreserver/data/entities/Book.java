@@ -32,7 +32,6 @@ public class Book {
 
     @Column(name = "price")
     @NotNull
-    @NotEmpty(message = "Price cannot be empty")
     private Double price;
 
     @Column(name = "cover_link")

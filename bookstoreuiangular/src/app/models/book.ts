@@ -12,3 +12,4 @@ export interface Book {
     genres: Set<Genre>;
     publishers: Set<Publisher>;
 }
+

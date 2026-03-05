@@ -2,10 +2,10 @@ import { Component, inject } from '@angular/core';
 import { BookComponent } from '../book/book.component';
 import { BooksService } from '../../services/books.service';
 import { Book } from '../../models/book';
-import { Observable } from 'rxjs';
+import { filter, Observable, Subscription } from 'rxjs';
 import { CommonModule, NgForOf } from '@angular/common';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-main-page',
@@ -15,6 +15,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 })
 export class MainPageComponent {
   service: BooksService = inject(BooksService);
+  router: Router = inject(Router);
 
   //TODO observable vs behaviourSubject vs Signal vs whatever
   books: Book[] = [];
@@ -26,8 +27,24 @@ export class MainPageComponent {
   pageIndex = 0; 
   filter = "";
 
+  private subscriptions = new Subscription();
+
+
   ngOnInit() {
     this.loadData();
+
+    // Re-fetch when navigating back to this route
+    const routerSub = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.loadData();
+    });
+
+    this.subscriptions.add(routerSub);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   loadData() : void{

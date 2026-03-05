@@ -14,6 +14,7 @@
     <img mat-card-sm-image [src] = "book.coverLink" alt="No image :(">
     <mat-card-content>
         {{book.price}}
+        {{book.publishDate.toDateString()}}
     </mat-card-content>
     </mat-card>
 </p>
