@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { RouterShellComponent } from "./components/router-shell/router-shell.component";
+import { RouterShellComponent } from "./components/router-shell/router-shell";
 
 @Component({
   selector: 'app-root',

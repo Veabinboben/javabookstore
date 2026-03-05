@@ -1,24 +1,24 @@
 import { Component, inject } from '@angular/core';
-import { BookComponent } from '../book/book.component';
-import { BooksService } from '../../services/books.service';
+import { BookComponent } from '../book/book';
+import { BooksService } from '../../services/books-service';
 import { Book } from '../../models/book';
 import { filter, Observable, Subscription } from 'rxjs';
-import { CommonModule, NgForOf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-main-page',
-  imports: [BookComponent, NgForOf, CommonModule, MatPaginatorModule],
-  templateUrl: './main-page.component.html',
-  styleUrl: './main-page.component.css'
+  imports: [BookComponent, CommonModule, MatPaginatorModule],
+  templateUrl: './main-page.html',
+  styleUrl: './main-page.css'
 })
 export class MainPageComponent {
   service: BooksService = inject(BooksService);
   router: Router = inject(Router);
 
   //TODO observable vs behaviourSubject vs Signal vs whatever
-  books: Book[] = [];
+  books$ = this.service.books$;
 
   //TODO update this from aga bubub
   length = 100; 
@@ -48,12 +48,7 @@ export class MainPageComponent {
   }
 
   loadData() : void{
-    this.service.getBooks(this.pageIndex,this.pageSize,this.filter).subscribe(
-      {
-        next: (data) => {this.books = data;},
-        error : (err) => {this.books = [];}
-      },
-    )
+    this.service.getBooks(this.pageIndex,this.pageSize,this.filter);
   }
 
   pageEvent(event: PageEvent) : void {

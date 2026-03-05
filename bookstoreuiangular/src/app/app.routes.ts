@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { MainPageComponent } from './components/main-page/main-page.component';
-import { BookFormComponent } from './components/book-form/book-form.component';
+import { MainPageComponent } from './components/main-page/main-page';
+import { BookFormComponent } from './components/book-form/book-form';
 
 export const routes: Routes = [
     {

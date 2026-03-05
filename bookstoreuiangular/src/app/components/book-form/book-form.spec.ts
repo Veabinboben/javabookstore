@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RouterShellComponent } from './router-shell.component';
+import { BookFormComponent } from './book-form';
 
-describe('RouterShellComponent', () => {
-  let component: RouterShellComponent;
-  let fixture: ComponentFixture<RouterShellComponent>;
+describe('BookFormComponent', () => {
+  let component: BookFormComponent;
+  let fixture: ComponentFixture<BookFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterShellComponent]
+      imports: [BookFormComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RouterShellComponent);
+    fixture = TestBed.createComponent(BookFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BookComponent } from './book.component';
+import { RouterShellComponent } from './router-shell';
 
-describe('BookComponent', () => {
-  let component: BookComponent;
-  let fixture: ComponentFixture<BookComponent>;
+describe('RouterShellComponent', () => {
+  let component: RouterShellComponent;
+  let fixture: ComponentFixture<RouterShellComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BookComponent]
+      imports: [RouterShellComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BookComponent);
+    fixture = TestBed.createComponent(RouterShellComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

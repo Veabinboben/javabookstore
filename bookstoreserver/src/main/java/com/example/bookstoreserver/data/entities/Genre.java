@@ -29,6 +29,14 @@ public class Genre {
     @JsonIgnore
     private Set<Book> books = new HashSet<>();
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return this.name;
     }

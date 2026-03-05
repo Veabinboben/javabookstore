@@ -1,0 +1,59 @@
+<p>hi</p>
+<input type="text" [formField]="bookForm.title" />
+<input type="number" [formField]="bookForm.price" />
+<input type="date" [formField]="bookForm.publishDate" />
+<input type="file" (change)="onFileChange($event)">
+<input matInput
+    placeholder="Authors"
+    [matAutocomplete]="authorsAuto"
+    (input)="onAuthorSearch($any($event.target).value)"
+    [value]="authorSearch()"
+    >
+    
+    <mat-autocomplete #authorsAuto="matAutocomplete"
+    (optionSelected)="onAuthorSelected($event)">
+    @for (author of authors$ | async; track author.id) {
+        <mat-option [value]="author">{{ author.name }}</mat-option>
+    }
+    </mat-autocomplete>
+
+<input matInput
+    placeholder="Genres"
+    [matAutocomplete]="genresAuto"
+    (input)="onGenreSearch($any($event.target).value)"
+    [value]="genreSearch()"
+    >
+
+    <mat-autocomplete #genresAuto="matAutocomplete"
+    (optionSelected)="onGenreSelected($event)">
+    @for (genre of genres$ | async; track genre.id) {
+        <mat-option [value]="genre">{{ genre.name }}</mat-option>
+    }
+    </mat-autocomplete>
+<input matInput
+    placeholder="Publishers"
+    [matAutocomplete]="publishersAuto"
+    (input)="onPublisherSearch($any($event.target).value)"
+    [value]="publisherSearch()"
+    >
+
+    <mat-autocomplete #publishersAuto="matAutocomplete"
+    (optionSelected)="onPublisherSelected($event)">
+    @for (publisher of publishers$ | async; track publisher.id) {
+        <mat-option [value]="publisher">{{ publisher.name }}</mat-option>
+    }
+    </mat-autocomplete>
+
+      <!-- Show selected authors as chips -->
+        <!-- <mat-chip-set>
+        <mat-chip
+            *ngFor="let id of selectedAuthorIds()"
+            (removed)="removeAuthor(id)"
+        >
+            {{ id }}
+            <button matChipRemove>✕</button>
+        </mat-chip>
+        </mat-chip-set> -->
+
+<button [disabled]="!bookForm().valid()" (click)="submitForm()">Submit</button>
+

@@ -4,8 +4,8 @@ import { RouterLink, RouterOutlet } from "@angular/router";
 @Component({
   selector: 'app-router-shell',
   imports: [RouterOutlet,RouterLink],
-  templateUrl: './router-shell.component.html',
-  styleUrl: './router-shell.component.css'
+  templateUrl: './router-shell.html',
+  styleUrl: './router-shell.css'
 })
 export class RouterShellComponent {
 
