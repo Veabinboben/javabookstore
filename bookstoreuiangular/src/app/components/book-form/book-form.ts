@@ -16,6 +16,8 @@ import { Author } from '../../models/author';
 import { Genre } from '../../models/genre';
 import { PublishersService } from '../../services/publishers-service';
 import { Publisher } from '../../models/publisher';
+import { Router } from '@angular/router';
+import { Book } from '../../models/book';
 
 @Component({
   selector: 'app-book-form',
@@ -34,11 +36,11 @@ import { Publisher } from '../../models/publisher';
   styleUrl: './book-form.css'
 })
 export class BookFormComponent {
-
   private booksService   = inject(BooksService);
   private authorsService = inject(AuthorsService);
   private genresService  = inject(GenresService);
   private publishersService  = inject(PublishersService);
+
 
   bookModel = signal<BookForm>({
     id:           null,
@@ -69,6 +71,22 @@ export class BookFormComponent {
   genreSearch = signal('');
   publisherSearch = signal('');
 
+   constructor(private router: Router) {
+    // TODO what to do with photos THONK
+    const navigation = this.router.currentNavigation();
+    if (navigation?.extras.state){
+      const currentBook = navigation?.extras.state['data'] as Book;
+      this.bookForm.id().value.set(currentBook.id);
+      this.bookForm.title().value.set(currentBook.title);
+      this.bookForm.price().value.set(currentBook.price);
+      this.bookForm.publishDate().value.set(currentBook.publishDate);
+      //TODO this prob works wroooooong
+      this.selectedPublishers.set([...currentBook.publishers])
+      this.selectedAuthors.set([...currentBook.authors])
+      this.selectedGenres.set([...currentBook.genres])
+      
+    }
+  }
 
   //TODO add separate component for this prob
   onAuthorSearch(value: string): void {
@@ -141,6 +159,8 @@ export class BookFormComponent {
     const file  = input.files?.[0] ?? null;
     this.bookForm.file().value.set(file);
   }
+
+  //TODO add form init for making edits -_-
 
   submitForm(): void {
     if (this.bookForm().invalid()) return;

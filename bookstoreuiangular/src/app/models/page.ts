@@ -1,6 +1,6 @@
-import { Book } from "./book";
 
-export interface Page {
-    content: Book[];
+
+export interface Page<T> {
+    content: T[];
     size: number;
 }

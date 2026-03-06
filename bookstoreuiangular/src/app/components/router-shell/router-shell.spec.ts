@@ -10,7 +10,7 @@ describe('RouterShellComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterShellComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(RouterShellComponent);
     component = fixture.componentInstance;

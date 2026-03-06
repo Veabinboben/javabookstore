@@ -1,4 +1,4 @@
-<p>hi</p>
+<div>
 <input type="text" [formField]="bookForm.title" />
 <input type="number" [formField]="bookForm.price" />
 <input type="date" [formField]="bookForm.publishDate" />
@@ -44,16 +44,18 @@
     }
     </mat-autocomplete>
 
-      <!-- Show selected authors as chips -->
-        <!-- <mat-chip-set>
+    <!-- Show selected authors as chips -->
+    <mat-chip-set>
+        @for (author of selectedAuthors(); track author.id) {
         <mat-chip
-            *ngFor="let id of selectedAuthorIds()"
-            (removed)="removeAuthor(id)"
-        >
-            {{ id }}
-            <button matChipRemove>✕</button>
-        </mat-chip>
-        </mat-chip-set> -->
+        (removed)="removeAuthor(author)">
+        {{ author.name }}
+        <button matChipRemove>✕</button>
+    </mat-chip>            
+    }
+    
+    </mat-chip-set>
 
 <button [disabled]="!bookForm().valid()" (click)="submitForm()">Submit</button>
+</div>
 

@@ -6,10 +6,11 @@ import { filter, Observable, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-main-page',
-  imports: [BookComponent, CommonModule, MatPaginatorModule],
+  imports: [BookComponent, CommonModule, MatPaginatorModule, MatButton],
   templateUrl: './main-page.html',
   styleUrl: './main-page.css'
 })

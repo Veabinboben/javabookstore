@@ -5,6 +5,8 @@ import { Page } from '../models/page';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { BookForm } from '../models/book-form';
 
+//TODO make separate layer for business logic and state (maybe)
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,6 +16,10 @@ export class BooksService {
   private booksSubject = new BehaviorSubject<Book[]>([]);
   books$ = this.booksSubject.asObservable();
 
+  //This may be a cringo gringo lmao
+  private bookByIdSubject = new BehaviorSubject<Book | null>(null);
+  book$ = this.bookByIdSubject.asObservable();
+
   constructor() { }
 
   getBooks(index: number, size : number, filter : string) {
@@ -21,7 +27,7 @@ export class BooksService {
       .set('page', index.toString())
       .set('titleFilter', filter.toString())
       .set('pageSize', size.toString());
-    return this.http.get<Page>('/books/all', {params})
+    return this.http.get<Page<Book>>('/books/all', {params})
       .pipe(map(page => page.content.map(book =>{
         book.publishDate = new Date(book.publishDate)
         return book;
@@ -35,6 +41,29 @@ export class BooksService {
           //this.loadingSubject.next(false);
         }
       });
+  }
+
+  getBookById(id: number) {
+    const params = new HttpParams()
+      .set('id', id.toString());
+    return this.http.get<Book>('/books/getById', {params})
+      .pipe(map(book => {
+        book.publishDate = new Date(book.publishDate);
+        return book;
+      })).subscribe({
+        next: (book) => {
+          this.bookByIdSubject.next(book);  // ← push new state
+          //this.loadingSubject.next(false);
+        },
+        error: () => {
+          this.bookByIdSubject.next(null);
+          //this.loadingSubject.next(false);
+        }
+      });
+  }
+
+  cleanBook(){
+    this.bookByIdSubject.next(null);
   }
 
   addBook(form : BookForm) : Observable<Book>  {

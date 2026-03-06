@@ -1,0 +1,16 @@
+<p>review-form works!</p>
+<input type="text" [formField]="reviewForm.contents" />
+<input type="number" [formField]="reviewForm.rating" />
+<input matInput
+    placeholder="Authors"
+    [matAutocomplete]="authorsAuto"
+    (input)="onAuthorSearch($any($event.target).value)"
+    [value]="authorSearch()"
+    >
+    
+    <mat-autocomplete #authorsAuto="matAutocomplete"
+    (optionSelected)="onAuthorSelected($event)">
+    @for (author of authors$ | async; track author.id) {
+        <mat-option [value]="author">{{ author.name }}</mat-option>
+    }
+    </mat-autocomplete>
