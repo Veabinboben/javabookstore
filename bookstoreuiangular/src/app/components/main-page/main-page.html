@@ -26,7 +26,6 @@
         <mat-paginator
         [length]="books.totalElements"
         [pageSize]="books.size"
-        [pageSizeOptions]="pageSizeOptions"
         [pageIndex]="pageIndex"
         (page)="pageEvent($event)"
         aria-label="Select page"
