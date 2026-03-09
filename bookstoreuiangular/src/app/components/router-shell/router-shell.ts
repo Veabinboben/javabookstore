@@ -6,10 +6,10 @@ import { RouterLink, RouterOutlet } from "@angular/router";
 
 @Component({
   selector: 'app-router-shell',
-  imports: [RouterOutlet,RouterLink,MatToolbarModule, MatButtonModule, MatIconModule],
+  imports: [RouterOutlet, RouterLink, MatToolbarModule, MatButtonModule, MatIconModule],
   templateUrl: './router-shell.html',
   styleUrl: './router-shell.css'
 })
 export class RouterShellComponent {
-  
+
 }

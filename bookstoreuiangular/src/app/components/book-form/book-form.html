@@ -1,93 +1,74 @@
-<div class = "book-form-container">
-     <form class="book-form">
-<label >Title</label>
-<input type="text" [formField]="bookForm.title" />
-<label >Price</label>
-<input type="number" [formField]="bookForm.price" />
-<label >Date</label>
-<input type="date" [formField]="bookForm.publishDate" />
-<label >Cover image</label>
-<input type="file" (change)="onFileChange($event)">
-<input matInput
-    placeholder="Authors"
-    [matAutocomplete]="authorsAuto"
-    (input)="onAuthorSearch($any($event.target).value)"
-    [value]="authorSearch()"
-    >
-    
-    <mat-autocomplete #authorsAuto="matAutocomplete"
-    (optionSelected)="onAuthorSelected($event)">
-    @for (author of authors$ | async; track author.id) {
-        <mat-option [value]="author">{{ author.name }}</mat-option>
-    }
-    </mat-autocomplete>
-     <div class="chip-row">
-    <mat-chip-set>
-        @for (author of selectedAuthors(); track author.id) {
-        <mat-chip
-        (removed)="removeAuthor(author)">
-        {{ author.name }}
-        <button matChipRemove >✕</button>
-    </mat-chip>            
-    }
-    
-    </mat-chip-set>
-    </div>
-<input matInput
-    placeholder="Genres"
-    [matAutocomplete]="genresAuto"
-    (input)="onGenreSearch($any($event.target).value)"
-    [value]="genreSearch()"
-    >
+<div class="book-form-container">
+    <form class="book-form">
+        <label for="title">Title</label>
+        <input type="text" id="title" [formField]="bookForm.title" />
+        <label for="price">Price</label>
+        <input type="number" id="price" [formField]="bookForm.price" />
+        <label for="date">Date</label>
+        <input type="date" id="date" [formField]="bookForm.publishDate" />
+        <label for="image">Cover image</label>
+        <input type="file" id="image" (change)="onFileChange($event)">
+        <input matInput placeholder="Authors" [matAutocomplete]="authorsAuto"
+            (input)="onAuthorSearch($any($event.target).value)" [value]="authorSearch()">
 
-    <mat-autocomplete #genresAuto="matAutocomplete"
-    (optionSelected)="onGenreSelected($event)">
-    @for (genre of genres$ | async; track genre.id) {
-        <mat-option [value]="genre">{{ genre.name }}</mat-option>
-    }
-    </mat-autocomplete>
+        <mat-autocomplete #authorsAuto="matAutocomplete" (optionSelected)="onAuthorSelected($event)">
+            @for (author of authors$ | async; track author.id) {
+            <mat-option [value]="author">{{ author.name }} {{ author.middleName }} {{ author.surname }}</mat-option>
+            }
+        </mat-autocomplete>
+        <div class="chip-row">
+            <mat-chip-set>
+                @for (author of selectedAuthors(); track author.id) {
+                <mat-chip (removed)="removeAuthor(author)">
+                    {{ author.name }} {{ author.middleName }} {{ author.surname }}
+                    <button matChipRemove>✕</button>
+                </mat-chip>
+                }
 
-     <div class="chip-row">
-    <mat-chip-set>
-        @for (genre of selectedGenres(); track genre.id) {
-        <mat-chip
-        (removed)="removeGenre(genre)">
-        {{ genre.name }}
-        <button matChipRemove >✕</button>
-    </mat-chip>            
-    }
-    
-    </mat-chip-set>
-    </div>
-<input matInput
-    placeholder="Publishers"
-    [matAutocomplete]="publishersAuto"
-    (input)="onPublisherSearch($any($event.target).value)"
-    [value]="publisherSearch()"
-    >
+            </mat-chip-set>
+        </div>
+        <input matInput placeholder="Genres" [matAutocomplete]="genresAuto"
+            (input)="onGenreSearch($any($event.target).value)" [value]="genreSearch()">
 
-    <mat-autocomplete #publishersAuto="matAutocomplete"
-    (optionSelected)="onPublisherSelected($event)">
-    @for (publisher of publishers$ | async; track publisher.id) {
-        <mat-option [value]="publisher">{{ publisher.name }}</mat-option>
-    }
-    </mat-autocomplete>
+        <mat-autocomplete #genresAuto="matAutocomplete" (optionSelected)="onGenreSelected($event)">
+            @for (genre of genres$ | async; track genre.id) {
+            <mat-option [value]="genre">{{ genre.name }}</mat-option>
+            }
+        </mat-autocomplete>
 
-     <div class="chip-row">
-    <mat-chip-set>
-        @for (publisher of selectedPublishers(); track publisher.id) {
-        <mat-chip
-        (removed)="removePublisher(publisher)">
-        {{ publisher.name }}
-        <button matChipRemove >✕</button>
-    </mat-chip>            
-    }
-    
-    </mat-chip-set>
-    </div>
+        <div class="chip-row">
+            <mat-chip-set>
+                @for (genre of selectedGenres(); track genre.id) {
+                <mat-chip (removed)="removeGenre(genre)">
+                    {{ genre.name }}
+                    <button matChipRemove>✕</button>
+                </mat-chip>
+                }
 
-<button type="button" [disabled]="!bookForm().valid()" (click)="submitForm()">Submit</button>
-  </form>
+            </mat-chip-set>
+        </div>
+        <input matInput placeholder="Publishers" [matAutocomplete]="publishersAuto"
+            (input)="onPublisherSearch($any($event.target).value)" [value]="publisherSearch()">
+
+        <mat-autocomplete #publishersAuto="matAutocomplete" (optionSelected)="onPublisherSelected($event)">
+            @for (publisher of publishers$ | async; track publisher.id) {
+            <mat-option [value]="publisher">{{ publisher.name }}</mat-option>
+            }
+        </mat-autocomplete>
+
+        <div class="chip-row">
+            <mat-chip-set>
+                @for (publisher of selectedPublishers(); track publisher.id) {
+                <mat-chip (removed)="removePublisher(publisher)">
+                    {{ publisher.name }}
+                    <button matChipRemove>✕</button>
+                </mat-chip>
+                }
+
+            </mat-chip-set>
+        </div>
+
+        <button type="button" [disabled]="!bookForm().valid()" (click)="submitForm()">Submit</button>
+    </form>
 
 </div>
-

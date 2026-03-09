@@ -1,36 +1,21 @@
-<!-- <button (click)="service.g()">Add more data</button> -->
 <section>
-    <!-- <nav>
-        <a routerLink="form">Settings</a>
-    </nav> -->
-    <!-- <router-outlet /> -->
-
-    <input class = "rounded-input" type="text" placeholder="Title filter" #filter>
+    <input class="rounded-input" type="text" placeholder="Title filter" #filter>
     <button class="primary" (click)="filterResults(filter.value)">Search</button>
-  
-        
-        @if (books$ | async; as books) {
-                              <div class="books-grid">
 
-            @for (book of books.content; track book.id) {
-            <app-book
-                [book] = "book"
-            ></app-book>
 
-            } @empty {
-                <!-- TODO add loader -->
-                <li>There are no items.</li>
-            }
-                            </div>
+    @if (books$ | async; as books) {
+    <div class="books-grid">
 
-        <mat-paginator
-        [length]="books.totalElements"
-        [pageSize]="books.size"
-        [pageIndex]="pageIndex"
-        (page)="pageEvent($event)"
-        aria-label="Select page"
-        showFirstLastButtons
-        ></mat-paginator>
-        <ng-template #loading>Loading…</ng-template>
+        @for (book of books.content; track book.id) {
+        <app-book [book]="book"></app-book>
+
+        } @empty {
+        <p>There are no items.</p>
+        }
+    </div>
+
+    <mat-paginator [length]="books.totalElements" [pageSize]="books.size" [pageIndex]="pageIndex"
+        (page)="pageEvent($event)" aria-label="Select page" showFirstLastButtons></mat-paginator>
+    <ng-template #loading>Loading…</ng-template>
     }
 </section>

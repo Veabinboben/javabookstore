@@ -3,7 +3,7 @@ import { Genre } from "./genre";
 import { Publisher } from "./publisher";
 
 export interface Book {
-    id : number;
+    id: number;
     title: string;
     publishDate: Date;
     price: number;

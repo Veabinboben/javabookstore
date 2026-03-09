@@ -1,37 +1,35 @@
 <p>
-    <!-- //TODO replace back -->
-    <!-- <mat-card class="example-card" appearance="outlined" (click)="goToBookToEdit(book)"> -->
     <mat-card class="example-card" appearance="outlined" (click)="goToBook(book.id)">
-    <mat-card-header>
-        <mat-card-title-group>
-            <mat-card-title>
-                <div class="title">
-                    {{book.title}}
-                </div>
-            </mat-card-title>
-            <mat-card-subtitle>
-                
-                @for (author of book.authors; track author.id;let last = $last; let first = $first) {
+        <mat-card-header>
+            <mat-card-title-group>
+                <mat-card-title>
+                    <div class="title">
+                        {{book.title}}
+                    </div>
+                </mat-card-title>
+                <mat-card-subtitle>
+
+                    @for (author of book.authors; track author.id;let last = $last; let first = $first) {
                     @if (first) {
-                     <span>by</span>
+                    <span>by</span>
                     }
                     {{author.name}} {{author.surname}}
                     @if (!last) {
-                     <span>, </span>
+                    <span>, </span>
                     }
-                    
-                } @empty {
-                    <!-- TODO add loader -->
-                    <!-- <li>There are no items.</li> -->
-                }
-                
-            </mat-card-subtitle>
-        </mat-card-title-group>
-    </mat-card-header>
-    <img mat-card-sm-image [src] = "book.coverLink" alt="No image :(", (error)="book.coverLink='placeholder.jpg';">
-    <mat-card-content>
-        Price : {{book.price}}$ <br>
-        Publish Date: {{book.publishDate.getDate()}}.{{book.publishDate.getMonth()}}.{{book.publishDate.getFullYear()}}
-    </mat-card-content>
+
+                    } @empty {
+                    <p>No Authors</p>
+                    }
+
+                </mat-card-subtitle>
+            </mat-card-title-group>
+        </mat-card-header>
+        <img mat-card-sm-image [src]="book.coverLink" alt="No image :(" , (error)="book.coverLink='placeholder.jpg';">
+        <mat-card-content>
+            Price : {{book.price}}$ <br>
+            Publish Date:
+            {{book.publishDate.getDate()}}.{{book.publishDate.getMonth()}}.{{book.publishDate.getFullYear()}}
+        </mat-card-content>
     </mat-card>
 </p>

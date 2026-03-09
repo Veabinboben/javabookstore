@@ -1,11 +1,11 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { BooksService } from '../../services/books-service';
 import { AuthorsService } from '../../services/authors-service';
 import { ReviewsService } from '../../services/reviews-service';
 import { ReviewForm } from '../../models/review-from';
 import { form, FormField, required } from '@angular/forms/signals';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Author } from '../../models/author';
 import { AsyncPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,7 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-review-form',
-  imports: [FormField, AsyncPipe,MatInputModule,
+  imports: [FormField, AsyncPipe, MatInputModule,
     MatAutocompleteModule,
     MatChipsModule,
     MatIconModule,
@@ -25,14 +25,14 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './review-form.html',
   styleUrl: './review-form.css',
 })
-export class ReviewFormComponent {
-  private booksService   = inject(BooksService);
+export class ReviewFormComponent implements OnInit, OnDestroy {
+  private booksService = inject(BooksService);
   private authorsService = inject(AuthorsService);
-  private reviewsService  = inject(ReviewsService);
+  private reviewsService = inject(ReviewsService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  id : number = Number(this.route.snapshot.paramMap.get('id') ?? -1);
+  id: number = Number(this.route.snapshot.paramMap.get('id') ?? -1);
   book$ = this.booksService.book$;
 
 
@@ -43,14 +43,13 @@ export class ReviewFormComponent {
     bookId: null,
   });
 
-  authors$        = this.authorsService.authors$;
+  authors$ = this.authorsService.authors$;
   selectedAuthor = signal<Author | null>(null);
   selectedAuthorId = computed(() => this.selectedAuthor()?.id ?? null);
 
-  reviewForm = form(this.reviewModel,(schemaPath) => {
-    required(schemaPath.contents, {message: 'Contents is required'});
-    required(schemaPath.authorId, {message: 'Author is required'});
-    //email(schemaPath.email, {message: 'Enter a valid email address'});
+  reviewForm = form(this.reviewModel, (schemaPath) => {
+    required(schemaPath.contents, { message: 'Contents is required' });
+    required(schemaPath.authorId, { message: 'Author is required' });
   });
 
   authorSearch = signal('');
@@ -64,9 +63,8 @@ export class ReviewFormComponent {
     this.booksService.cleanBook();
   }
 
-  loadBook(){
+  loadBook() {
     this.booksService.getBookById(this.id);
-    //TODO add check for not null
     this.reviewForm.bookId().value.set(this.id);
   }
 
@@ -78,10 +76,8 @@ export class ReviewFormComponent {
   onAuthorSelected(event: MatAutocompleteSelectedEvent): void {
     const author: Author = event.option.value;
 
-
     this.selectedAuthor.set(author);
     this.reviewForm.authorId().value.set(author.id);
-    
 
     this.authorSearch.set('');
   }
@@ -93,13 +89,12 @@ export class ReviewFormComponent {
 
   submitForm(): void {
     if (this.reviewForm().invalid()) return;
-    //TODO add retunr to othe page sheesh and aga ugug ,lyat form validation
     this.reviewsService.addReview(this.reviewModel()).subscribe({
-      next:  (data) => {
+      next: (data) => {
         console.log('Saved:', data);
-        this.router.navigate(['/book', this.id], );
+        this.router.navigate(['/book', this.id],);
       },
-      error: (err)  => console.error('Error:', err),
+      error: (err) => console.error('Error:', err),
     });
   }
 

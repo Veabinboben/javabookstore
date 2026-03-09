@@ -7,25 +7,23 @@ import { Genre } from '../models/genre';
   providedIn: 'root',
 })
 export class GenresService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   private genresSubject = new BehaviorSubject<Genre[]>([]);
   genres$ = this.genresSubject.asObservable();
 
   constructor() { }
 
-  getGenres(filter : string) {
+  getGenres(filter: string) {
     const params = new HttpParams()
       .set('nameFilter', filter.toString())
-    return this.http.get<Genre[]>('/genres/all', {params})
+    return this.http.get<Genre[]>('/genres/all', { params })
       .subscribe({
         next: (genres) => {
-          this.genresSubject.next(genres);  
-          //this.loadingSubject.next(false);
+          this.genresSubject.next(genres);
         },
         error: () => {
           this.genresSubject.next([]);
-          //this.loadingSubject.next(false);
         }
       });
   }

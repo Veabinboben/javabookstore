@@ -9,8 +9,7 @@ import { ReviewForm } from '../models/review-from';
   providedIn: 'root',
 })
 export class ReviewsService {
-
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   private reviewsByBookSubject = new BehaviorSubject<Review[]>([]);
   reviewsByBook$ = this.reviewsByBookSubject.asObservable();
@@ -24,16 +23,13 @@ export class ReviewsService {
       .set('pageSize', size.toString());
     return this.http.get<Page<Review>>('/reviews/all', {params})
       .pipe(map(page => page.content.map(review =>{
-        //review.publishDate = new Date(book.publishDate)
         return review;
       }))).subscribe({
         next: (reviews) => {
-          this.reviewsByBookSubject.next(reviews);  // ← push new state
-          //this.loadingSubject.next(false);
+          this.reviewsByBookSubject.next(reviews);  
         },
         error: () => {
           this.reviewsByBookSubject.next([]);
-          //this.loadingSubject.next(false);
         }
       });
   }
@@ -45,16 +41,14 @@ export class ReviewsService {
       .set('pageSize', size.toString());
     return this.http.get<Page<Review>>('/reviews/all', {params})
       .pipe(map(page => page.content.map(review =>{
-        //review.publishDate = new Date(book.publishDate)
         return review;
       }))).subscribe({
         next: (reviews) => {
           const current = this.reviewsByBookSubject.getValue() || [];
-          this.reviewsByBookSubject.next([...current, ...reviews]);          //this.loadingSubject.next(false);
+          this.reviewsByBookSubject.next([...current, ...reviews]);          
         },
         error: () => {
           this.reviewsByBookSubject.next([]);
-          //this.loadingSubject.next(false);
         }
       });
   }
@@ -63,11 +57,9 @@ export class ReviewsService {
     this.reviewsByBookSubject.next([]);
   }
 
-  //TODO why observable
   addReview(form : ReviewForm) : Observable<Review>  {
     const formData = new FormData();
 
-    //TODO null checl
     formData.append('contents', form.contents);
     formData.append('rating', form.rating.toString());
     formData.append('authorId', form.authorId!.toString());

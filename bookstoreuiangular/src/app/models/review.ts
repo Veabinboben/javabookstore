@@ -1,7 +1,7 @@
 import { Author } from "./author";
 import { Book } from "./book";
 
-export interface Review{
+export interface Review {
     id: number;
     contents: string;
     rating: number;

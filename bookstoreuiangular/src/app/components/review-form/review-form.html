@@ -1,25 +1,20 @@
 <div class="form-container">
     <form>
-<label>Content</label>
-<input type="text" [formField]="reviewForm.contents" />
-<label>Rating</label>
-<input type="number" [formField]="reviewForm.rating" />
+        <label for ="contents">Content</label>
+        <input type="text" id ="contents" [formField]="reviewForm.contents" />
+        <label for ="rating">Rating</label>
+        <input type="number" id ="rating" [formField]="reviewForm.rating" />
 
-<input matInput
-    placeholder="Author"
-    [matAutocomplete]="authorsAuto"
-    (input)="onAuthorSearch($any($event.target).value)"
-    [value]="authorSearch()"
-    >
-    
-    <mat-autocomplete #authorsAuto="matAutocomplete"
-    (optionSelected)="onAuthorSelected($event)">
-    @for (author of authors$ | async; track author.id) {
-        <mat-option [value]="author">{{ author.name }}</mat-option>
-    }
-    </mat-autocomplete>
+        <input matInput placeholder="Author" [matAutocomplete]="authorsAuto"
+            (input)="onAuthorSearch($any($event.target).value)" [value]="authorSearch()">
 
-<button type="button" [disabled]="!reviewForm().valid()" (click)="submitForm()">Submit</button>
-</form>
+        <mat-autocomplete #authorsAuto="matAutocomplete" (optionSelected)="onAuthorSelected($event)">
+            @for (author of authors$ | async; track author.id) {
+            <mat-option [value]="author">{{ author.name }}</mat-option>
+            }
+        </mat-autocomplete>
+
+        <button type="button" [disabled]="!reviewForm().valid()" (click)="submitForm()">Submit</button>
+    </form>
 
 </div>

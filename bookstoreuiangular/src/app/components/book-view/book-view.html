@@ -1,49 +1,61 @@
-
+<div>
     @if (id != null){
-    
     @if (book$ | async; as book) {
-        <button type="button" (click)="goToBookToEdit(book)">Edit book</button>
-        <button type="button" (click)="deleteBook()">Delete book</button>
-        <div class = "row">
-            <div class="book-view-container">
-                <app-book [book] = "book"
-                ></app-book>
-            </div>
-            <div class ="column">
-                <!-- TODO check if none -->
-                <button class="primary" matButton="tonal" (click)="addStock()">Add stock</button>
-                
-                @for (stock of stocks$ | async; track stock.id) {
-                    <mat-card class="example-card" appearance="outlined">
+    <button type="button" (click)="goToBookToEdit(book)">Edit book</button>
+    <button type="button" (click)="deleteBook()">Delete book</button>
+    <div class="row">
+        <div class="book-view-container">
+            <app-book [book]="book"></app-book>
+            <div class="row">
+                @for (genre of book.genres; track genre.id) {
+                <mat-card class="example-card" appearance="outlined">
                     <mat-card-content>
-                        {{stock.warehouse.city.name}}, {{stock.warehouse.adress}} : {{stock.ammount}}                    </mat-card-content>
-                    </mat-card>
+                        {{genre.name}}
+                    </mat-card-content>
+                </mat-card>
+                }
+            </div>
+            <div class="row">
+                @for (publisher of book.publishers; track publisher.id) {
+                <mat-card class="example-card" appearance="outlined">
+                    <mat-card-content>
+                        {{publisher.name}}
+                    </mat-card-content>
+                </mat-card>
                 }
             </div>
         </div>
-        <button class="primary" matButton="tonal" (click)="addReview()">Add reviws</button> 
-            @for (review of reviews$ | async; track review.id ; let last = $last) {
-                <mat-card class="example-card" appearance="outlined">
-                <mat-card-header>
-                    <mat-card-title-group>
-                        <mat-card-title>{{review.author.name}}</mat-card-title>
-                        <mat-card-subtitle>{{review.rating}}/10</mat-card-subtitle>
-                    </mat-card-title-group>
-                </mat-card-header>
+        <div class="column">
+            <button class="primary" matButton="tonal" (click)="addStock()">Add stock</button>
+
+            @for (stock of stocks$ | async; track stock.id) {
+            <mat-card class="example-card" appearance="outlined">
                 <mat-card-content>
-                    {{review.contents}}
-                </mat-card-content>
-                </mat-card>
-                @if (last){
-                    
-                }
-            } 
-    
+                    {{stock.warehouse.city.name}}, {{stock.warehouse.adress}} : {{stock.ammount}} </mat-card-content>
+            </mat-card>
+            }
+        </div>
+    </div>
+
+    <button class="primary" matButton="tonal" (click)="addReview()">Add reviws</button>
+    @for (review of reviews$ | async; track review.id ; let last = $last) {
+    <mat-card class="example-card" appearance="outlined">
+        <mat-card-header>
+            <mat-card-title-group>
+                <mat-card-title>{{review.author.name}}</mat-card-title>
+                <mat-card-subtitle>{{review.rating}}/10</mat-card-subtitle>
+            </mat-card-title-group>
+        </mat-card-header>
+        <mat-card-content>
+            {{review.contents}}
+        </mat-card-content>
+    </mat-card>
+    }
     }
     } @else {
-        <!-- TODO -->
-        <p>No content</p>
+    <p>No content</p>
     }
 
 
-<div #anchor class="anchor" aria-hidden="true"></div>
+    <div #anchor class="anchor" aria-hidden="true"></div>
+</div>

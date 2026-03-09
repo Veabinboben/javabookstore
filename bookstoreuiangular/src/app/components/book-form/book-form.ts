@@ -18,7 +18,6 @@ import { PublishersService } from '../../services/publishers-service';
 import { Publisher } from '../../models/publisher';
 import { Router } from '@angular/router';
 import { Book } from '../../models/book';
-import { Validators } from '@angular/forms';
 
 
 @Component({
@@ -38,39 +37,38 @@ import { Validators } from '@angular/forms';
   styleUrl: './book-form.css'
 })
 export class BookFormComponent {
-  private booksService   = inject(BooksService);
-  private authorsService = inject(AuthorsService);
-  private genresService  = inject(GenresService);
-  private publishersService  = inject(PublishersService);
+  private readonly booksService = inject(BooksService);
+  private readonly authorsService = inject(AuthorsService);
+  private readonly genresService = inject(GenresService);
+  private readonly publishersService = inject(PublishersService);
 
 
   bookModel = signal<BookForm>({
-    id:           null,
-    title:        '',
-    publishDate:  new Date(),
-    price:        100,
-    file:         null,
-    authorIds:    [],
-    genreIds:     [],
+    id: null,
+    title: '',
+    publishDate: new Date(),
+    price: 100,
+    file: null,
+    authorIds: [],
+    genreIds: [],
     publisherIds: [],
   });
 
   bookForm = form(this.bookModel, (schemaPath) => {
-    required(schemaPath.title, {message: 'Title is required'});
-    required(schemaPath.price, {message: 'Price is required'});
-    required(schemaPath.publishDate, {message: 'Publish date is required'});
-    //email(schemaPath.email, {message: 'Enter a valid email address'});
+    required(schemaPath.title, { message: 'Title is required' });
+    required(schemaPath.price, { message: 'Price is required' });
+    required(schemaPath.publishDate, { message: 'Publish date is required' });
   });
 
-  authors$        = this.authorsService.authors$;
+  authors$ = this.authorsService.authors$;
   selectedAuthors = signal<Author[]>([]);
   selectedAuthorIds = computed(() => this.selectedAuthors().map(a => a.id));
-  
-  genres$        = this.genresService.genres$;
+
+  genres$ = this.genresService.genres$;
   selectedGenres = signal<Genre[]>([]);
   selectedGenreIds = computed(() => this.selectedGenres().map(a => a.id));
 
-  publishers$        = this.publishersService.publishers$;
+  publishers$ = this.publishersService.publishers$;
   selectedPublishers = signal<Publisher[]>([]);
   selectedPublishersIds = computed(() => this.selectedPublishers().map(a => a.id));
 
@@ -78,24 +76,21 @@ export class BookFormComponent {
   genreSearch = signal('');
   publisherSearch = signal('');
 
-   constructor(private router: Router) {
-    // TODO what to do with photos THONK
+  constructor(private router: Router) {
     const navigation = this.router.currentNavigation();
-    if (navigation?.extras.state){
+    if (navigation?.extras.state) {
       const currentBook = navigation?.extras.state['data'] as Book;
       this.bookForm.id().value.set(currentBook.id);
       this.bookForm.title().value.set(currentBook.title);
       this.bookForm.price().value.set(currentBook.price);
       this.bookForm.publishDate().value.set(currentBook.publishDate);
-      //TODO this prob works wroooooong
       this.selectedPublishers.set([...currentBook.publishers])
       this.selectedAuthors.set([...currentBook.authors])
       this.selectedGenres.set([...currentBook.genres])
-      
+
     }
   }
 
-  //TODO add separate component for this prob
   onAuthorSearch(value: string): void {
     this.authorSearch.set(value);
     this.authorsService.getAuthors(value);
@@ -120,7 +115,6 @@ export class BookFormComponent {
   onGenreSearch(value: string): void {
     this.genreSearch.set(value);
     this.genresService.getGenres(value);
-    //console.log(this.genres$)
   }
 
   onGenreSelected(event: MatAutocompleteSelectedEvent): void {
@@ -142,7 +136,6 @@ export class BookFormComponent {
   onPublisherSearch(value: string): void {
     this.publisherSearch.set(value);
     this.publishersService.getPublishers(value);
-    //console.log(this.genres$)
   }
 
   onPublisherSelected(event: MatAutocompleteSelectedEvent): void {
@@ -163,21 +156,20 @@ export class BookFormComponent {
 
   onFileChange(ev: Event): void {
     const input = ev.target as HTMLInputElement;
-    const file  = input.files?.[0] ?? null;
+    const file = input.files?.[0] ?? null;
     this.bookForm.file().value.set(file);
   }
 
-  //TODO add form init for making edits -_-
 
   submitForm(): void {
     if (this.bookForm().invalid()) return;
     this.booksService.addBook(this.bookModel()).subscribe({
-      next:  (data) => {
+      next: (data) => {
         console.log('Saved:', data)
-        this.router.navigate(['/book', data.id], );
+        this.router.navigate(['/book', data.id],);
 
       },
-      error: (err)  => console.error('Error:', err),
+      error: (err) => console.error('Error:', err),
     });
   }
 }

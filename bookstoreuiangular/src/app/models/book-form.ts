@@ -1,5 +1,5 @@
 export interface BookForm {
-    id : number | null;
+    id: number | null;
     title: string;
     publishDate: Date;
     price: number;

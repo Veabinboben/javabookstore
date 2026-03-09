@@ -7,26 +7,24 @@ import { HttpClient, HttpParams } from '@angular/common/http';
   providedIn: 'root',
 })
 export class AuthorsService {
-    private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
-    private authorsSubject = new BehaviorSubject<Author[]>([]);
-    authors$ = this.authorsSubject.asObservable();
-  
-    constructor() { }
-  
-    getAuthors(filter : string) {
-      const params = new HttpParams()
-        .set('nameFilter', filter.toString())
-      return this.http.get<Author[]>('/authors/all', {params})
-        .subscribe({
-          next: (authors) => {
-            this.authorsSubject.next(authors);  
-            //this.loadingSubject.next(false);
-          },
-          error: () => {
-            this.authorsSubject.next([]);
-            //this.loadingSubject.next(false);
-          }
-        });
-    }
+  private authorsSubject = new BehaviorSubject<Author[]>([]);
+  authors$ = this.authorsSubject.asObservable();
+
+  constructor() { }
+
+  getAuthors(filter: string) {
+    const params = new HttpParams()
+      .set('nameFilter', filter.toString())
+    return this.http.get<Author[]>('/authors/all', { params })
+      .subscribe({
+        next: (authors) => {
+          this.authorsSubject.next(authors);
+        },
+        error: () => {
+          this.authorsSubject.next([]);
+        }
+      });
+  }
 }

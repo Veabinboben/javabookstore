@@ -7,7 +7,7 @@ import { Publisher } from '../models/publisher';
   providedIn: 'root',
 })
 export class PublishersService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   private publishersSubject = new BehaviorSubject<Publisher[]>([]);
   publishers$ = this.publishersSubject.asObservable();
@@ -21,11 +21,9 @@ export class PublishersService {
       .subscribe({
         next: (publishers) => {
           this.publishersSubject.next(publishers);  
-          //this.loadingSubject.next(false);
         },
         error: () => {
           this.publishersSubject.next([]);
-          //this.loadingSubject.next(false);
         }
       });
   }

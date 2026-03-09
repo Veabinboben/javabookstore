@@ -1,21 +1,16 @@
-<div class = "form-container">
+<div class="form-container">
     <form>
-<label >Ammount</label>
-<input type="number" [formField]="stockForm.stock" />
-<input matInput
-    placeholder="Warehouses"
-    [matAutocomplete]="WarehousesAuto"
-    (input)="onWarehouseSearch($any($event.target).value)"
-    [value]="warehouseSearch()"
-    >
-    
-    <mat-autocomplete #WarehousesAuto="matAutocomplete"
-    (optionSelected)="onWarehouseSelected($event)">
-    @for (warehouse of warehouses$ | async; track warehouse.id) {
-        <mat-option [value]="warehouse">{{ warehouse.adress }}</mat-option>
-    }
-    </mat-autocomplete>
+        <label for="stock">Ammount</label>
+        <input type="number" id="stock" [formField]="stockForm.stock" />
+        <input matInput placeholder="Warehouses" [matAutocomplete]="WarehousesAuto"
+            (input)="onWarehouseSearch($any($event.target).value)" [value]="warehouseSearch()">
 
-<button [disabled]="!stockForm().valid()" (click)="submitForm()">Submit</button>
-</form>
+        <mat-autocomplete #WarehousesAuto="matAutocomplete" (optionSelected)="onWarehouseSelected($event)">
+            @for (warehouse of warehouses$ | async; track warehouse.id) {
+            <mat-option [value]="warehouse">{{ warehouse.adress }}</mat-option>
+            }
+        </mat-autocomplete>
+
+        <button [disabled]="!stockForm().valid()" (click)="submitForm()">Submit</button>
+    </form>
 </div>
