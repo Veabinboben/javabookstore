@@ -15,8 +15,9 @@ jobs:
           with:
             fetch-depth: 0  
         - name: SonarQube Scan
-          working-directory: ./bookstoreuiangular
           uses: SonarSource/sonarqube-scan-action@v6
+          with:
+            projectBaseDir: ./bookstoreuiangular
           env:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   build:
