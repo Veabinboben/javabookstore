@@ -14,3 +14,5 @@
         <mat-option [value]="author">{{ author.name }}</mat-option>
     }
     </mat-autocomplete>
+
+<button [disabled]="!reviewForm().valid()" (click)="submitForm()">Submit</button>

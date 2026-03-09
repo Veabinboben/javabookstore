@@ -38,6 +38,11 @@ export class ReviewsService {
       });
   }
 
+  cleanReviews(){
+    this.reviewsByBookSubject.next([]);
+  }
+
+  //TODO why observable
   addReview(form : ReviewForm) : Observable<Review>  {
     const formData = new FormData();
 

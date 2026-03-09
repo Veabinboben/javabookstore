@@ -6,3 +6,17 @@
     margin-right: auto;
     width: 50%;
 }
+
+.row {
+    display: grid;
+    grid-template-columns: 5fr 1fr; /* Creates three equal-width columns */
+    grid-template-rows: auto auto; /* Automatically size two rows based on content */
+    gap: 10px; /* Adds space between items */
+}
+
+.example-card {
+    padding: 10px;
+    margin: 10px;
+    /* max-width: 400px; */
+    /* max-height: 800px; */
+}

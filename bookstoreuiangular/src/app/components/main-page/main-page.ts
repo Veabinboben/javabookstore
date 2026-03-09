@@ -35,6 +35,7 @@ export class MainPageComponent {
     this.loadData();
 
     // Re-fetch when navigating back to this route
+    //TODO make so it returns to correct page (add page in route params)
     const routerSub = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {

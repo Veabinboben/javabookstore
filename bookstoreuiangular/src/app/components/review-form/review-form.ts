@@ -5,12 +5,23 @@ import { ReviewsService } from '../../services/reviews-service';
 import { ReviewForm } from '../../models/review-from';
 import { form, FormField } from '@angular/forms/signals';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Author } from '../../models/author';
+import { AsyncPipe } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-review-form',
-  imports: [FormField],
+  imports: [FormField, AsyncPipe,MatInputModule,
+    MatAutocompleteModule,
+    MatChipsModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDatepickerModule,],
   templateUrl: './review-form.html',
   styleUrl: './review-form.css',
 })
@@ -33,7 +44,7 @@ export class ReviewFormComponent {
 
   authors$        = this.authorsService.authors$;
   selectedAuthor = signal<Author | null>(null);
-  selectedAuthorId = computed(() => this.selectedAuthor()?.id);
+  selectedAuthorId = computed(() => this.selectedAuthor()?.id ?? null);
 
   reviewForm = form(this.reviewModel);
 
@@ -50,6 +61,8 @@ export class ReviewFormComponent {
 
   loadBook(){
     this.booksService.getBookById(this.id);
+    //TODO add check for not null
+    this.reviewForm.bookId().value.set(this.id);
   }
 
   onAuthorSearch(value: string): void {
@@ -69,8 +82,8 @@ export class ReviewFormComponent {
   }
 
   removeAuthor(author: Author): void {
-    this.selectedAuthors.update(prev => prev.filter(a => a.id !== author.id));
-    this.bookForm.authorIds().value.set(this.selectedAuthorIds());
+    this.selectedAuthor.set(author);
+    this.reviewForm.authorId().value.set(this.selectedAuthorId());
   }
 
   submitForm(): void {
