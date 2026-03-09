@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { BooksService } from '../../services/books-service';
 import { AsyncPipe, CommonModule } from '@angular/common';
@@ -27,15 +27,28 @@ export class BookView {
   reviews$ = this.reviewsService.reviewsByBook$;
   stocks$ = this.stocksService.stocks$;
   
-
-  length = 100; 
   pageSize = 10; 
   pageIndex = 0; 
+
+  @ViewChild('anchor', { static: true }) anchor!: ElementRef<HTMLElement>;
+  private observer!: IntersectionObserver;
+
 
   ngOnInit() {
     this.loadBook();
     this.loadReviews();
+
     this.loadStocks();
+  }
+
+  ngAfterViewInit() {
+    this.observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        this.appendReviws() // call service to fetch and append
+      }
+    }, { root: null, rootMargin: '200px', threshold: 0 });
+
+    if (this.anchor) this.observer.observe(this.anchor.nativeElement);
   }
 
   ngOnDestroy() {
@@ -51,6 +64,12 @@ export class BookView {
   loadReviews(){
     this.reviewsService.getReviewsByBookId(this.pageIndex,this.pageSize,this.id);
   }
+
+  appendReviws(){
+    this.pageIndex +=1 ;
+    console.log(this.pageIndex.toString());
+    this.reviewsService.appendReviewsByBookId(this.pageIndex,this.pageSize,this.id);
+  } 
   
   loadStocks(){
     this.stocksService.getStocks(this.id);
@@ -59,6 +78,7 @@ export class BookView {
   addReview(){
     this.router.navigate(['/review/add', this.id]);
   } 
+
   addStock(){
     this.router.navigate(['/stocks/add', this.id]);
   } 
@@ -72,4 +92,10 @@ export class BookView {
     this.router.navigate(['/form'], navigationExtras);
   }
 
+  deleteBook(){
+    this.booksService.deleteBook(this.id).subscribe({ next: ()=> {
+      console.log('deleted')
+      this.router.navigate(['/all'], { queryParams: { page: 0} });
+    } });;
+  }
 }

@@ -2,7 +2,8 @@
     @if (id != null){
     
     @if (book$ | async; as book) {
-        <button (click)="goToBookToEdit(book)">Edit book</button>
+        <button type="button" (click)="goToBookToEdit(book)">Edit book</button>
+        <button type="button" (click)="deleteBook()">Delete book</button>
         <div class = "row">
             <div class="book-view-container">
                 <app-book [book] = "book"
@@ -20,23 +21,29 @@
                 }
             </div>
         </div>
-        <button class="primary" matButton="tonal" (click)="addReview()">Add reviws</button>
-        @for (review of reviews$ | async; track review.id) {
-            <mat-card class="example-card" appearance="outlined">
-            <mat-card-header>
-                <mat-card-title-group>
-                    <mat-card-title>{{review.author.name}}</mat-card-title>
-                    <mat-card-subtitle>{{review.rating}}/10</mat-card-subtitle>
-                </mat-card-title-group>
-            </mat-card-header>
-            <mat-card-content>
-                {{review.contents}}
-            </mat-card-content>
-            </mat-card>
-        } 
+        <button class="primary" matButton="tonal" (click)="addReview()">Add reviws</button> 
+            @for (review of reviews$ | async; track review.id ; let last = $last) {
+                <mat-card class="example-card" appearance="outlined">
+                <mat-card-header>
+                    <mat-card-title-group>
+                        <mat-card-title>{{review.author.name}}</mat-card-title>
+                        <mat-card-subtitle>{{review.rating}}/10</mat-card-subtitle>
+                    </mat-card-title-group>
+                </mat-card-header>
+                <mat-card-content>
+                    {{review.contents}}
+                </mat-card-content>
+                </mat-card>
+                @if (last){
+                    
+                }
+            } 
+    
     }
     } @else {
         <!-- TODO -->
         <p>No content</p>
     }
 
+
+<div #anchor class="anchor" aria-hidden="true"></div>

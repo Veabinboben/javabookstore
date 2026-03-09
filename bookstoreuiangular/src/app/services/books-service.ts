@@ -90,6 +90,12 @@ export class BooksService {
     return this.http.post<Book>('/books/save', formData);
   }
 
+  deleteBook(id: number) : Observable<void>  {
+    const params = new HttpParams()
+      .set('id', id.toString());
+    return this.http.delete<void>('/books/delete', {params});
+  }
+
   // getAllHousingLocations(): HousingLocation[] {
   //   return this.housingLocationList;
   // }

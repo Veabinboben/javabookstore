@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { form, FormField } from '@angular/forms/signals';
+import { form, FormField, required } from '@angular/forms/signals';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WarehousesService } from '../../services/warehouses-service';
@@ -46,7 +46,11 @@ export class StocksForm {
   selectedWarehouse = signal<Warehouse | null>(null);
   selectedWarehouseId = computed(() => this.selectedWarehouse()?.id ?? null);
 
-  stockForm = form(this.stockModel);
+  stockForm = form(this.stockModel,(schemaPath) => {
+    required(schemaPath.stock, {message: 'Stock is required'});
+    required(schemaPath.warehouseId, {message: 'Warehouse is required'});
+    //email(schemaPath.email, {message: 'Enter a valid email address'});
+  });
 
   warehouseSearch = signal('');
 

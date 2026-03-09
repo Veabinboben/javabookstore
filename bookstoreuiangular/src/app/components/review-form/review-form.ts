@@ -3,7 +3,7 @@ import { BooksService } from '../../services/books-service';
 import { AuthorsService } from '../../services/authors-service';
 import { ReviewsService } from '../../services/reviews-service';
 import { ReviewForm } from '../../models/review-from';
-import { form, FormField } from '@angular/forms/signals';
+import { form, FormField, required } from '@angular/forms/signals';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Author } from '../../models/author';
@@ -47,7 +47,11 @@ export class ReviewFormComponent {
   selectedAuthor = signal<Author | null>(null);
   selectedAuthorId = computed(() => this.selectedAuthor()?.id ?? null);
 
-  reviewForm = form(this.reviewModel);
+  reviewForm = form(this.reviewModel,(schemaPath) => {
+    required(schemaPath.contents, {message: 'Contents is required'});
+    required(schemaPath.authorId, {message: 'Author is required'});
+    //email(schemaPath.email, {message: 'Enter a valid email address'});
+  });
 
   authorSearch = signal('');
 

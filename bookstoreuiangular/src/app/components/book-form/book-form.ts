@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { form, FormField } from '@angular/forms/signals';
+import { form, FormField, required } from '@angular/forms/signals';
 import { BookForm } from '../../models/book-form';
 import { BooksService } from '../../services/books-service';
 import { AuthorsService } from '../../services/authors-service';
@@ -18,6 +18,8 @@ import { PublishersService } from '../../services/publishers-service';
 import { Publisher } from '../../models/publisher';
 import { Router } from '@angular/router';
 import { Book } from '../../models/book';
+import { Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-book-form',
@@ -53,7 +55,12 @@ export class BookFormComponent {
     publisherIds: [],
   });
 
-  bookForm = form(this.bookModel);
+  bookForm = form(this.bookModel, (schemaPath) => {
+    required(schemaPath.title, {message: 'Title is required'});
+    required(schemaPath.price, {message: 'Price is required'});
+    required(schemaPath.publishDate, {message: 'Publish date is required'});
+    //email(schemaPath.email, {message: 'Enter a valid email address'});
+  });
 
   authors$        = this.authorsService.authors$;
   selectedAuthors = signal<Author[]>([]);
