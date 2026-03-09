@@ -1,4 +1,6 @@
-<p>review-form works!</p>
+<div class = "form-container">
+    <form>
+<label >Ammount</label>
 <input type="number" [formField]="stockForm.stock" />
 <input matInput
     placeholder="Warehouses"
@@ -15,3 +17,5 @@
     </mat-autocomplete>
 
 <button [disabled]="!stockForm().valid()" (click)="submitForm()">Submit</button>
+</form>
+</div>

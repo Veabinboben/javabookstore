@@ -7,7 +7,7 @@ import { StocksForm } from './components/stocks-form/stocks-form';
 
 export const routes: Routes = [
     {
-        path: '',
+        path: 'all',
         component: MainPageComponent,
     },
     {

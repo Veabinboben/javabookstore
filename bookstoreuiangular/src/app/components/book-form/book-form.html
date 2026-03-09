@@ -1,7 +1,12 @@
-<div>
+<div class = "book-form-container">
+     <form class="book-form">
+<label >Title</label>
 <input type="text" [formField]="bookForm.title" />
+<label >Price</label>
 <input type="number" [formField]="bookForm.price" />
+<label >Date</label>
 <input type="date" [formField]="bookForm.publishDate" />
+<label >Cover image</label>
 <input type="file" (change)="onFileChange($event)">
 <input matInput
     placeholder="Authors"
@@ -16,7 +21,18 @@
         <mat-option [value]="author">{{ author.name }}</mat-option>
     }
     </mat-autocomplete>
-
+     <div class="chip-row">
+    <mat-chip-set>
+        @for (author of selectedAuthors(); track author.id) {
+        <mat-chip
+        (removed)="removeAuthor(author)">
+        {{ author.name }}
+        <button matChipRemove >✕</button>
+    </mat-chip>            
+    }
+    
+    </mat-chip-set>
+    </div>
 <input matInput
     placeholder="Genres"
     [matAutocomplete]="genresAuto"
@@ -30,6 +46,19 @@
         <mat-option [value]="genre">{{ genre.name }}</mat-option>
     }
     </mat-autocomplete>
+
+     <div class="chip-row">
+    <mat-chip-set>
+        @for (genre of selectedGenres(); track genre.id) {
+        <mat-chip
+        (removed)="removeGenre(genre)">
+        {{ genre.name }}
+        <button matChipRemove >✕</button>
+    </mat-chip>            
+    }
+    
+    </mat-chip-set>
+    </div>
 <input matInput
     placeholder="Publishers"
     [matAutocomplete]="publishersAuto"
@@ -44,18 +73,21 @@
     }
     </mat-autocomplete>
 
-    <!-- Show selected authors as chips -->
+     <div class="chip-row">
     <mat-chip-set>
-        @for (author of selectedAuthors(); track author.id) {
+        @for (publisher of selectedPublishers(); track publisher.id) {
         <mat-chip
-        (removed)="removeAuthor(author)">
-        {{ author.name }}
-        <button matChipRemove>✕</button>
+        (removed)="removePublisher(publisher)">
+        {{ publisher.name }}
+        <button matChipRemove >✕</button>
     </mat-chip>            
     }
     
     </mat-chip-set>
+    </div>
 
-<button [disabled]="!bookForm().valid()" (click)="submitForm()">Submit</button>
+<button type="button" [disabled]="!bookForm().valid()" (click)="submitForm()">Submit</button>
+  </form>
+
 </div>
 

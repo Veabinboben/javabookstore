@@ -13,7 +13,7 @@ import { BookForm } from '../models/book-form';
 export class BooksService {
   private http = inject(HttpClient);
 
-  private booksSubject = new BehaviorSubject<Book[]>([]);
+  private booksSubject = new BehaviorSubject<Page<Book> | null>(null);
   books$ = this.booksSubject.asObservable();
 
   //This may be a cringo gringo lmao
@@ -28,16 +28,18 @@ export class BooksService {
       .set('titleFilter', filter.toString())
       .set('pageSize', size.toString());
     return this.http.get<Page<Book>>('/books/all', {params})
-      .pipe(map(page => page.content.map(book =>{
-        book.publishDate = new Date(book.publishDate)
-        return book;
-      }))).subscribe({
+      .pipe().subscribe({
         next: (books) => {
+          books.content.map(book => {
+            book.publishDate = new Date(book.publishDate);
+            return book;
+          })
+          console.log(books);
           this.booksSubject.next(books);  // ← push new state
           //this.loadingSubject.next(false);
         },
         error: () => {
-          this.booksSubject.next([]);
+          this.booksSubject.next(null);
           //this.loadingSubject.next(false);
         }
       });

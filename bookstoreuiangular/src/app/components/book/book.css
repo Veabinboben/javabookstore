@@ -9,7 +9,14 @@ button{
     max-height: 800px;
 }
 
-mat-card-title {
+.title {
+display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%; 
+  white-space: normal; 
+  word-break: break-word; /
 }
 
 img {

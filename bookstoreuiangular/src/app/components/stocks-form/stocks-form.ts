@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WarehousesService } from '../../services/warehouses-service';
 import { BooksService } from '../../services/books-service';
 import { StocksService } from '../../services/stocks-service';
@@ -30,6 +30,7 @@ export class StocksForm {
   private warehousesService = inject(WarehousesService);
   private stocksService  = inject(StocksService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   id : number = Number(this.route.snapshot.paramMap.get('id') ?? -1);
   book$ = this.booksService.book$;
@@ -89,7 +90,10 @@ export class StocksForm {
     if (this.stockForm().invalid()) return;
     //TODO add retunr to othe page sheesh and aga ugug ,lyat form validation
     this.stocksService.addStock(this.stockModel()).subscribe({
-      next:  (data) => console.log('Saved:', data),
+      next:  (data) => {
+        console.log('Saved:', data)
+       this.router.navigate(['/book', this.id], );
+      },
       error: (err)  => console.error('Error:', err),
     });
   }

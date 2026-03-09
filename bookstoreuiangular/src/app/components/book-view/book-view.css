@@ -8,10 +8,31 @@
 }
 
 .row {
-    display: grid;
-    grid-template-columns: 5fr 1fr; /* Creates three equal-width columns */
-    grid-template-rows: auto auto; /* Automatically size two rows based on content */
-    gap: 10px; /* Adds space between items */
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  margin: 16px 0;
+  flex-wrap: wrap;
+  align-items:center;
+  align-content: center;
+  justify-content: center;   
+}
+
+.column {
+  display: flex;
+  flex-direction: column;    /* stack children vertically */
+  align-items: center;       /* center horizontally */
+  justify-content: center;   /* center vertically within container */
+  gap: 12px;                 /* space between items */
+  min-height: 100%;          /* let vertical centering work—use a fixed height if needed */
+  padding: 16px;
+}
+
+.stock-item {
+  padding: 8px;
+  background: #f7f9fc;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
 .example-card {
@@ -19,4 +40,8 @@
     margin: 10px;
     /* max-width: 400px; */
     /* max-height: 800px; */
+}
+
+button{
+    margin: 10px;
 }

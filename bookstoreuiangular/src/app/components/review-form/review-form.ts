@@ -30,6 +30,7 @@ export class ReviewFormComponent {
   private authorsService = inject(AuthorsService);
   private reviewsService  = inject(ReviewsService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   id : number = Number(this.route.snapshot.paramMap.get('id') ?? -1);
   book$ = this.booksService.book$;
@@ -90,7 +91,10 @@ export class ReviewFormComponent {
     if (this.reviewForm().invalid()) return;
     //TODO add retunr to othe page sheesh and aga ugug ,lyat form validation
     this.reviewsService.addReview(this.reviewModel()).subscribe({
-      next:  (data) => console.log('Saved:', data),
+      next:  (data) => {
+        console.log('Saved:', data);
+        this.router.navigate(['/book', this.id], );
+      },
       error: (err)  => console.error('Error:', err),
     });
   }

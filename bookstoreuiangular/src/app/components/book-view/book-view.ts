@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { BooksService } from '../../services/books-service';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { BookComponent } from "../book/book";
@@ -7,6 +7,7 @@ import { ReviewsService } from '../../services/reviews-service';
 import { MatCard, MatCardHeader, MatCardTitleGroup, MatCardContent, MatCardTitle, MatCardSubtitle } from '@angular/material/card';
 import { StocksService } from '../../services/stocks-service';
 import { WarehousesService } from '../../services/warehouses-service';
+import { Book } from '../../models/book';
 @Component({
   selector: 'app-book-view',
   imports: [CommonModule, BookComponent,MatCard, MatCardHeader, MatCardTitleGroup,MatCardContent,MatCardTitle, MatCardSubtitle],
@@ -61,4 +62,14 @@ export class BookView {
   addStock(){
     this.router.navigate(['/stocks/add', this.id]);
   } 
+
+  goToBookToEdit(book: Book) {
+    const navigationExtras: NavigationExtras = {
+    state: {
+      data: book
+      }
+    };
+    this.router.navigate(['/form'], navigationExtras);
+  }
+
 }

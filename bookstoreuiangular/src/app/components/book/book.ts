@@ -18,6 +18,7 @@ export class BookComponent {
   goToBook(id: number) {
     this.router.navigate(['/book', id]);
   }
+  
   goToBookToEdit(book: Book) {
     const navigationExtras: NavigationExtras = {
     state: {

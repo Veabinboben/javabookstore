@@ -1,16 +1,22 @@
 
     @if (id != null){
+    
     @if (book$ | async; as book) {
+        <button (click)="goToBookToEdit(book)">Edit book</button>
         <div class = "row">
             <div class="book-view-container">
                 <app-book [book] = "book"
                 ></app-book>
             </div>
-            <div>
+            <div class ="column">
                 <!-- TODO check if none -->
-                <button class="primary" matButton="tonal" (click)="addStock()">Search</button>
+                <button class="primary" matButton="tonal" (click)="addStock()">Add stock</button>
+                
                 @for (stock of stocks$ | async; track stock.id) {
-                    <div>{{stock.ammount}}</div>
+                    <mat-card class="example-card" appearance="outlined">
+                    <mat-card-content>
+                        {{stock.warehouse.city.name}}, {{stock.warehouse.adress}} : {{stock.ammount}}                    </mat-card-content>
+                    </mat-card>
                 }
             </div>
         </div>
@@ -31,6 +37,6 @@
     }
     } @else {
         <!-- TODO -->
-        <p>saaaaaaaaaaaaaaaaaaaaaaaad</p>
+        <p>No content</p>
     }
 

@@ -64,7 +64,7 @@ export class BookFormComponent {
   selectedGenreIds = computed(() => this.selectedGenres().map(a => a.id));
 
   publishers$        = this.publishersService.publishers$;
-  selectedPublishers = signal<Genre[]>([]);
+  selectedPublishers = signal<Publisher[]>([]);
   selectedPublishersIds = computed(() => this.selectedPublishers().map(a => a.id));
 
   authorSearch = signal('');
@@ -165,7 +165,11 @@ export class BookFormComponent {
   submitForm(): void {
     if (this.bookForm().invalid()) return;
     this.booksService.addBook(this.bookModel()).subscribe({
-      next:  (data) => console.log('Saved:', data),
+      next:  (data) => {
+        console.log('Saved:', data)
+        this.router.navigate(['/book', data.id], );
+
+      },
       error: (err)  => console.error('Error:', err),
     });
   }
