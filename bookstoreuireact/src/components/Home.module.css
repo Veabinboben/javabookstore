@@ -1,0 +1,21 @@
+.grid {
+  display: grid;
+  gap: 16px;         
+  padding: 10px;           
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  align-items: start;
+}
+
+.book{
+    padding: 10px;
+    max-width: 400px;
+    max-height: 800px;
+}
+
+/* .rounded-input {
+  padding: 10px; 
+  border: 1px solid #ccc; 
+  border-radius: 15px; 
+  outline: none; 
+  margin: 10px;
+} */
