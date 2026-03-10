@@ -61,7 +61,7 @@ public class BooksController {
     @PostMapping("/save")
     public ResponseEntity<Book> saveBook(@Value("${app.file.upload-dir}") String uploadDir,
             @ModelAttribute BookForm form) throws ApiException {
-        String coverLink = null;
+        String coverLink = form.getImageUrl();
         if (form.getFile() != null) {
             coverLink = fileUploadService.uploadMultipart(form.getFile());
         }

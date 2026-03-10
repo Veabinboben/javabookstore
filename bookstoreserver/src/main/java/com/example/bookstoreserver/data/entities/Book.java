@@ -1,6 +1,6 @@
 package com.example.bookstoreserver.data.entities;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,7 +28,7 @@ public class Book {
     private String title;
 
     @Column(name = "publish_date")
-    private Date publishDate;
+    private LocalDate publishDate;
 
     @Column(name = "price")
     @NotNull
@@ -65,11 +65,11 @@ public class Book {
         this.title = title;
     }
 
-    public Date getPublishDate() {
+    public LocalDate getPublishDate() {
         return this.publishDate;
     }
 
-    public void setPublishDate(Date publishDate) {
+    public void setPublishDate(LocalDate publishDate) {
         this.publishDate = publishDate;
     }
 

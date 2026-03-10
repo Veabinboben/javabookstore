@@ -32,7 +32,6 @@ export class BooksService {
             book.publishDate = new Date(book.publishDate);
             return book;
           })
-          console.log(books);
           this.booksSubject.next(books);
         },
         error: () => {
@@ -64,7 +63,7 @@ export class BooksService {
 
   addBook(form: BookForm): Observable<Book> {
     const formData = new FormData();
-
+    
     if (form.id != null) {
       formData.append('id', form.id.toString());
     }
@@ -76,10 +75,12 @@ export class BooksService {
     form.publisherIds.forEach(id => formData.append('publisherIds', id.toString()));
     form.genreIds.forEach(id => formData.append('genreIds', id.toString()));
 
+    if (form.imageUrl != null){
+      formData.append('imageUrl', form.imageUrl);
+    }
     if (form.file) {
       formData.append('file', form.file, form.file.name);
     }
-    console.log(formData);
 
     return this.http.post<Book>('/books/save', formData);
   }

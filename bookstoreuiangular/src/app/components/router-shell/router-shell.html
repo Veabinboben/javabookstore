@@ -1,10 +1,10 @@
 <mat-toolbar>
   <span class="example-spacer"></span>
-  <button matIconButton class="example-icon plus-icon" aria-label="Example icon-button with heart icon">
-    <a routerLink="form"><mat-icon>add</mat-icon></a>
+  <button routerLink="form" matIconButton class="example-icon plus-icon" aria-label="Example icon-button with heart icon">
+    <mat-icon>add</mat-icon>
   </button>
-  <button matIconButton class="example-icon" aria-label="Example icon-button with share icon">
-    <a [routerLink]="['all']" [queryParams]="{ page: 0 }"><mat-icon>book</mat-icon></a>
+  <button [routerLink]="['all']" [queryParams]="{ page: 0 }" matIconButton class="example-icon" aria-label="Example icon-button with share icon">
+    <mat-icon>book</mat-icon>
   </button>
 </mat-toolbar>
 

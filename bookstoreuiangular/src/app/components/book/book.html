@@ -25,11 +25,11 @@
                 </mat-card-subtitle>
             </mat-card-title-group>
         </mat-card-header>
-        <img mat-card-sm-image [src]="book.coverLink" alt="No image :(" , (error)="book.coverLink='placeholder.jpg';">
+        <img mat-card-sm-image [src]="book.coverLink" alt="No image :(" (error)="book.coverLink='placeholder.jpg'">
         <mat-card-content>
             Price : {{book.price}}$ <br>
             Publish Date:
-            {{book.publishDate.getDate()}}.{{book.publishDate.getMonth()}}.{{book.publishDate.getFullYear()}}
+            {{book.publishDate.getDate()}}.{{book.publishDate.getMonth() + 1 }}.{{book.publishDate.getFullYear()}} 
         </mat-card-content>
     </mat-card>
 </p>

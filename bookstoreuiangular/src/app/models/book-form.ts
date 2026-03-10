@@ -4,6 +4,7 @@ export interface BookForm {
     publishDate: Date;
     price: number;
     file: File | null;
+    imageUrl: string | null;
     authorIds: number[];
     genreIds: number[];
     publisherIds: number[];

@@ -8,11 +8,23 @@
         <input matInput placeholder="Author" [matAutocomplete]="authorsAuto"
             (input)="onAuthorSearch($any($event.target).value)" [value]="authorSearch()">
 
-        <mat-autocomplete #authorsAuto="matAutocomplete" (optionSelected)="onAuthorSelected($event)">
+        <mat-autocomplete #authorsAuto="matAutocomplete" (optionSelected)="onAuthorSelected($event)" [displayWith]="display">
             @for (author of authors$ | async; track author.id) {
             <mat-option [value]="author">{{ author.name }}</mat-option>
             }
         </mat-autocomplete>
+
+        <div class="chip-row">
+            <mat-chip-set>
+                @if (selectedAuthor() != null) {
+                <mat-chip (removed)="removeAuthor(selectedAuthor()!)">
+                    {{ selectedAuthor()!.name }}
+                    <button matChipRemove>✕</button>
+                </mat-chip>
+                }
+
+            </mat-chip-set>
+        </div>
 
         <button type="button" [disabled]="!reviewForm().valid()" (click)="submitForm()">Submit</button>
     </form>

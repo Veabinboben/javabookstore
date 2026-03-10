@@ -66,7 +66,6 @@ export class BookView implements OnInit, AfterViewInit, OnDestroy {
 
   appendReviws() {
     this.pageIndex += 1;
-    console.log(this.pageIndex.toString());
     this.reviewsService.appendReviewsByBookId(this.pageIndex, this.pageSize, this.id);
   }
 
@@ -94,7 +93,6 @@ export class BookView implements OnInit, AfterViewInit, OnDestroy {
   deleteBook() {
     this.booksService.deleteBook(this.id).subscribe({
       next: () => {
-        console.log('deleted')
         this.router.navigate(['/all'], { queryParams: { page: 0 } });
       }
     });;

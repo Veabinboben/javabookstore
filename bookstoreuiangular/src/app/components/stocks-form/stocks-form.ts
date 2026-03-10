@@ -56,6 +56,7 @@ export class StocksForm implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadBook();
+    this.warehousesService.getWarehouses('');
   }
 
   ngOnDestroy() {
@@ -82,18 +83,22 @@ export class StocksForm implements OnInit, OnDestroy {
   }
 
   removeWarehouse(warehouse: Warehouse): void {
-    this.selectedWarehouse.set(warehouse);
-    this.stockForm.warehouseId().value.set(this.selectedWarehouseId());
+    this.selectedWarehouse.set(null);
+    this.stockForm.warehouseId().value.set(null);
   }
 
   submitForm(): void {
     if (this.stockForm().invalid()) return;
     this.stocksService.addStock(this.stockModel()).subscribe({
       next: (data) => {
-        console.log('Saved:', data)
         this.router.navigate(['/book', this.id],);
       },
       error: (err) => console.error('Error:', err),
     });
   }
+
+  display(): string {
+    return ''; 
+  }
+
 }

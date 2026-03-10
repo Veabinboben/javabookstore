@@ -57,6 +57,7 @@ export class ReviewFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadBook();
+    this.authorsService.getAuthors('');
   }
 
   ngOnDestroy() {
@@ -83,20 +84,22 @@ export class ReviewFormComponent implements OnInit, OnDestroy {
   }
 
   removeAuthor(author: Author): void {
-    this.selectedAuthor.set(author);
-    this.reviewForm.authorId().value.set(this.selectedAuthorId());
+    this.selectedAuthor.set(null);
+    this.reviewForm.authorId().value.set(null);
   }
 
   submitForm(): void {
     if (this.reviewForm().invalid()) return;
     this.reviewsService.addReview(this.reviewModel()).subscribe({
       next: (data) => {
-        console.log('Saved:', data);
         this.router.navigate(['/book', this.id],);
       },
       error: (err) => console.error('Error:', err),
     });
   }
 
+  display(): string {
+    return ''; 
+  }
 
 }

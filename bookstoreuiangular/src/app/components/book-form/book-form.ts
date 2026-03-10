@@ -36,7 +36,7 @@ import { Book } from '../../models/book';
   templateUrl: './book-form.html',
   styleUrl: './book-form.css'
 })
-export class BookFormComponent {
+export class BookFormComponent implements OnInit {
   private readonly booksService = inject(BooksService);
   private readonly authorsService = inject(AuthorsService);
   private readonly genresService = inject(GenresService);
@@ -49,6 +49,7 @@ export class BookFormComponent {
     publishDate: new Date(),
     price: 100,
     file: null,
+    imageUrl: null,
     authorIds: [],
     genreIds: [],
     publisherIds: [],
@@ -76,6 +77,12 @@ export class BookFormComponent {
   genreSearch = signal('');
   publisherSearch = signal('');
 
+  ngOnInit(): void {
+    this.genresService.getGenres(this.genreSearch());
+    this.authorsService.getAuthors(this.authorSearch());
+    this.publishersService.getPublishers(this.publisherSearch());
+  }
+
   constructor(private router: Router) {
     const navigation = this.router.currentNavigation();
     if (navigation?.extras.state) {
@@ -84,6 +91,7 @@ export class BookFormComponent {
       this.bookForm.title().value.set(currentBook.title);
       this.bookForm.price().value.set(currentBook.price);
       this.bookForm.publishDate().value.set(currentBook.publishDate);
+      this.bookForm.imageUrl().value.set(currentBook.coverLink);
       this.selectedPublishers.set([...currentBook.publishers])
       this.selectedAuthors.set([...currentBook.authors])
       this.selectedGenres.set([...currentBook.genres])
@@ -110,6 +118,10 @@ export class BookFormComponent {
   removeAuthor(author: Author): void {
     this.selectedAuthors.update(prev => prev.filter(a => a.id !== author.id));
     this.bookForm.authorIds().value.set(this.selectedAuthorIds());
+  }
+
+  display(): string {
+    return ''; 
   }
 
   onGenreSearch(value: string): void {
@@ -165,9 +177,7 @@ export class BookFormComponent {
     if (this.bookForm().invalid()) return;
     this.booksService.addBook(this.bookModel()).subscribe({
       next: (data) => {
-        console.log('Saved:', data)
         this.router.navigate(['/book', data.id],);
-
       },
       error: (err) => console.error('Error:', err),
     });
