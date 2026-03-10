@@ -1,31 +1,28 @@
-import { useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import type { Book } from "../models/book";
-import { BookContext } from "../config/ServiceProvider";
+import styles from "./Book.module.css";
+import placeholderImage from '../../public/placeholder.png';
 
-export function Book() {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const bookService = useContext(BookContext);
-    
-
-    const params = new URLSearchParams(location.search);
-    const id = Number(params.get("id") ?? -1);
-
-    const [book, setBook] = useState<Book | null>(null);
-    
-    useEffect(() => {
-        bookService?.getBook(id).then((b) => setBook(b))
-    },[])
+export function Book({ book, onClickHandler }: { book: Book, onClickHandler?: (id: number) => void }) {
 
     return (
-        <>
-            {book &&
-                <div>
-                    {book.title}
-                </div>
-            }
-        </>
+        <div className={styles.container}>
+            {book.title}
+            <div className={styles.row}>
+                {[...book.authors].map((author) => (
+                    <div> {author.name}</div>
+                ))}
+            </div>
+            <div key={book.id} className={styles.bookimage} onClick={() => onClickHandler?.(book.id)}>
+                <img src={book.coverLink || placeholderImage} alt="no image :("
+                    onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = placeholderImage;
+                    }} />
+            </div>
+            ${book.price}
+
+
+        </div>
     )
 
 }

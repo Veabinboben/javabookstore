@@ -5,7 +5,7 @@ export const createHttp = (baseURL = 'http://localhost:8080/'): AxiosInstance =>
     const http = axios.create({   
             baseURL, 
             timeout: 10000, 
-            headers: { 'Content-Type': 'application/json' } 
+            //headers: { 'Content-Type': 'application/json' } 
         }
     );
     //   http.interceptors.request.use(cfg => {

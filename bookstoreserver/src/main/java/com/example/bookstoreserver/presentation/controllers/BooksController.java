@@ -11,6 +11,8 @@ import com.example.bookstoreserver.presentation.models.ApiException;
 import com.example.bookstoreserver.presentation.models.forms.BookForm;
 import com.example.bookstoreserver.presentation.services.FileUploadService;
 
+import java.io.Console;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -83,6 +85,7 @@ public class BooksController {
                 book.addPublisher(publisherService.getPublisherById(id));
             }
         } catch (NullPointerException e) {
+           
             throw new ApiException(HttpStatus.NOT_ACCEPTABLE, "Null value on not-null field");
         }
         bookService.saveBook(book);

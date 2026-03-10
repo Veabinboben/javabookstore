@@ -9,6 +9,7 @@ export function RouterShell() {
                 <nav>
                     <Link to={{ pathname: '/', search: new URLSearchParams({ page: '1' }).toString() }}>Home</Link> |{" "}
                     <Link to="/asd">asd</Link> |{" "}
+                    <Link to="/book/add">Add</Link> |{" "}
                 </nav>
                 <AppRoutes></AppRoutes>
             </BrowserRouter>

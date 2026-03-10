@@ -29,4 +29,13 @@ export class BookService {
         });
         return data;
     }
+
+    async addBook(form: FormData): Promise<Book> {
+        const { data } = await this.http.post<Book>('/books/save', form,{
+        headers: {
+            'Content-Type': undefined, // force it explicitly
+        },
+    });
+        return data;
+    }
 }

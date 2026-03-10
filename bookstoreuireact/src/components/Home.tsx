@@ -5,6 +5,7 @@ import type { Book } from "../models/book";
 import { Pagination } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./Home.module.css";
+import { Book as BookView } from "./Book";
 
 export function Home() {
     const location = useLocation();
@@ -77,7 +78,7 @@ export function Home() {
                         {
 
                             books.content.map((book) => (
-                                <div key={book.id} className={styles.book} onClick={() => handleBookClick(book.id)}> <img src={book.coverLink} height={200} width={200} /> </div>
+                                <BookView book={book} onClickHandler={handleBookClick}/>
                             )
 
                             )

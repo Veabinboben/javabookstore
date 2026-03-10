@@ -1,5 +1,5 @@
 import { createContext, useMemo, type ReactNode } from 'react';
-import { BookService } from "../services/BookService";
+import { BookService } from "../services/book-service";
 import { createHttp } from './http';
 
 export const BookContext = createContext<BookService | null>(null);
