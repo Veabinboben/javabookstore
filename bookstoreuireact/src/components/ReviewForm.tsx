@@ -58,7 +58,6 @@ export function ReviewForm() {
         return authorService?.getAuthors(input || "");
     }
     const selectAuthor = (selected : SingleValue<Author>) => {
-        //console.log(selected);
         setSelectedAuthor(selected);
     }
 

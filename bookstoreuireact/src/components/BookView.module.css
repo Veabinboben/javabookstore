@@ -18,11 +18,13 @@
     padding: 16px;
 }
 
-.stockCard{
+.card{
     border: 1px solid black;
     padding: 10px;
     max-width: 400px;
+    min-width: 100px;
     max-height: 800px;
     border-radius: 10px;
-    box-shadow: 1px 1px 10px black;
+    box-shadow: 1px 1px 1px black;
+    margin: 10px;
 }

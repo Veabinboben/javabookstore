@@ -14,7 +14,7 @@ export function Home() {
 
     const params = new URLSearchParams(location.search);
     //const q = params.get("q") ?? "";
-    const page = Number(params.get("page") ?? -1);
+    const page = Number(params.get("page") ?? 1);
     const filter = String(params.get("filter") ?? '');
 
 
@@ -25,28 +25,14 @@ export function Home() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        console.log(page);
+        setLoading(true)
         setInput(filter);
-        bookService?.getBooks(page - 1, 10, filter).then((b) => setBooks(b))
+        bookService?.getBooks(page - 1, 10, filter).then((b) => {
+            setBooks(b);
+            setLoading(false)
+        })
     },
         [page, filter])
-
-    async function handleClick() {
-        setLoading(true);
-        setError(null);
-        try {
-
-            //TODO null checking aga
-            //TODO add to querry params for page so on reload good
-            const result = await bookService!.getBooks(0, 10, '');
-            setBooks(result);
-
-        } catch (e) {
-            setError((e as Error).message || 'Failed to load books');
-        } finally {
-            setLoading(false);
-        }
-    };
     function handleBookClick(id: number) {
         try {
             const next = new URLSearchParams();
@@ -61,7 +47,7 @@ export function Home() {
         event: React.ChangeEvent<unknown> | null,
         page: number,
     ) => {
-
+        
         const next = new URLSearchParams();
         next.set('page', page.toString());
         if (input != '')
@@ -112,6 +98,8 @@ export function Home() {
                     </div>
                 </div>
             }
+            {loading && <p>Loading data...</p> }
+            {error && <p>Error occurred</p> }
         </div>
     </>
 }

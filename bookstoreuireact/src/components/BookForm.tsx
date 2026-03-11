@@ -17,8 +17,6 @@ export function BookForm() {
     const location = useLocation();
     const navigate = useNavigate();
 
-
-
     const fileRef = useRef<HTMLInputElement>(null);
     const [submitting, setSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -35,10 +33,9 @@ export function BookForm() {
 
     const params = new URLSearchParams(location.search);
     const id = Number(params.get("id") ?? -1);
-    
-    useEffect(() => {
 
-        if (id != -1){
+    useEffect(() => {
+        if (id != -1) {
             bookService?.getBook(id).then((b) => {
                 setEditableBook(b)
                 setSelectedAuthors([...b.authors]);
@@ -46,35 +43,27 @@ export function BookForm() {
                 setSelectedPublishers([...b.publishers]);
             });
         }
-
         authorService?.getAuthors('').then((a) => setAuthors(a));
         genreService?.getGenres('').then((g) => setGenres(g));
         publisherService?.getPublishers('').then((p) => setPublishers(p));
-    },[]);
+    }, []);
 
     async function addBook(formData: FormData) {
         setSubmitting(true);
         setError(null);
         setSuccess(false);
-        for (const [key, value] of formData.entries()) {
-            console.log(key, value);
-        }        
         try {
             const file = fileRef.current?.files?.[0];
-            // formData.set("publishDate", (new Date(formData.get("publishDate")!.toString())).toISOString().split('T')[0])
-            // formData.set('title', formData.get('title')!);
-            // formData.set('price', formData.get('price')!);
-            if (editableBook != null){
+            if (editableBook != null) {
                 formData.set('id', editableBook.id.toString());
                 formData.set('imageUrl', editableBook.coverLink);
             }
             if (file) {
                 formData.set('file', file, file.name);
             }
-            else{
+            else {
                 formData.delete('file');
             }
-
             selectedGenres.forEach(genre => formData.append('genreIds', genre.id.toString()));
             selectedAuthors.forEach(author => formData.append('authorIds', author.id.toString()));
             selectedPublishers.forEach(publisher => formData.append('publisherIds', publisher.id.toString()));
@@ -93,39 +82,36 @@ export function BookForm() {
     }
 
 
-    const loadGenres = (input : string) => {
+    const loadGenres = (input: string) => {
         return genreService?.getGenres(input || "");
     }
-    const selectGenres = (selected : MultiValue<Genre>) => {
-        //console.log(selected);
+    const selectGenres = (selected: MultiValue<Genre>) => {
         setSelectedGenres([...selected]);
     }
-    
-    const loadAuthors = (input : string) => {
+
+    const loadAuthors = (input: string) => {
         return authorService?.getAuthors(input || "");
     }
-    const selectAuthors = (selected : MultiValue<Author>) => {
-        //console.log(selected);
+    const selectAuthors = (selected: MultiValue<Author>) => {
         setSelectedAuthors([...selected]);
     }
-    
-    const loadPublishers = (input : string) => {
+
+    const loadPublishers = (input: string) => {
         return publisherService?.getPublishers(input || "");
     }
-    const selectPublishers = (selected : MultiValue<Publisher>) => {
-        //console.log(selected);
+    const selectPublishers = (selected: MultiValue<Publisher>) => {
         setSelectedPublishers([...selected]);
     }
 
     return (
         <form action={addBook} encType="multipart/form-data">
-            <input type="number" defaultValue={editableBook?.price } name="price" placeholder="Price" required />
-            <input type="text" defaultValue={editableBook?.title } name="title" placeholder="Title" required />
-            <input type="date" defaultValue={editableBook?.publishDate.toString() } name="publishDate" required />
+            <input type="number" defaultValue={editableBook?.price} name="price" placeholder="Price" required />
+            <input type="text" defaultValue={editableBook?.title} name="title" placeholder="Title" required />
+            <input type="date" defaultValue={editableBook?.publishDate.toString()} name="publishDate" required />
             <input type="file" name="file" ref={fileRef} accept=".jpg,.png" />
             <AsyncSelect
-                isMulti 
-                placeholder ={'Select genres'}
+                isMulti
+                placeholder={'Select genres'}
                 defaultOptions={genres}
                 onChange={selectGenres}
                 loadOptions={loadGenres}
@@ -134,8 +120,8 @@ export function BookForm() {
                 getOptionLabel={(opt) => opt.name}
             />
             <AsyncSelect
-                isMulti 
-                placeholder ={'Select authors'}
+                isMulti
+                placeholder={'Select authors'}
                 defaultOptions={authors}
                 onChange={selectAuthors}
                 loadOptions={loadAuthors}
@@ -144,8 +130,8 @@ export function BookForm() {
                 getOptionLabel={(opt) => opt.name + ' ' + opt.middleName + ' ' + opt.surname}
             />
             <AsyncSelect
-                isMulti 
-                placeholder ={'Select publishers'}
+                isMulti
+                placeholder={'Select publishers'}
                 defaultOptions={publishers}
                 onChange={selectPublishers}
                 loadOptions={loadPublishers}

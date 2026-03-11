@@ -58,7 +58,6 @@ export function StockForm() {
         return warehouseService?.getWarehouses(input || "");
     }
     const selectWarehouse = (selected : SingleValue<Warehouse>) => {
-        //console.log(selected);
         setSelectedWarehouse(selected);
     }
 

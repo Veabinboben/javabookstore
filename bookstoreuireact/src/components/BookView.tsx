@@ -4,7 +4,6 @@ import type { Book } from "../models/book";
 import { BookContext, ReviewContext, StockContext } from "../config/ServiceProvider";
 import { Book as BookComp } from "./Book";
 import styles from "./BookView.module.css"
-import type { Page } from "../models/page";
 import type { Review } from "../models/review";
 import type { Stock } from "../models/stock";
 
@@ -14,9 +13,6 @@ export function BookView() {
     const bookService = useContext(BookContext);
     const reviewService = useContext(ReviewContext);
     const stockService = useContext(StockContext);
-
-
-
 
     const params = new URLSearchParams(location.search);
     const id = Number(params.get("id") ?? -1);
@@ -30,8 +26,6 @@ export function BookView() {
     const page = useRef(0);
     const totalItems = useRef(0);
     const pageSize = 5;
-
-
 
     useEffect(() => {
         bookService?.getBook(id).then((b) => setBook(b))
@@ -50,7 +44,6 @@ export function BookView() {
         const nextPage = page.current + 1;
         reviewService?.getReviews(nextPage, pageSize, id)
             .then(r => {
-                //console.log('loading', nextPage)
                 setReviews(prev => [...prev ?? [], ...r.content]);
                 page.current = nextPage;
             })
@@ -96,19 +89,32 @@ export function BookView() {
                 <div className={styles.column}>
                     <button type="button" onClick={editBook}>Edit</button>
                     <div className={styles.row}>
-                        <BookComp book={book} />
+                        <div className={styles.column}>
+                            <BookComp book={book} />
+                            <div className={styles.card}>
+                                <div className={styles.row}>
+                                    {
+                                        (book.genres && [...book.genres].length != 0) ? [...book.genres].map(
+                                            (g) => <div>{g.name}</div>
+                                        ) : (<div>No Genres</div>)
+                                    }
+                                </div>
+                                <div className={styles.row}>
+                                    {
+                                        (book.publishers && [...book.publishers].length != 0) ? ([...book.publishers].map(
+                                            (g) => <div>{g.name}</div>
+                                        )) : (<div>No Publishers</div>)
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
                         <div>
                             <button type="button" onClick={addStock} >Add Stock</button>
-                            {stocks.length != 0 ?
-                                <>
-                                    {
-                                        stocks.map((s) => (
-                                            <div key={s.id} className={styles.stockCard}>{s.warehouse.adress} : {s.ammount}</div>
-                                        ))
-                                    }
-                                </>
-                                :
-                                <p>no stock</p>
+                            {stocks && stocks.length != 0 ?
+                                stocks.map((s) => (
+                                    <div key={s.id} className={styles.card}>{s.warehouse.city.name}, {s.warehouse.adress} : {s.ammount}</div>
+                                )) : <div>No Stocks</div>
                             }
                         </div>
                     </div>
@@ -116,8 +122,9 @@ export function BookView() {
                     <div>
                         {reviews &&
                             reviews.map((r) => (
-                                <div key={r.id}>
-                                    <strong>{r.author.name}</strong>
+                                <div key={r.id} className={styles.card}>
+                                    <strong>{r.author.name} {r.author.middleName} {r.author.surname}</strong>
+                                    <div>{r.rating} ⭐</div>
                                     <div>{r.contents}</div>
                                 </div>
                             ))
