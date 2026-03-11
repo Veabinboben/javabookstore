@@ -51,9 +51,6 @@ export function StockForm() {
         }
     }
 
-
-   
-    
     const loadWarehouses = (input : string) => {
         return warehouseService?.getWarehouses(input || "");
     }

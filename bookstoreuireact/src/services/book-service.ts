@@ -3,7 +3,6 @@ import type { Book } from '../models/book';
 import type { Page } from '../models/page';
 
 export class BookService {
-    //TODO maybe change init
     private http: AxiosInstance;
 
     constructor(http: AxiosInstance) {
@@ -37,5 +36,14 @@ export class BookService {
         },
     });
         return data;
+    }
+
+    async deleteBook(id: number): Promise<void> {
+        await this.http.delete<Book>('/books/delete', {
+            params : {
+                id: id,
+            }
+        });
+        return;
     }
 }

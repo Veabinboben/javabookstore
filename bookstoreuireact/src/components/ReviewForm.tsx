@@ -20,7 +20,6 @@ export function ReviewForm() {
     
     const [selectedAuthor, setSelectedAuthor] = useState<Author| null>(null);
     
-
     const params = new URLSearchParams(location.search);
     const id = Number(params.get("id") ?? -1);
     
@@ -51,9 +50,6 @@ export function ReviewForm() {
         }
     }
 
-
-   
-    
     const loadAuthors = (input : string) => {
         return authorService?.getAuthors(input || "");
     }

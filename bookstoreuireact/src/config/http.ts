@@ -1,11 +1,11 @@
 import axios, { type AxiosInstance } from 'axios';
 
-export const createHttp = (baseURL = 'http://localhost:8080/'): AxiosInstance => {
-    // add config here
+const apiBase = import.meta.env.VITE_API_BASE_URL;
+
+export const createHttp = (baseURL = apiBase): AxiosInstance => {
     const http = axios.create({   
             baseURL, 
             timeout: 10000, 
-            //headers: { 'Content-Type': 'application/json' } 
         }
     );
     //   http.interceptors.request.use(cfg => {

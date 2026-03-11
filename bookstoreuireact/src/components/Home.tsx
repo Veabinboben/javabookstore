@@ -13,11 +13,8 @@ export function Home() {
     const bookService = useContext(BookContext);
 
     const params = new URLSearchParams(location.search);
-    //const q = params.get("q") ?? "";
     const page = Number(params.get("page") ?? 1);
     const filter = String(params.get("filter") ?? '');
-
-
 
     const [books, setBooks] = useState<Page<Book> | null>(null);
     const [input, setInput] = useState("");
@@ -83,7 +80,7 @@ export function Home() {
                     Search
                 </button>
             </div>
-            {books &&
+            {books != null && [...books.content].length!= 0 ?
                 <div>
                     <div className={styles.resultsGrid}>
                         {
@@ -96,7 +93,7 @@ export function Home() {
                     <div className={styles.paginationWrapper}>
                         <Pagination page={page} count={books.totalPages} onChange={handleChangePage} />
                     </div>
-                </div>
+                </div> : <div>No books found</div>
             }
             {loading && <p>Loading data...</p> }
             {error && <p>Error occurred</p> }

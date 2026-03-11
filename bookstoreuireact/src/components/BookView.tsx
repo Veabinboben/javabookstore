@@ -70,6 +70,11 @@ export function BookView() {
 
         navigate({ pathname: '/book/edit', search: next.toString() }, { replace: false })
     }
+    const deleteBook = () => {
+        bookService?.deleteBook(id).then((e) => {
+            navigate({ pathname: '/' }, { replace: true })
+        })
+    }
     const addStock = () => {
         const next = new URLSearchParams();
         next.set('id', book!.id.toString());
@@ -87,7 +92,10 @@ export function BookView() {
         <>
             {book &&
                 <div className={styles.column}>
-                    <button type="button" onClick={editBook}>Edit</button>
+                    <div className={styles.row}>
+                        <button type="button" onClick={editBook}>Edit</button>
+                        <button type="button" onClick={deleteBook}>Delete</button>
+                    </div>
                     <div className={styles.row}>
                         <div className={styles.column}>
                             <BookComp book={book} />
