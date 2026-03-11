@@ -29,7 +29,7 @@ export function Home() {
         setInput(filter);
         bookService?.getBooks(page - 1, 10, filter).then((b) => setBooks(b))
     },
-        [page,filter])
+        [page, filter])
 
     async function handleClick() {
         setLoading(true);
@@ -54,7 +54,7 @@ export function Home() {
             navigate({ pathname: '/book', search: next.toString() }, { replace: false })
         } catch (e) {
             setError((e as Error).message || 'Failed to load books');
-        } 
+        }
     };
 
     const handleChangePage = async (
@@ -65,7 +65,7 @@ export function Home() {
         const next = new URLSearchParams();
         next.set('page', page.toString());
         if (input != '')
-        next.set('filter', filter.toString());
+            next.set('filter', filter.toString());
 
         navigate({ pathname: location.pathname, search: next.toString() }, { replace: false })
 
@@ -77,42 +77,39 @@ export function Home() {
 
         next.set('page', '1');
         if (input != '')
-        next.set('filter', input.toString());
+            next.set('filter', input.toString());
 
         navigate({ pathname: location.pathname, search: next.toString() }, { replace: false })
 
     };
 
-
-
-
     return <>
-        <div>
-            <input
-            type="text"
-            value={input}
-            placeholder={"Input book title..."}
-            onChange={(e) => setInput(e.target.value)}
-            aria-label="Search input"
-            />
-            <button type="button" onClick={handleSearch} >
-            Search
-            </button>
-
+        <div className={styles.searchContainer}>
+            <div className={styles.searchRow}>
+                <input
+                    type="text"
+                    value={input}
+                    placeholder={"Input book title..."}
+                    onChange={(e) => setInput(e.target.value)}
+                    aria-label="Search input"
+                />
+                <button type="button" onClick={handleSearch} >
+                    Search
+                </button>
+            </div>
             {books &&
                 <div>
-                    <div className={styles.grid}>
+                    <div className={styles.resultsGrid}>
                         {
-
                             books.content.map((book) => (
-                                <BookView book={book} onClickHandler={handleBookClick}/>
-                            )
-
-                            )
+                                <BookView book={book} onClickHandler={handleBookClick} />
+                            ))
                         }
-
                     </div>
-                    <Pagination page={page} count={books.totalPages} onChange={handleChangePage} />
+                    <br/>
+                    <div className={styles.paginationWrapper}>
+                        <Pagination page={page} count={books.totalPages} onChange={handleChangePage} />
+                    </div>
                 </div>
             }
         </div>

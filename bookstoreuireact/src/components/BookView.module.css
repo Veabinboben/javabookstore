@@ -17,3 +17,12 @@
     min-height: 100%;
     padding: 16px;
 }
+
+.stockCard{
+    border: 1px solid black;
+    padding: 10px;
+    max-width: 400px;
+    max-height: 800px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px black;
+}

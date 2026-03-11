@@ -1,42 +1,131 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { Book } from "../models/book";
-import { BookContext } from "../config/ServiceProvider";
+import { BookContext, ReviewContext, StockContext } from "../config/ServiceProvider";
 import { Book as BookComp } from "./Book";
 import styles from "./BookView.module.css"
+import type { Page } from "../models/page";
+import type { Review } from "../models/review";
+import type { Stock } from "../models/stock";
 
 export function BookView() {
     const location = useLocation();
     const navigate = useNavigate();
     const bookService = useContext(BookContext);
-    
+    const reviewService = useContext(ReviewContext);
+    const stockService = useContext(StockContext);
+
+
+
 
     const params = new URLSearchParams(location.search);
     const id = Number(params.get("id") ?? -1);
 
     const [book, setBook] = useState<Book | null>(null);
-    
+    const [stocks, setStocks] = useState<Stock[]>([]);
+    const [reviews, setReviews] = useState<Review[]>([]);
+    const loadingRef = useRef(false);
+    const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+    const page = useRef(0);
+    const totalItems = useRef(0);
+    const pageSize = 5;
+
+
+
     useEffect(() => {
         bookService?.getBook(id).then((b) => setBook(b))
-    },[])
+        stockService?.getStocks(id).then((s) => setStocks(s));
+        reviewService?.getReviews(page.current, pageSize, id).then((r) => {
+            setReviews(r.content)
+            page.current = 0;
+            totalItems.current = (r.totalElements);
+        })
+    }, [])
+
+    const loadNext = useCallback(() => {
+        if (loadingRef.current) return;
+        if (totalItems !== null && reviews.length >= totalItems.current) return;
+        loadingRef.current = true;
+        const nextPage = page.current + 1;
+        reviewService?.getReviews(nextPage, pageSize, id)
+            .then(r => {
+                //console.log('loading', nextPage)
+                setReviews(prev => [...prev ?? [], ...r.content]);
+                page.current = nextPage;
+            })
+            .finally(() => { loadingRef.current = false; });
+    }, [id, pageSize, reviewService, reviews.length]);
+
+    useEffect(() => {
+        if (!sentinelRef.current) return;
+
+        const observer = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting) {
+                loadNext();
+            }
+        });
+
+        observer.observe(sentinelRef.current);
+
+        return () => observer.disconnect();
+    }, [loadNext]);
 
     const editBook = () => {
         const next = new URLSearchParams();
         next.set('id', book!.id.toString());
 
-        navigate({ pathname: '/book/edit', search: next.toString() }, {replace: false })
+        navigate({ pathname: '/book/edit', search: next.toString() }, { replace: false })
+    }
+    const addStock = () => {
+        const next = new URLSearchParams();
+        next.set('id', book!.id.toString());
+
+        navigate({ pathname: '/stock/add', search: next.toString() }, { replace: false })
+    }
+    const addReview = () => {
+        const next = new URLSearchParams();
+        next.set('id', book!.id.toString());
+
+        navigate({ pathname: '/review/add', search: next.toString() }, { replace: false })
     }
 
     return (
         <>
-            <div className={styles.column}>
-            <button type = "button" onClick={editBook}>aSasdsahjgdahsgdjhas</button>
             {book &&
-                <div>
-                    <BookComp book = {book}/>
+                <div className={styles.column}>
+                    <button type="button" onClick={editBook}>Edit</button>
+                    <div className={styles.row}>
+                        <BookComp book={book} />
+                        <div>
+                            <button type="button" onClick={addStock} >Add Stock</button>
+                            {stocks.length != 0 ?
+                                <>
+                                    {
+                                        stocks.map((s) => (
+                                            <div key={s.id} className={styles.stockCard}>{s.warehouse.adress} : {s.ammount}</div>
+                                        ))
+                                    }
+                                </>
+                                :
+                                <p>no stock</p>
+                            }
+                        </div>
+                    </div>
+                    <button type="button" onClick={addReview}> Add Review</button>
+                    <div>
+                        {reviews &&
+                            reviews.map((r) => (
+                                <div key={r.id}>
+                                    <strong>{r.author.name}</strong>
+                                    <div>{r.contents}</div>
+                                </div>
+                            ))
+                        }
+                        <div ref={sentinelRef} ><br /></div>
+                    </div>
                 </div>
             }
-            </div>
         </>
     )
 

@@ -6,7 +6,8 @@ import type { Genre } from "../models/genre";
 import type { Publisher } from "../models/publisher";
 import AsyncSelect from "react-select/async";
 import type { MultiValue } from "react-select";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import styles from './Form.module.css';
 
 export function BookForm() {
     const bookService = useContext(BookContext);
@@ -14,6 +15,8 @@ export function BookForm() {
     const genreService = useContext(GenreContext);
     const publisherService = useContext(PublisherContext);
     const location = useLocation();
+    const navigate = useNavigate();
+
 
 
     const fileRef = useRef<HTMLInputElement>(null);
@@ -76,8 +79,11 @@ export function BookForm() {
             selectedAuthors.forEach(author => formData.append('authorIds', author.id.toString()));
             selectedPublishers.forEach(publisher => formData.append('publisherIds', publisher.id.toString()));
 
+            const book = await bookService?.addBook(formData);
+            const next = new URLSearchParams();
+            next.set('id', book!.id.toString());
+            navigate({ pathname: '/book', search: next.toString() }, { replace: true })
 
-            await bookService?.addBook(formData);
             setSuccess(true);
         } catch (err) {
             setError("Failed to add book. Please try again.");
@@ -135,7 +141,7 @@ export function BookForm() {
                 loadOptions={loadAuthors}
                 value={selectedAuthors}
                 getOptionValue={(opt) => String(opt.id)}
-                getOptionLabel={(opt) => opt.name}
+                getOptionLabel={(opt) => opt.name + ' ' + opt.middleName + ' ' + opt.surname}
             />
             <AsyncSelect
                 isMulti 
@@ -148,7 +154,7 @@ export function BookForm() {
                 getOptionLabel={(opt) => opt.name}
             />
             <button type="submit" disabled={submitting}>
-                {submitting ? "Adding..." : "Add to Cart"}
+                {submitting ? "Adding..." : "Add book"}
             </button>
             {success && <p>Book added successfully!</p>}
             {error && <p>{error}</p>}
