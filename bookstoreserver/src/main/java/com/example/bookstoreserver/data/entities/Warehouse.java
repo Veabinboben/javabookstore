@@ -24,6 +24,10 @@ public class Warehouse {
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
+    public Long getId() {
+        return id;
+    }
+
     public String getAdress() {
         return this.adress;
     }

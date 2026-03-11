@@ -1,0 +1,24 @@
+button {
+    color: black;
+    border: 0pc solid black
+}
+
+.example-card {
+    padding: 10px;
+    max-width: 400px;
+    max-height: 800px;
+}
+
+.title {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    white-space: normal;
+    word-break: break-word;/
+}
+
+img {
+    border-radius: 15px;
+}

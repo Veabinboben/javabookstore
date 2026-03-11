@@ -7,6 +7,19 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
+  angular:
+      name: Test Angular
+      runs-on: windows-latest
+      steps:
+        - uses: actions/checkout@v4
+          with:
+            fetch-depth: 0  
+        - name: SonarQube Scan
+          uses: SonarSource/sonarqube-scan-action@v6
+          with:
+            projectBaseDir: ./bookstoreuiangular
+          env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   build:
     name: Build, test, upload reports and analyze
     runs-on: ubuntu-latest
