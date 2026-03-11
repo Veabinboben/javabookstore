@@ -19,4 +19,8 @@ Estimated time = 20.7h, Actual time = 30h
 
 ## Angular 
 
-Estimated time = 31h
+Estimated time = 31h, Actual time = 32h
+
+## React
+
+Estimated time = 25h, 
