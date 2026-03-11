@@ -85,7 +85,7 @@ public class BooksControllerTest {
     @Test
     void testDeleteByIdRequest() {
 
-        restTestClient.post().uri("/books/delete?id=1")
+        restTestClient.delete().uri("/books/delete?id=1")
                 .exchange()
                 .expectStatus().isOk();
 

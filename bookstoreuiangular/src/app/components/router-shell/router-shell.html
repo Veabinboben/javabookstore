@@ -1,0 +1,15 @@
+<mat-toolbar>
+  <span class="example-spacer"></span>
+  <button routerLink="form" matIconButton class="example-icon plus-icon" aria-label="Example icon-button with heart icon">
+    <mat-icon>add</mat-icon>
+  </button>
+  <button [routerLink]="['all']" [queryParams]="{ page: 0 }" matIconButton class="example-icon" aria-label="Example icon-button with share icon">
+    <mat-icon>book</mat-icon>
+  </button>
+</mat-toolbar>
+
+<nav>
+
+
+</nav>
+<router-outlet />

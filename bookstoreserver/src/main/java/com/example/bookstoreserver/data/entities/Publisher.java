@@ -31,6 +31,10 @@ public class Publisher {
     @JsonIgnore
     private Set<Book> books = new HashSet<>();
 
+    public Long getId() {
+        return id;
+    }
+
     public String getName() {
         return this.name;
     }

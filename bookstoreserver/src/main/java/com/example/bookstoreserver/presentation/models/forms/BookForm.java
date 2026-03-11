@@ -1,6 +1,6 @@
 package com.example.bookstoreserver.presentation.models.forms;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +14,9 @@ public class BookForm {
 
     private String title;
 
-    private Date publishDate;
+    private String imageUrl = null;
+
+    private LocalDate publishDate;
 
     private Double price;
 
@@ -48,6 +50,14 @@ public class BookForm {
         this.title = title;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public double getPrice() {
         return this.price;
     }
@@ -56,11 +66,11 @@ public class BookForm {
         this.price = price;
     }
 
-    public Date getPublishDate() {
+    public LocalDate getPublishDate() {
         return this.publishDate;
     }
 
-    public void setPublishDate(Date publishDate) {
+    public void setPublishDate(LocalDate publishDate) {
         this.publishDate = publishDate;
     }
 

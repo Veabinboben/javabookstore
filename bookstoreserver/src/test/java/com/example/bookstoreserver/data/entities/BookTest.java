@@ -1,6 +1,7 @@
 package com.example.bookstoreserver.data.entities;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +19,7 @@ public class BookTest {
         book.setId(1);
         book.setPrice(1.0);
         book.setTitle("title");
-        book.setPublishDate(Date.valueOf("1111-11-11"));
+        book.setPublishDate(LocalDate.parse("1111-11-11"));
         book.setCoverLink("link");
         book.addAuthor(author);
         book.addGenre(genre);
@@ -27,7 +28,7 @@ public class BookTest {
         Assertions.assertEquals(1, book.getId());
         Assertions.assertEquals(1.0, book.getPrice());
         Assertions.assertEquals("title", book.getTitle());
-        Assertions.assertEquals(Date.valueOf("1111-11-11"), book.getPublishDate());
+        Assertions.assertEquals(LocalDate.parse("1111-11-11"), book.getPublishDate());
         Assertions.assertEquals("link", book.getCoverLink());
         Assertions.assertEquals(new HashSet<>(Set.of(author)), book.getAuthors());
         Assertions.assertEquals(new HashSet<>(Set.of(genre)), book.getGenres());

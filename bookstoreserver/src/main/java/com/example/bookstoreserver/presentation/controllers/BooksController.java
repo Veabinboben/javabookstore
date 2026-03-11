@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,7 +63,7 @@ public class BooksController {
     @PostMapping("/save")
     public ResponseEntity<Book> saveBook(@Value("${app.file.upload-dir}") String uploadDir,
             @ModelAttribute BookForm form) throws ApiException {
-        String coverLink = null;
+        String coverLink = form.getImageUrl();
         if (form.getFile() != null) {
             coverLink = fileUploadService.uploadMultipart(form.getFile());
         }
@@ -92,7 +93,7 @@ public class BooksController {
         return ResponseEntity.ok(book);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteBook(@RequestParam long id) {
         try {
             bookService.deleteBookById(id);
