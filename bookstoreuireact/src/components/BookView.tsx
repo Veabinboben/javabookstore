@@ -20,9 +20,17 @@ export function BookView() {
         bookService?.getBook(id).then((b) => setBook(b))
     },[])
 
+    const editBook = () => {
+        const next = new URLSearchParams();
+        next.set('id', book!.id.toString());
+
+        navigate({ pathname: '/book/edit', search: next.toString() }, {replace: false })
+    }
+
     return (
         <>
             <div className={styles.column}>
+            <button type = "button" onClick={editBook}>aSasdsahjgdahsgdjhas</button>
             {book &&
                 <div>
                     <BookComp book = {book}/>

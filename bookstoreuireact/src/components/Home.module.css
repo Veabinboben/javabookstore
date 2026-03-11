@@ -6,6 +6,18 @@
   align-items: start;
 }
 
+input{
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+button{
+  flex: 1;
+  padding: 8; 
+  margin: 8;
+}
 
 /* .rounded-input {
   padding: 10px; 

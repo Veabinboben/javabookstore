@@ -9,6 +9,7 @@ export function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/book" element={<BookView />} />
       <Route path="/book/add" element={<BookForm />} />
+      <Route path="/book/edit" element={<BookForm />} />
     </Routes>
   );
 }

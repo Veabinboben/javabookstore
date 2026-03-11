@@ -19,7 +19,8 @@ export function Book({ book, onClickHandler }: { book: Book, onClickHandler?: (i
                         e.currentTarget.src = placeholderImage;
                     }} />
             </div>
-            ${book.price}
+            ${book.price} <br />
+            {book.publishDate.toString()}
 
 
         </div>

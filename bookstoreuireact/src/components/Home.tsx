@@ -15,16 +15,21 @@ export function Home() {
     const params = new URLSearchParams(location.search);
     //const q = params.get("q") ?? "";
     const page = Number(params.get("page") ?? -1);
+    const filter = String(params.get("filter") ?? '');
+
+
+
+    const [books, setBooks] = useState<Page<Book> | null>(null);
+    const [input, setInput] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         console.log(page);
-        bookService?.getBooks(page - 1, 10, '').then((b) => setBooks(b))
+        setInput(filter);
+        bookService?.getBooks(page - 1, 10, filter).then((b) => setBooks(b))
     },
-        [page])
-
-    const [books, setBooks] = useState<Page<Book> | null>(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+        [page,filter])
 
     async function handleClick() {
         setLoading(true);
@@ -56,21 +61,43 @@ export function Home() {
         event: React.ChangeEvent<unknown> | null,
         page: number,
     ) => {
-        //const result = await bookService!.getBooks(page-1, 10, '');
-        //console.log(page);
-        //setBooks(result);
+
         const next = new URLSearchParams();
         next.set('page', page.toString());
+        if (input != '')
+        next.set('filter', filter.toString());
+
+        navigate({ pathname: location.pathname, search: next.toString() }, { replace: false })
+
+    };
+
+    const handleSearch = async (
+    ) => {
+        const next = new URLSearchParams();
+
+        next.set('page', '1');
+        if (input != '')
+        next.set('filter', input.toString());
 
         navigate({ pathname: location.pathname, search: next.toString() }, { replace: false })
 
     };
 
 
+
+
     return <>
         <div>
-            hihiha
-            <button onClick={handleClick}>Load</button>
+            <input
+            type="text"
+            value={input}
+            placeholder={"Input book title..."}
+            onChange={(e) => setInput(e.target.value)}
+            aria-label="Search input"
+            />
+            <button type="button" onClick={handleSearch} >
+            Search
+            </button>
 
             {books &&
                 <div>
