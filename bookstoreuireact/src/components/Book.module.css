@@ -1,7 +1,12 @@
 .bookimage {
     padding: 10px;
     max-width: 400px;
-    max-height: 800px;
+    height: 100%;
+    /* max-height: 800px; */
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
 }
 
 .container {
@@ -11,6 +16,19 @@
     max-height: 800px;
     border-radius: 10px;
     box-shadow: 1px 1px 10px black;
+    align-items: center; 
+    flex-direction: column;
+    display: flex;
+    align-content: space-between;
+}
+
+.container > :first-child {
+  padding: 16px;
+  width: 90%;
+}
+
+.container > :last-child {
+  margin-top: auto;
 }
 
 .container img {
@@ -18,17 +36,15 @@
     height: 100%;
     object-fit: contain;
     border-radius: 10px;
-
 }
 
-p {
+.title {
     display: block;
-    overflow: hidden;
+    overflow:hidden;
     white-space: nowrap;
-    text-overflow: ellipsis;
+    text-overflow:ellipsis;
     max-width: 100%;
     white-space: normal;
-    word-break: break-word;
 }
 
 .row {
