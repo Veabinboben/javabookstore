@@ -13,11 +13,13 @@ export function Book({ book, onClickHandler }: { book: Book, onClickHandler?: (i
                 )) : <div>No Author</div> }
             </div>
             <div key={book.id} className={styles.bookimage}>
-                <img src={book.coverLink || placeholderImage} alt="no image :("
+                <div>
+                    <img src={book.coverLink || placeholderImage} alt="no image :("
                     onError={(e) => {
                         e.currentTarget.onerror = null;
                         e.currentTarget.src = placeholderImage;
                     }} />
+                </div>
             </div>
             
             <div>
