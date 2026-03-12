@@ -23,4 +23,4 @@ Estimated time = 31h, Actual time = 32h
 
 ## React
 
-Estimated time = 25h, 
+Estimated time = 25h, Actual time = 22h
