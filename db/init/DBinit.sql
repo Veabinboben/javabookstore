@@ -60,7 +60,7 @@ CREATE TABLE book_publishers(
     id SERIAL PRIMARY KEY,
     book_id INT REFERENCES books(id) ON DELETE CASCADE,
     publisher_id INT REFERENCES publishers(id),
-    CONSTRAINT uniquie_book_publisher UNIQUE (book_id, publisher_id),
+    CONSTRAINT uniquie_book_publisher UNIQUE (book_id, publisher_id)
 );
 
 CREATE TABLE book_genres(
