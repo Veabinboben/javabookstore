@@ -63,6 +63,10 @@ jobs:
 
       - name: Build, run tests and generate JaCoCo report
         working-directory: ./bookstoreserver
+        env: 
+          DB_HOST: localhost
+          APP_FILE_UPLOAD-DIR: /tmp/bookstore-uploads/
+          UPLOAD_DIR: /tmp/bookstore-uploads/
         run: |
           # Run tests and produce JaCoCo xml and surefire/junit reports
           mvn -B clean verify \
