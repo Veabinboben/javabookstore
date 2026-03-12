@@ -24,3 +24,7 @@ Estimated time = 31h, Actual time = 32h
 ## React
 
 Estimated time = 25h, Actual time = 22h
+
+## Docker
+
+Estimated time = 9h, 
