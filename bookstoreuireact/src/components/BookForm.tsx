@@ -7,7 +7,7 @@ import type { Publisher } from "../models/publisher";
 import AsyncSelect from "react-select/async";
 import type { MultiValue } from "react-select";
 import { useLocation, useNavigate } from "react-router-dom";
-import styles from './Form.module.css';
+import './form.css';
 
 export function BookForm() {
     const bookService = useContext(BookContext);

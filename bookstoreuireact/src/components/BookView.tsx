@@ -71,7 +71,7 @@ export function BookView() {
         navigate({ pathname: '/book/edit', search: next.toString() }, { replace: false })
     }
     const deleteBook = () => {
-        bookService?.deleteBook(id).then((e) => {
+        bookService?.deleteBook(id).then((_) => {
             navigate({ pathname: '/' }, { replace: true })
         })
     }

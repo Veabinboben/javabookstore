@@ -1,6 +1,16 @@
 version: "3.8"
 services:
 
+  react:
+    image: bookstorereact  # built locally with: docker build -t my-spring-app:latest .
+    build:
+      context: ./bookstoreuireact
+      dockerfile: Dockerfile
+    container_name: bookstore-react
+    ports:
+      - "5173:8080"
+
+
   angular:
     image: bookstoreangular   # built locally with: docker build -t my-spring-app:latest .
     build:

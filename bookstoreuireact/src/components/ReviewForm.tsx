@@ -3,7 +3,7 @@ import { AuthorContext, ReviewContext } from "../config/ServiceProvider";
 import AsyncSelect from "react-select/async";
 import type { SingleValue } from "react-select";
 import { useLocation, useNavigate } from "react-router-dom";
-import styles from './Form.module.css';
+import './form.css';
 import type { Author } from "../models/author";
 
 export function ReviewForm() {

@@ -41,7 +41,7 @@ export function Home() {
     };
 
     const handleChangePage = async (
-        event: React.ChangeEvent<unknown> | null,
+        _: React.ChangeEvent<unknown> | null,
         page: number,
     ) => {
         
