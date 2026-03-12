@@ -1,0 +1,73 @@
+form {
+  max-width: 720px;
+  margin: 20px auto;
+  padding: 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(16,24,40,0.04);
+  display: grid;
+  gap: 12px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+form input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="file"],
+.select__control { 
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #f8fafc;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: #94a3b8;
+}
+
+input[type="file"] {
+  padding: 8px;
+  background: transparent;
+}
+
+button[type="submit"] {
+  padding: 10px 14px;
+  background: linear-gradient(180deg,#2563eb,#1e40af);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+form p {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+form p:first-of-type[success],
+.success {
+  background: #ecfdf5;
+  color: #064e3b;
+}
+
+form p.error,
+.error {
+  background: #fff1f2;
+  color: #991b1b;
+}
+
+@media (max-width: 520px) {
+  form { padding: 14px; margin: 12px; }
+}
