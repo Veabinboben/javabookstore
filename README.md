@@ -27,4 +27,4 @@ Estimated time = 25h, Actual time = 22h
 
 ## Docker
 
-Estimated time = 9h, 
+Estimated time = 9h, Actual time = 8h
